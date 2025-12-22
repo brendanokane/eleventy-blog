@@ -1,0 +1,19 @@
+# Su Shi Discovers the Secret Ingredient
+
+[![](images/su-shi-chengtian-temple/cb43d3e8-610c-402f-b2b5-67261d7b688b.heic)](images/su-shi-chengtian-temple/cb43d3e8-610c-402f-b2b5-67261d7b688b.heic) Su Shi, caught in the rain with sandals and a bamboo hat, presumably a reference to a _ci_ of his I’ve been meaning to translate. ( [Princeton Art Museum](https://artmuseum.princeton.edu/collections/objects/57613))
+
+For the weekend, a short vignette by Su Shi 蘇軾 (1037-1101; aka Su Dongpo 蘇東坡), writing from exile in Huangzhou, about the 12th night of the 10th month of Yuanfeng year six (November 24, 1083), which was also a Friday:
+
+> **記承天寺夜遊**
+>
+> 元豐六年十月十二日夜，解衣欲睡，月色入戶，欣然起行。念無與樂者，遂至承天寺尋張懷民。懷民亦未寢，相與步於中庭。
+>
+> 庭下如積水空明，水中藻荇交橫，蓋竹柏影也。何夜無月？何處無竹柏？但少閑人如吾兩人者耳。
+
+> **A Nighttime Visit to Chengtian Temple**
+>
+> It was the 12th night of the 10th month of Yuanfeng year six. I had undressed and was just about to fall asleep when the moonlight shone in through the doorway. Delighted, I dressed again and stepped outside — then, realizing I had no one to enjoy the scene with, I stopped by Chengtian Temple to get Zhang Huaimin. Huaimin hadn’t gone to sleep yet either, so he joined me for a stroll around the temple courtyard.
+>
+> A translucent, watery radiance pooled at one end of the yard, and clumps of duckweed and floating-hearts swayed and criss-crossed in it — shadows of bamboos and cypresses. The moon is out every night, of course, and bamboos and cypresses can be found anywhere one cares to look. The two of us and our idleness had been the only things missing.
+
+Happy weekend! Use the idleness for [something delightful](https://www.burninghou.se/p/whats-good).
