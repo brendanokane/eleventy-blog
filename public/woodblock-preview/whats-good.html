@@ -17,15 +17,20 @@
         --rule: rgba(35, 31, 26, 0.18);
 
         --font-body: "Vollkorn", ui-serif, Georgia, serif;
-        /* Gill Sans is not universally available; fall back to system sans if missing. */
         --font-mn: "Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
         --body-size: 1.0rem;
         --body-leading: 1.5;
 
         --main-measure: 72ch;
-        --mn-width: 360px;
-        --mn-gutter: 3.25rem;
+
+        /* Tighten based on CJK 'character widths': 1ch ~ width of '0', 1em ~ font-size.
+           Using em here makes it scale with the current text size.
+           Requested: margin notes ~5 Chinese character-widths narrower, gutter ~3 narrower.
+           Approximating 1 Chinese character-width ~ 1em.
+        */
+        --mn-width: 280px;
+        --mn-gutter: 2.5rem;
       }
 
       * { box-sizing: border-box; }
@@ -92,10 +97,18 @@
         overflow-x: auto;
       }
 
+      /*
+        Prevent superscript marker from affecting line box metrics:
+        - use inline-block with fixed line-height
+        - position it relative instead of relying on vertical-align: super
+      */
       .mn-marker {
         font-family: var(--font-mn);
         font-size: 0.78em;
-        vertical-align: super;
+        display: inline-block;
+        line-height: 1;
+        position: relative;
+        top: -0.45em;
         margin-left: 0.08em;
         cursor: pointer;
         user-select: none;
@@ -285,13 +298,15 @@
           const frameRect = frame.getBoundingClientRect();
           const gridRect = grid.getBoundingClientRect();
 
-          // Left edge of margin column, relative to the frame.
-          const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mn-width')));
+          const mnWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mn-width'));
+          const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - mnWidth);
 
           const entries = [];
 
-          const mnLineHeight = 1.35 * 0.78 * 16; // approx px; OK for preview
-          const nudgeUp = mnLineHeight; // user requested ~1 mn line-height higher
+          // Nudge up by one margin-note line height.
+          const mnNote = document.querySelector('.mn-note');
+          const mnLineHeightPx = mnNote ? parseFloat(getComputedStyle(mnNote).lineHeight) : 16;
+          const nudgeUp = mnLineHeightPx;
 
           document.querySelectorAll('.mn-marker').forEach((marker) => {
             const id = marker.getAttribute('data-mn-id');
@@ -303,6 +318,7 @@
             note.style.left = `${Math.round(marginLeft)}px`;
 
             const markerRect = marker.getBoundingClientRect();
+            // markerRect.bottom approximates baseline; subtract nudgeUp to lift note.
             const desiredTop = (markerRect.bottom - frameRect.top) - nudgeUp;
 
             entries.push({ note, desiredTop });
