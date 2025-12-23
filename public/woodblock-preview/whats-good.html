@@ -17,10 +17,15 @@
         --rule: rgba(35, 31, 26, 0.18);
 
         --font-body: "Vollkorn", ui-serif, Georgia, serif;
-        --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        /* Gill Sans is not universally available; fall back to system sans if missing. */
+        --font-mn: "Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
         --body-size: 1.0rem;
-        --body-leading: 1.4;
+        --body-leading: 1.5;
+
+        --main-measure: 72ch;
+        --mn-width: 360px;
+        --mn-gutter: 3.25rem;
       }
 
       * { box-sizing: border-box; }
@@ -32,14 +37,13 @@
         overflow-x: hidden;
       }
 
-      /* Ensure media never causes horizontal scrolling */
       img, svg, video, iframe {
         max-width: 100%;
         height: auto;
       }
 
       .wb-shell {
-        max-width: 1080px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 4rem;
       }
@@ -48,15 +52,16 @@
         border: 1px solid var(--rule);
         padding: 2rem 2rem;
         background: rgba(255,255,255,0.35);
-        position: relative; /* anchor absolutely-positioned margin notes */
-        overflow-x: clip; /* keep any positioned notes from creating horizontal scroll */
+        position: relative;
+        overflow-x: clip;
       }
 
       .wb-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 260px;
-        gap: 2.25rem;
+        grid-template-columns: minmax(0, var(--main-measure)) var(--mn-width);
+        gap: var(--mn-gutter);
         align-items: start;
+        justify-content: center;
       }
 
       .wb-prose {
@@ -71,13 +76,11 @@
 
       .wb-prose a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
-      /* Blockquotes are for quotations: indentation only */
       .wb-prose blockquote {
         margin: 1.2em 0;
         padding-left: 1.1em;
       }
 
-      /* Poetry / preformatted: preserve line breaks, no code styling */
       .wb-prose pre {
         font-family: var(--font-body);
         font-size: 0.92em;
@@ -90,7 +93,7 @@
       }
 
       .mn-marker {
-        font-family: var(--font-sans);
+        font-family: var(--font-mn);
         font-size: 0.78em;
         vertical-align: super;
         margin-left: 0.08em;
@@ -101,8 +104,8 @@
 
       .mn-note {
         position: absolute;
-        width: 260px;
-        font-family: var(--font-sans);
+        width: var(--mn-width);
+        font-family: var(--font-mn);
         font-size: 0.78em;
         line-height: 1.35;
         color: var(--muted-ink);
@@ -115,7 +118,7 @@
       .footnotes { display: none; }
 
       @media (max-width: 950px) {
-        .wb-grid { grid-template-columns: 1fr; }
+        .wb-grid { grid-template-columns: 1fr; justify-content: stretch; }
 
         .mn-note {
           position: static;
@@ -282,11 +285,13 @@
           const frameRect = frame.getBoundingClientRect();
           const gridRect = grid.getBoundingClientRect();
 
-          // Margin note column is the second grid column; position notes within that.
           // Left edge of margin column, relative to the frame.
-          const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - 260);
+          const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mn-width')));
 
           const entries = [];
+
+          const mnLineHeight = 1.35 * 0.78 * 16; // approx px; OK for preview
+          const nudgeUp = mnLineHeight; // user requested ~1 mn line-height higher
 
           document.querySelectorAll('.mn-marker').forEach((marker) => {
             const id = marker.getAttribute('data-mn-id');
@@ -295,20 +300,17 @@
             if (!note) return;
 
             note.hidden = false;
-
             note.style.left = `${Math.round(marginLeft)}px`;
 
             const markerRect = marker.getBoundingClientRect();
-
-            // Use marker's bottom to approximate baseline alignment (sup top is misleading).
-            const desiredTop = markerRect.bottom - frameRect.top;
+            const desiredTop = (markerRect.bottom - frameRect.top) - nudgeUp;
 
             entries.push({ note, desiredTop });
           });
 
           entries.sort((a, b) => a.desiredTop - b.desiredTop);
 
-          const GAP = 10;
+          const GAP = 12;
           let cursor = 0;
 
           entries.forEach(({ note, desiredTop }) => {
