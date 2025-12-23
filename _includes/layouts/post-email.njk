@@ -1,0 +1,78 @@
+---
+layout: layouts/base.njk
+---
+<style>
+  :root {
+    --email-font-body: ui-serif, Georgia, serif;
+    --email-font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --email-ink: #111;
+    --email-muted: rgba(0,0,0,0.66);
+  }
+
+  body { color: var(--email-ink); }
+
+  .email-shell {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+    font-family: var(--email-font-body);
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+
+  .email-meta {
+    font-family: var(--email-font-sans);
+    font-size: 0.95rem;
+    color: var(--email-muted);
+    margin: 0 0 1.25rem;
+  }
+
+  .email-shell h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
+
+  .endnotes {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .endnotes h2 {
+    font-family: var(--email-font-sans);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0 0 0.75rem;
+    color: var(--email-muted);
+  }
+
+  .endnotes ol { margin: 0; padding-left: 1.25rem; }
+  .endnotes li { margin: 0 0 0.6rem; }
+
+  sup.fn {
+    font-family: var(--email-font-sans);
+    font-size: 0.75em;
+    vertical-align: super;
+  }
+</style>
+
+<div class="email-shell">
+  <h1>{{ title }}</h1>
+
+  <p class="email-meta">
+    <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+    ·
+    <a href="{{ webUrl }}">View on the web</a>
+  </p>
+
+  {{ emailContent | safe }}
+
+  {%- if endnotes and endnotes.length %}
+  <section class="endnotes">
+    <h2>Notes</h2>
+    <ol>
+      {%- for note in endnotes %}
+      <li>{{ note | safe }}</li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
+</div>
