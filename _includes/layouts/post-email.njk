@@ -63,16 +63,5 @@ layout: layouts/base.njk
     <a href="{{ webUrl }}">View on the web</a>
   </p>
 
-  {{ emailContent | safe }}
-
-  {%- if endnotes and endnotes.length %}
-  <section class="endnotes">
-    <h2>Notes</h2>
-    <ol>
-      {%- for note in endnotes %}
-      <li>{{ note | safe }}</li>
-      {%- endfor %}
-    </ol>
-  </section>
-  {%- endif %}
+  {{ content | safe }}
 </div>
