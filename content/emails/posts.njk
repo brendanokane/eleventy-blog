@@ -7,11 +7,12 @@ permalink: "/emails/{{ post.fileSlug }}/"
 layout: layouts/post-email.njk
 ---
 
-{# Compute the web URL (now top-level /<slug>/) #}
-{% set webUrl %}{{ post.url }}{% endset %}
+{# Web URL is the post's canonical URL (now top-level /<slug>/) #}
+{% set webUrl = post.url %}
 
 {# Convert inline margin note HTML to endnotes for email #}
 {% set transformed = post.templateContent | emailifyMarginNotes %}
 
+{# Provide layout vars #}
 {% set emailContent = transformed.content %}
 {% set endnotes = transformed.endnotes %}
