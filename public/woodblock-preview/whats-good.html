@@ -19,7 +19,6 @@
         --font-body: "Vollkorn", ui-serif, Georgia, serif;
         --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-        /* Preview scale: you asked for ~half the previous size. */
         --body-size: 1.0rem;
         --body-leading: 1.4;
       }
@@ -30,7 +29,13 @@
       body {
         background: var(--paper);
         color: var(--ink);
-        overflow-x: hidden; /* prevent margin notes from forcing horizontal scrolling */
+        overflow-x: hidden;
+      }
+
+      /* Ensure media never causes horizontal scrolling */
+      img, svg, video, iframe {
+        max-width: 100%;
+        height: auto;
       }
 
       .wb-shell {
@@ -43,6 +48,8 @@
         border: 1px solid var(--rule);
         padding: 2rem 2rem;
         background: rgba(255,255,255,0.35);
+        position: relative; /* anchor absolutely-positioned margin notes */
+        overflow-x: clip; /* keep any positioned notes from creating horizontal scroll */
       }
 
       .wb-grid {
@@ -82,14 +89,6 @@
         overflow-x: auto;
       }
 
-      /*
-        Margin notes:
-        - Marker is an inline <sup> inside the paragraph (valid HTML, no paragraph splitting).
-        - Note content is a block <aside> immediately after the paragraph.
-        - On desktop, JS positions the <aside> into the right margin and aligns it to the marker.
-        - On mobile, notes stay in-flow after their paragraph and can be toggled by tapping the marker.
-      */
-
       .mn-marker {
         font-family: var(--font-sans);
         font-size: 0.78em;
@@ -101,22 +100,18 @@
       }
 
       .mn-note {
-        /* Desktop placement: moved to margin via absolute positioning + JS. */
         position: absolute;
-        left: calc(100% + 2.25rem);
         width: 260px;
         font-family: var(--font-sans);
-        font-size: 0.78em; /* roughly half of prior margin note size */
+        font-size: 0.78em;
         line-height: 1.35;
         color: var(--muted-ink);
         margin: 0;
         opacity: 0;
-        max-width: calc(100vw - 2rem);
       }
       .mn-note p { margin: 0 0 0.6em; }
       .mn-note p:last-child { margin-bottom: 0; }
 
-      /* Hide the original footnotes section in this preview */
       .footnotes { display: none; }
 
       @media (max-width: 950px) {
@@ -245,22 +240,14 @@
           return window.matchMedia && window.matchMedia('(max-width: 950px)').matches;
         }
 
-        function getFrameContainer() {
-          // Position notes relative to the framed area, not the whole article.
-          return document.querySelector('.wb-frame');
-        }
-
         function setNoteVisibilityForViewport() {
           const mobile = isMobile();
           document.querySelectorAll('.mn-note').forEach((note) => {
-            // On mobile: default to hidden (tap-to-expand). On desktop: show.
             note.hidden = mobile;
             if (!mobile) {
               note.style.opacity = 0;
-              note.style.transform = '';
               note.style.top = '';
               note.style.left = '';
-              note.style.maxWidth = '';
             }
           });
 
@@ -277,7 +264,7 @@
               const note = document.getElementById(id);
               if (!note) return;
 
-              if (!isMobile()) return; // Desktop stays always-on in this preview.
+              if (!isMobile()) return;
 
               note.hidden = !note.hidden;
               marker.setAttribute('aria-expanded', String(!note.hidden));
@@ -288,17 +275,16 @@
         function alignDesktopMarginNotes() {
           if (isMobile()) return;
 
-          const frame = getFrameContainer();
-          if (!frame) return;
-          const frameRect = frame.getBoundingClientRect();
-
+          const frame = document.querySelector('.wb-frame');
           const grid = document.querySelector('.wb-grid');
-          const marginColumn = grid ? grid.getBoundingClientRect() : null;
+          if (!frame || !grid) return;
 
-          // Compute the left edge for margin notes to keep them inside the viewport/frame.
-          // We anchor to the right side of the grid (main content + margin column) but clamp within frame.
-          const baseLeft = marginColumn ? (marginColumn.right - frameRect.left - 260) : (frameRect.width - 260 - 16);
-          const left = Math.max(0, Math.min(baseLeft, frameRect.width - 260));
+          const frameRect = frame.getBoundingClientRect();
+          const gridRect = grid.getBoundingClientRect();
+
+          // Margin note column is the second grid column; position notes within that.
+          // Left edge of margin column, relative to the frame.
+          const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - 260);
 
           const entries = [];
 
@@ -308,29 +294,24 @@
             const note = document.getElementById(id);
             if (!note) return;
 
-            // Ensure note is measurable.
             note.hidden = false;
 
-            // Place horizontally within the frame.
-            note.style.left = `${Math.round(left)}px`;
-            note.style.maxWidth = `${Math.round(frameRect.width - left)}px`;
+            note.style.left = `${Math.round(marginLeft)}px`;
 
             const markerRect = marker.getBoundingClientRect();
 
-            // Align top to the marker, relative to the frame.
-            const desiredTop = markerRect.top - frameRect.top;
+            // Use marker's bottom to approximate baseline alignment (sup top is misleading).
+            const desiredTop = markerRect.bottom - frameRect.top;
 
             entries.push({ note, desiredTop });
           });
 
           entries.sort((a, b) => a.desiredTop - b.desiredTop);
 
-          const GAP = 10; // px gap between margin notes
+          const GAP = 10;
           let cursor = 0;
 
-          entries.forEach((entry) => {
-            const { note, desiredTop } = entry;
-
+          entries.forEach(({ note, desiredTop }) => {
             const top = Math.max(desiredTop, cursor);
             note.style.top = `${Math.round(top)}px`;
             note.style.opacity = 1;
