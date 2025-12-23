@@ -1,0 +1,17 @@
+---
+pagination:
+  data: collections.posts
+  size: 1
+  alias: post
+permalink: "/emails/{{ post.fileSlug }}/"
+layout: layouts/post-email.njk
+---
+
+{# Compute the web URL (now top-level /<slug>/) #}
+{% set webUrl %}{{ post.url }}{% endset %}
+
+{# Convert inline margin note HTML to endnotes for email #}
+{% set transformed = post.templateContent | emailifyMarginNotes %}
+
+{% set emailContent = transformed.content %}
+{% set endnotes = transformed.endnotes %}
