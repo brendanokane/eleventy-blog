@@ -1,7 +1,7 @@
 import {
   IdAttributePlugin,
   InputPathToUrlTransformPlugin,
-  HtmlBasePlugin,
+  // HtmlBasePlugin, // disabled for baseline smoke test
 } from "@11ty/eleventy";
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
@@ -49,7 +49,11 @@ export default async function (eleventyConfig) {
     preAttributes: { tabindex: 0 },
   });
   eleventyConfig.addPlugin(pluginNavigation);
-  eleventyConfig.addPlugin(HtmlBasePlugin);
+
+  // HtmlBasePlugin is disabled for baseline smoke test.
+  // We will re-enable it once we finish the publish-gating/collections cleanup.
+  // eleventyConfig.addPlugin(HtmlBasePlugin);
+
   eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
 
   // Starter feed plugin (baseline)
