@@ -3,6 +3,7 @@ title: "Import Instructions (Substack/BHArchive)"
 draft: true
 publish: false
 permalink: false
+eleventyExcludeFromCollections: true
 ---
 
 This file documents the one-off Substack import that created `content/blog/<slug>/index.md` posts.
