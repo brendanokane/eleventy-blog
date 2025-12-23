@@ -1,6 +1,13 @@
 ---
-title: This is a fifth post (draft)
-date: 2023-01-23
+title: This is my fifth post.
+description: This is a post on My Blog about things.
+date: 2018-05-05
+tags:
+  - fifth tag
+  - posts
+  - another tag
 draft: true
+publish: false
+bluesky_thread:
 ---
-This is a draft post
+This is my fifth post.
