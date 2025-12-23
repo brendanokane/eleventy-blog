@@ -7,12 +7,11 @@ permalink: "/emails/{{ post.fileSlug }}/"
 layout: layouts/post-email.njk
 ---
 
-{# Web URL is the post's canonical URL (now top-level /<slug>/) #}
+{# Provide layout vars in render scope #}
 {% set webUrl = post.url %}
-
-{# Convert inline margin note HTML to endnotes for email #}
 {% set transformed = post.templateContent | emailifyMarginNotes %}
-
-{# Provide layout vars #}
 {% set emailContent = transformed.content %}
 {% set endnotes = transformed.endnotes %}
+
+{# Emit content so Eleventy processes templateContent and keeps variables in scope for layout. #}
+{{ "" }}
