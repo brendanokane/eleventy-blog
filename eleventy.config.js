@@ -3,7 +3,6 @@ import {
   InputPathToUrlTransformPlugin,
   HtmlBasePlugin,
 } from "@11ty/eleventy";
-import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import MarkdownIt from "markdown-it";
@@ -15,8 +14,8 @@ const md = new MarkdownIt();
 
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 export default async function (eleventyConfig) {
-  // Drafts, see also _data/eleventyDataSchema.js
-  eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
+  // Drafts
+  eleventyConfig.addPreprocessor("drafts", "*", (data) => {
     if (data.draft) {
       data.title = `${data.title} (draft)`;
     }
@@ -26,7 +25,6 @@ export default async function (eleventyConfig) {
     }
   });
 
-  // Copy the contents of the `public` folder to the output folder
   eleventyConfig
     .addPassthroughCopy({
       "./public/": "/",
@@ -53,37 +51,11 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
 
-  // Ensure the posts collection never includes templates with url:false.
-  // This prevents feed/sitemap templates (and feed plugins) from calling `htmlBaseUrl(false)`.
+  // Collection safety: exclude url:false items (permalink:false) from posts.
   eleventyConfig.addCollection("posts", (collectionApi) => {
     return collectionApi
       .getFilteredByTag("posts")
       .filter((item) => item && item.url && item.url !== false);
-  });
-
-  eleventyConfig.addPlugin(feedPlugin, {
-    type: "atom", // or "rss", "json"
-    outputPath: "/feed/feed.xml",
-    stylesheet: "pretty-atom-feed.xsl",
-    templateData: {
-      eleventyNavigation: {
-        key: "Feed",
-        order: 4,
-      },
-    },
-    collection: {
-      name: "posts",
-      limit: 10,
-    },
-    metadata: {
-      language: "en",
-      title: "Blog Title",
-      subtitle: "This is a longer description about your blog.",
-      base: "https://example.com/",
-      author: {
-        name: "Your Name",
-      },
-    },
   });
 
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
@@ -114,6 +86,7 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addPlugin(IdAttributePlugin, {});
 
+  // Existing mn/fn shortcodes (legacy). We'll replace these when we wire true mn/endnote variants.
   eleventyConfig.addPairedShortcode("mn", function (content, anchor) {
     const renderedContent = md.render(content);
 
