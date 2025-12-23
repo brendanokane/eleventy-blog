@@ -3,4 +3,5 @@ module.exports = {
 		"posts"
 	],
 	layout: "layouts/post-woodblock.njk",
+	permalink: "/{{ page.fileSlug }}/",
 };
