@@ -116,16 +116,22 @@ export default async function (eleventyConfig) {
   // Filters
   eleventyConfig.addPlugin(pluginFilters);
 
+  // Slugify helper for import pipeline
+  eleventyConfig.addFilter("slugify", (str) => {
+    if (!str) return "";
+    return String(str)
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  });
+
   eleventyConfig.addPlugin(IdAttributePlugin, {
     // by default we use Eleventy’s built-in `slugify` filter:
     // slugify: eleventyConfig.getFilter("slugify"),
     // selector: "h1,h2,h3,h4,h5,h6", // default
   });
-
-  // ... (Your existing code up to the custom shortcode block)
-
-  // Create a new instance of the Markdown parser outside the config function
-  const md = new MarkdownIt();
 
   // ----------------------------------------------------------------------
   // --- START CUSTOM SHORTCODES (Final, Synchronous External Solution) ---
@@ -159,53 +165,22 @@ export default async function (eleventyConfig) {
   // --- END CUSTOM SHORTCODES ---
   // ----------------------------------------------------------------------
 
-  // ... (Rest of your existing code)
-
   eleventyConfig.addShortcode("currentBuildDate", () => {
     return new Date().toISOString();
   });
-
-  // Features to make your build faster (when you need them)
-
-  // If your passthrough copy gets heavy and cumbersome, add this line
-  // to emulate the file copy on the dev server. Learn more:
-  // https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve
-
-  // eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 
   // Ensure the async function returns the config object
   return {};
 }
 
 export const config = {
-  // Control which files Eleventy will process
-  // e.g.: *.md, *.njk, *.html, *.liquid
   templateFormats: ["md", "njk", "html", "liquid", "11ty.js"],
-
-  // Pre-process *.md files with: (default: `liquid`)
   markdownTemplateEngine: "njk",
-
-  // Pre-process *.html files with: (default: `liquid`)
   htmlTemplateEngine: "njk",
-
-  // These are all optional:
   dir: {
-    input: "content", // default: "."
-    includes: "../_includes", // default: "_includes" (`input` relative)
-    data: "../_data", // default: "_data" (`input` relative)
+    input: "content",
+    includes: "../_includes",
+    data: "../_data",
     output: "_site",
   },
-
-  // -----------------------------------------------------------------
-  // Optional items:
-  // -----------------------------------------------------------------
-
-  // If your site deploys to a subdirectory, change `pathPrefix`.
-  // Read more: https://www.11ty.dev/docs/config/#deploy-to-a-subdirectory-with-a-path-prefix
-
-  // When paired with the HTML <base> plugin https://www.11ty.dev/docs/plugins/html-base/
-  // it will transform any absolute URLs in your HTML to include this
-  // folder name and does **not** affect where things go in the output folder.
-
-  // pathPrefix: "/",
 };
