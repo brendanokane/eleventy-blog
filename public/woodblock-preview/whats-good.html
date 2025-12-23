@@ -81,12 +81,37 @@
         overflow-x: auto;
       }
 
-      /* Margin notes */
-      .mn-wrapper { position: relative; }
-      .mn-anchor {
-        border-bottom: 1px dotted var(--rule);
-        cursor: help;
+      /*
+        Margin note markup uses <details>/<summary> so mobile can tap-to-expand.
+        On desktop, JS positions .mn-content in the margin.
+
+        NOTE: HTML does not allow <p> inside <p>. For multi-paragraph margin notes,
+        this preview wraps note content in a <div> so it can contain <p>, lists, etc.
+      */
+
+      .mn {
+        display: inline;
+        position: relative;
       }
+
+      /* Remove default disclosure triangle/marker */
+      .mn > summary {
+        list-style: none;
+        display: inline;
+      }
+      .mn > summary::-webkit-details-marker { display: none; }
+
+      /* Marker appearance */
+      .mn-marker {
+        font-family: var(--font-sans);
+        font-size: 0.70em;
+        vertical-align: super;
+        margin-left: 0.08em;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      /* Margin note content (desktop: in margin) */
       .mn-content {
         position: absolute;
         left: calc(100% + 2.25rem);
@@ -98,19 +123,10 @@
         opacity: 0;
       }
 
-      /* Footnote anchor marker */
-      .fn-marker {
-        font-family: var(--font-sans);
-        font-size: 0.7em;
-        vertical-align: super;
-        margin-left: 0.08em;
-      }
-
-      /* Hide the original footnotes section in this preview */
-      .footnotes { display: none; }
-
+      /* When opened on mobile, show inline in flow */
       @media (max-width: 950px) {
         .wb-grid { grid-template-columns: 1fr; }
+
         .mn-content {
           position: static;
           display: inline;
@@ -119,7 +135,18 @@
           opacity: 1;
           font-size: 0.85em;
         }
+
+        /* Only show content when open (so tap-to-expand works) */
+        details.mn:not([open]) .mn-content { display: none; }
+
+        /* Make opened note read a bit like an aside */
+        details.mn[open] .mn-content {
+          display: inline;
+        }
       }
+
+      /* Hide the original footnotes section in this preview */
+      .footnotes { display: none; }
     </style>
   </head>
   <body>
@@ -147,7 +174,13 @@
 
             <p>
               Is all hope lost? (No.) Will true love prevail? (Yes.) But before you can find out what happens next, you’re confronted with a chatty little digression from the commentator: a list of delightful things, each ending with the words 不亦快哉 <em>bù yì kuài zāi</em> — “Is <em>that</em> not a delight?”
-              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[1]</span></span><span class="mn-content">Lin Yutang's translation, the only other one I know of in English, consistently renders <em>bù yì kuài zāi</em> as “Ah, is this not happiness?” while Pierre Ryckmans' French translation goes with “Ah, quel délice!” throughout. I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.</span></span>
+              <details class="mn">
+                <summary class="mn-marker" aria-label="Margin note">※</summary>
+                <div class="mn-content">
+                  <p>Lin Yutang's translation, the only other one I know of in English, consistently renders <em>bù yì kuài zāi</em> as “Ah, is this not happiness?” while Pierre Ryckmans' French translation goes with “Ah, quel délice!” throughout.</p>
+                  <p>I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.</p>
+                </div>
+              </details>
             </p>
 
             <p>
@@ -166,7 +199,12 @@
 
             <p>
               <em>Once, when Zhuoshan</em>
-              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[2]</span></span><span class="mn-content">‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on <em>The Romance of the Western Chamber</em> to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “<em>Jin Shengtan nianpu</em> 金聖嘆年譜” in Xu, <em>Wan Ming qujia nianpu</em> 晚明曲家年譜, 1.735.</span></span>
+              <details class="mn">
+                <summary class="mn-marker" aria-label="Margin note">※</summary>
+                <div class="mn-content">
+                  <p>‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on <em>The Romance of the Western Chamber</em> to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “<em>Jin Shengtan nianpu</em> 金聖嘆年譜” in Xu, <em>Wan Ming qujia nianpu</em> 晚明曲家 nianpu_, 1.735.</p>
+                </div>
+              </details>
               <em> and I were lodging together, a ten-day stretch of rain left us stuck indoors with nothing to do but stare at the furniture, and we decided to go back and forth listing happy things to break up the boredom</em>.
               <em> This was twenty years ago, and I’d forgotten all about it until I read this section of</em> <em>The Romance of the Western Chamber</em><em>, “The Questioning,” saw the wonderful lines the author gives Hongniang, and found myself wishing Zhuoshan and I had thought to read the play together. Boredom wouldn’t have stood a chance!</em>
             </p>
@@ -178,34 +216,24 @@
             <hr />
 
             <p>
-              Summer: the seventh month, when the crimson sun parks itself in the sky and there’s no wind or clouds; when the front and back yards are furnaces; when no birds fly and the sweat runs down your body and you can’t make yourself touch the meal in front of you; when you call for a cool mat to lie on but the ground makes it instantly clammy, when flies are circling your head and trying to land on your nose and nothing will make them go away,
-            </p>
-
-            <p>
-              And you’re just about to throw up your hands when all of a sudden the sky goes dark and there's a rumbling and battering like a million battle drums, and the rain pours down in mighty cataracts from the eaves — and there’s your sweat gone, and the clamminess of the ground, and the flies too, and your appetite back again —
-            </p>
-
-            <p>
-              — and if <em>that</em> isn’t nice, I don’t know what is.
-            </p>
-
-            <hr />
-
-            <p>
               A friend I haven't seen in ten years shows up one evening. I greet him and immediately dash back inside, even before asking how he got here or inviting him to have a seat, to ask my wife: "I don't suppose you could make like Su Dongpo's old lady
-              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[3]</span></span><span class="mn-content">In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需)</span></span>
+              <details class="mn">
+                <summary class="mn-marker" aria-label="Margin note">※</summary>
+                <div class="mn-content">
+                  <p>In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需)</p>
+                </div>
+              </details>
               and bring us a dipperful of wine?" And she cheerfully pulls the gold pin out of her hair and we figure it'll cover three days' worth of drinking —
             </p>
 
             <p>
-              — if <em>that</em>’s not nice, what is?
-            </p>
-
-            <hr />
-
-            <p>
               I’m on a little boat when a favorable wind rises, and me without a sail to catch it. A big junk passes, moving quick as the wind, and since I’ve nothing better to do I try throwing my grapnel at it a few times. It catches, to my surprise, and the cable drags me along in the larger boat’s wake, singing Du Fu’s “Unmooring”
-              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[4]</span></span><span class="mn-content">Not gonna lie, I really wanted to translate the title as "I'm On A Boat".</span></span>
+              <details class="mn">
+                <summary class="mn-marker" aria-label="Margin note">※</summary>
+                <div class="mn-content">
+                  <p>Not gonna lie, I really wanted to translate the title as "I'm On A Boat".</p>
+                </div>
+              </details>
               at the top of my lungs and laughing for joy —
             </p>
 
@@ -215,14 +243,13 @@
             </blockquote>
 
             <p>
-              — talk about happiness!
-            </p>
-
-            <hr />
-
-            <p>
               Reading <em>The Stranger with the Curly Beard</em>
-              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[5]</span></span><span class="mn-content">Like Yuan Zhen’s 元稹 <em>The Tale of Yingying</em> 鶯鶯傳, which <em>Western Chamber</em> is based on, <em>The Stranger with the Curly Beard</em> is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's <em>Tang Dynasty Tales: A Guided Reader</em>, 189 ff.</span></span>
+              <details class="mn">
+                <summary class="mn-marker" aria-label="Margin note">※</summary>
+                <div class="mn-content">
+                  <p>Like Yuan Zhen’s 元稹 <em>The Tale of Yingying</em> 鶯鶯傳, which <em>Western Chamber</em> is based on, <em>The Stranger with the Curly Beard</em> is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's <em>Tang Dynasty Tales: A Guided Reader</em>, 189 ff.</p>
+                </div>
+              </details>
               —
             </p>
 
@@ -239,28 +266,28 @@
     <script>
       (function () {
         function alignMarginNotes() {
-          const wrappers = document.querySelectorAll('.mn-wrapper');
+          const notes = document.querySelectorAll('details.mn');
 
-          wrappers.forEach((wrapper) => {
-            const anchor = wrapper.querySelector('.mn-anchor');
-            const noteContent = wrapper.querySelector('.mn-content');
+          notes.forEach((note) => {
+            const marker = note.querySelector('summary.mn-marker');
+            const content = note.querySelector('.mn-content');
+            if (!marker || !content) return;
 
-            if (!anchor || !noteContent) return;
-
-            const computed = window.getComputedStyle(noteContent);
+            // If CSS has made notes static (e.g. mobile), don't try to position.
+            const computed = window.getComputedStyle(content);
             if (computed.position !== 'absolute' && computed.position !== 'fixed') {
-              noteContent.style.opacity = 1;
-              noteContent.style.top = '';
-              noteContent.style.transform = '';
+              content.style.opacity = 1;
+              content.style.top = '';
+              content.style.transform = '';
               return;
             }
 
-            const anchorRect = anchor.getBoundingClientRect();
-            const wrapperRect = wrapper.getBoundingClientRect();
-            const anchorTopWithinWrapper = anchorRect.top - wrapperRect.top;
+            const markerRect = marker.getBoundingClientRect();
+            const noteRect = note.getBoundingClientRect();
+            const topWithinNote = markerRect.top - noteRect.top;
 
-            noteContent.style.top = `${Math.round(anchorTopWithinWrapper)}px`;
-            noteContent.style.opacity = 1;
+            content.style.top = `${Math.round(topWithinNote)}px`;
+            content.style.opacity = 1;
           });
         }
 
