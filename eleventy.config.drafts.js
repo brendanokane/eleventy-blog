@@ -1,50 +1,31 @@
-function eleventyComputedPermalink() {
-	// When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
-	// `addGlobalData` acts like a global data file and runs the top level function it receives.
-	return (data) => {
-		// Always skip during non-watch/serve builds
-		if(data.draft && !process.env.BUILD_DRAFTS) {
-			return false;
-		}
+/**
+ * Publishing gate:
+ * - `draft: true` behaves like Eleventy base-blog (excluded on `build`).
+ * - `publish: true` is the positive signal that a post is ready.
+ * - We warn (but do not block) if `publish: true` and `bluesky_thread` is missing.
+ */
 
-		return data.permalink;
-	}
-};
+/** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
+export default function (eleventyConfig) {
+  eleventyConfig.addPreprocessor("drafts", "*", (data) => {
+    if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
+      return false;
+    }
 
-function eleventyComputedExcludeFromCollections() {
-	// When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
-	// `addGlobalData` acts like a global data file and runs the top level function it receives.
-	return (data) => {
-		// Always exclude from non-watch/serve builds
-		if(data.draft && !process.env.BUILD_DRAFTS) {
-			return true;
-		}
+    // If explicitly publishable is not set, treat as not publishable in production builds.
+    if (process.env.ELEVENTY_RUN_MODE === "build") {
+      const isPublishable = data.publish === true;
+      if (!isPublishable) {
+        return false;
+      }
 
-		return data.eleventyExcludeFromCollections;
-	}
-};
-
-module.exports.eleventyComputedPermalink = eleventyComputedPermalink;
-module.exports.eleventyComputedExcludeFromCollections = eleventyComputedExcludeFromCollections;
-
-module.exports = eleventyConfig => {
-	eleventyConfig.addGlobalData("eleventyComputed.permalink", eleventyComputedPermalink);
-	eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", eleventyComputedExcludeFromCollections);
-
-	let logged = false;
-	eleventyConfig.on("eleventy.before", ({runMode}) => {
-		let text = "Excluding";
-		// Only show drafts in serve/watch modes
-		if(runMode === "serve" || runMode === "watch") {
-			process.env.BUILD_DRAFTS = true;
-			text = "Including";
-		}
-
-		// Only log once.
-		if(!logged) {
-			console.log( `[11ty/eleventy-base-blog] ${text} drafts.` );
-		}
-
-		logged = true;
-	});
+      if (!data.bluesky_thread) {
+        // Warning only
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[WARN] publish:true but bluesky_thread is missing for: ${data.page?.inputPath ?? data.title ?? "(unknown)"}`
+        );
+      }
+    }
+  });
 }
