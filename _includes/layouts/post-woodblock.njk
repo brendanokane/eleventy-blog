@@ -1,0 +1,272 @@
+---
+layout: layouts/base.njk
+---
+<style>
+  :root {
+    --paper: #f4f0e6;
+    --ink: #231f1a;
+    --muted-ink: rgba(35, 31, 26, 0.70);
+    --rule: rgba(35, 31, 26, 0.18);
+
+    --font-body: "Alegreya", ui-serif, Georgia, serif;
+    --font-mn: "Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    --body-size: 1.05rem;
+    --body-leading: 1.6;
+
+    --main-measure: 72ch;
+    --mn-width: 250px;
+    --mn-gutter: 2.5rem;
+
+    --frame-pad-x: 2.05rem;
+    --shell-pad-x: 4rem;
+  }
+
+  /* Ensure media never causes horizontal scrolling */
+  img, svg, video, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  html, body { max-width: none; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .wb-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem var(--shell-pad-x) 4rem;
+  }
+
+  .wb-frame {
+    border: 1px solid var(--rule);
+    padding: 2rem var(--frame-pad-x);
+    background: rgba(255,255,255,0.35);
+    position: relative;
+    overflow-x: clip;
+  }
+
+  .wb-grid {
+    display: grid;
+    grid-template-columns: minmax(0, var(--main-measure)) var(--mn-width);
+    gap: var(--mn-gutter);
+    align-items: start;
+    justify-content: center;
+  }
+
+  .wb-prose {
+    font-family: var(--font-body);
+    font-size: var(--body-size);
+    line-height: var(--body-leading);
+
+    /* Better line breaking in supporting browsers */
+    text-wrap: pretty;
+    -webkit-hyphenate-character: "‐";
+    hyphens: auto;
+  }
+
+  .wb-prose p { margin: 0 0 1.1em; }
+  .wb-prose h1 { font-size: 1.55em; margin: 0 0 0.6em; letter-spacing: 0.01em; }
+
+  /* Blockquotes are for quotations: indentation only */
+  .wb-prose blockquote {
+    margin: 1.2em 0;
+    padding-left: 1.1em;
+  }
+
+  /* Poetry / preformatted: preserve line breaks */
+  .wb-prose pre {
+    font-family: var(--font-body);
+    font-size: 0.92em;
+    line-height: 1.35;
+    background: transparent;
+    padding: 0;
+    margin: 1.1em 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* Margin note marker: do not perturb line-height */
+  .mn-marker {
+    font-family: var(--font-mn);
+    font-size: 0.78em;
+    display: inline-block;
+    line-height: 1;
+    position: relative;
+    top: -0.45em;
+    margin-left: 0.08em;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px dotted var(--rule);
+  }
+
+  .mn-note {
+    position: absolute;
+    width: var(--mn-width);
+    font-family: var(--font-mn);
+    font-size: 0.78em;
+    line-height: 1.35;
+    color: var(--muted-ink);
+    margin: 0;
+    opacity: 0;
+  }
+  .mn-note p { margin: 0 0 0.6em; }
+  .mn-note p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 950px) {
+    .wb-grid { grid-template-columns: 1fr; justify-content: stretch; }
+
+    .mn-note {
+      position: static;
+      width: auto;
+      opacity: 1;
+      margin: 0 0 1.1em;
+      padding-left: 1.0em;
+      border-left: 1px solid var(--rule);
+    }
+
+    .mn-note[hidden] { display: none; }
+  }
+</style>
+
+{# Load Alegreya webfont #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+<div class="wb-shell">
+  <div class="wb-frame">
+    <div class="wb-grid">
+      <article class="wb-prose">
+        <h1>{{ title }}</h1>
+
+        <ul class="post-metadata">
+          <li><time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
+          {%- if tags %}
+          {%- for tag in tags | filterTagList %}
+          {%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
+          <li><a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{%- if not loop.last %}, {% endif %}</li>
+          {%- endfor %}
+          {%- endif %}
+        </ul>
+
+        {{ content | safe }}
+      </article>
+    </div>
+  </div>
+</div>
+
+{# Margin note behavior (position + mobile toggles) #}
+<script>
+  (function () {
+    function isMobile() {
+      return window.matchMedia && window.matchMedia('(max-width: 950px)').matches;
+    }
+
+    function setNoteVisibilityForViewport() {
+      const mobile = isMobile();
+      document.querySelectorAll('.mn-note').forEach((note) => {
+        note.hidden = mobile;
+        if (!mobile) {
+          note.style.opacity = 0;
+          note.style.top = '';
+          note.style.left = '';
+        }
+      });
+
+      document.querySelectorAll('.mn-marker').forEach((marker) => {
+        marker.setAttribute('aria-expanded', String(!mobile));
+      });
+    }
+
+    function wireToggles() {
+      document.querySelectorAll('.mn-marker').forEach((marker) => {
+        marker.addEventListener('click', () => {
+          const id = marker.getAttribute('data-mn-id');
+          if (!id) return;
+          const note = document.getElementById(id);
+          if (!note) return;
+
+          if (!isMobile()) return;
+
+          note.hidden = !note.hidden;
+          marker.setAttribute('aria-expanded', String(!note.hidden));
+        });
+      });
+    }
+
+    function alignDesktopMarginNotes() {
+      if (isMobile()) return;
+
+      const frame = document.querySelector('.wb-frame');
+      const grid = document.querySelector('.wb-grid');
+      if (!frame || !grid) return;
+
+      const frameRect = frame.getBoundingClientRect();
+      const gridRect = grid.getBoundingClientRect();
+
+      const mnWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mn-width'));
+      const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - mnWidth);
+
+      const entries = [];
+
+      const mnNote = document.querySelector('.mn-note');
+      const mnLineHeightPx = mnNote ? parseFloat(getComputedStyle(mnNote).lineHeight) : 16;
+      const nudgeUp = mnLineHeightPx;
+
+      document.querySelectorAll('.mn-marker').forEach((marker) => {
+        const id = marker.getAttribute('data-mn-id');
+        if (!id) return;
+        const note = document.getElementById(id);
+        if (!note) return;
+
+        note.hidden = false;
+        note.style.left = `${Math.round(marginLeft)}px`;
+
+        const markerRect = marker.getBoundingClientRect();
+        const desiredTop = (markerRect.bottom - frameRect.top) - nudgeUp;
+
+        entries.push({ note, desiredTop });
+      });
+
+      entries.sort((a, b) => a.desiredTop - b.desiredTop);
+
+      const GAP = 12;
+      let cursor = 0;
+
+      entries.forEach(({ note, desiredTop }) => {
+        const top = Math.max(desiredTop, cursor);
+        note.style.top = `${Math.round(top)}px`;
+        note.style.opacity = 1;
+
+        const height = note.getBoundingClientRect().height;
+        cursor = top + height + GAP;
+      });
+    }
+
+    function scheduleAlign() {
+      window.requestAnimationFrame(alignDesktopMarginNotes);
+    }
+
+    function onResize() {
+      setNoteVisibilityForViewport();
+      scheduleAlign();
+    }
+
+    setNoteVisibilityForViewport();
+    wireToggles();
+
+    window.addEventListener('load', scheduleAlign);
+    window.addEventListener('resize', onResize);
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        setNoteVisibilityForViewport();
+        scheduleAlign();
+      });
+    }
+  })();
+</script>
