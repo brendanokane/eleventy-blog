@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What’s Good — woodblock preview</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+    <style>
+      :root {
+        --paper: #f4f0e6;
+        --ink: #231f1a;
+        --muted-ink: rgba(35, 31, 26, 0.70);
+        --rule: rgba(35, 31, 26, 0.18);
+
+        --font-body: "Vollkorn", ui-serif, Georgia, serif;
+        --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+        /* 22pt ≈ 29.33px. Using rem keeps it user-scalable. */
+        --body-size: 1.833rem;
+        --body-leading: 1.4;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      .wb-shell {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      .wb-frame {
+        border: 1px solid var(--rule);
+        padding: 2rem 2rem;
+        background: rgba(255,255,255,0.35);
+      }
+
+      .wb-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        gap: 2.25rem;
+        align-items: start;
+      }
+
+      .wb-prose {
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        line-height: var(--body-leading);
+      }
+
+      .wb-prose p { margin: 0 0 1.1em; }
+      .wb-prose h1 { font-size: 1.55em; margin: 0 0 0.6em; letter-spacing: 0.01em; }
+      .wb-prose h2 { font-size: 1.12em; margin: 1.6em 0 0.5em; letter-spacing: 0.01em; }
+
+      .wb-prose a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+      /* Blockquotes are for quotations: indentation only */
+      .wb-prose blockquote {
+        margin: 1.2em 0;
+        padding-left: 1.1em;
+      }
+
+      /* Poetry / preformatted: preserve line breaks, no code styling */
+      .wb-prose pre {
+        font-family: var(--font-body);
+        font-size: 0.92em;
+        line-height: 1.35;
+        background: transparent;
+        padding: 0;
+        margin: 1.1em 0;
+        white-space: pre;
+        overflow-x: auto;
+      }
+
+      /* Margin notes */
+      .mn-wrapper { position: relative; }
+      .mn-anchor {
+        border-bottom: 1px dotted var(--rule);
+        cursor: help;
+      }
+      .mn-content {
+        position: absolute;
+        left: calc(100% + 2.25rem);
+        width: 260px;
+        font-family: var(--font-sans);
+        font-size: 0.62em;
+        line-height: 1.35;
+        color: var(--muted-ink);
+        opacity: 0;
+      }
+
+      /* Footnote anchor marker */
+      .fn-marker {
+        font-family: var(--font-sans);
+        font-size: 0.7em;
+        vertical-align: super;
+        margin-left: 0.08em;
+      }
+
+      /* Hide the original footnotes section in this preview */
+      .footnotes { display: none; }
+
+      @media (max-width: 950px) {
+        .wb-grid { grid-template-columns: 1fr; }
+        .mn-content {
+          position: static;
+          display: inline;
+          width: auto;
+          margin-left: 0.25em;
+          opacity: 1;
+          font-size: 0.85em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wb-shell">
+      <div class="wb-frame">
+        <div class="wb-grid">
+          <article class="wb-prose" id="main">
+            <h1>What’s Good?</h1>
+
+            <p>
+              <a href="https://substackcdn.com/image/fetch/$s_!VmLi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb9cca365-1abb-4ee8-bcde-4447efd0b32f_2620x2048.jpeg">
+                <img
+                  alt="A scan of the Jinguyuan edition of Jin Shengtan's version of The Romance of the Western Chamber, open to the pages translated here"
+                  src="https://substackcdn.com/image/fetch/$s_!VmLi!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb9cca365-1abb-4ee8-bcde-4447efd0b32f_2620x2048.jpeg"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              Jin Shengtan's introduction to "33 Nice Things," 清書坊金谷園刊本
+            </p>
+
+            <p>
+              So you're reading <em>The Romance of the Western Chamber</em> 西廂記, as one does, and you're reading it in an old woodblock edition, because obviously, and you're hooked. Young Student Zhang has driven away the Flying Tiger and his bandits, and for a moment it looks like there'll be nothing more to stand in the way of his marriage to the well-bred Cui Yingying – but Yingying's mother is having second thoughts about the promise she made. The young lovers have been relying on Yingying's sassy maidservant Hongniang to pass messages, but Yingying's mother is onto them.
+            </p>
+
+            <p>
+              Is all hope lost? (No.) Will true love prevail? (Yes.) But before you can find out what happens next, you’re confronted with a chatty little digression from the commentator: a list of delightful things, each ending with the words 不亦快哉 <em>bù yì kuài zāi</em> — “Is <em>that</em> not a delight?”
+              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[1]</span></span><span class="mn-content">Lin Yutang's translation, the only other one I know of in English, consistently renders <em>bù yì kuài zāi</em> as “Ah, is this not happiness?” while Pierre Ryckmans' French translation goes with “Ah, quel délice!” throughout. I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.</span></span>
+            </p>
+
+            <p>
+              Stories from a Burning House is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+            </p>
+
+            <p>
+              This is Jin Shengtan's 金聖嘆 "Thirty-three Nice Things" 不亦快哉三十三則, a digression so powerful that it broke free of its original context to become widely known and beloved in its own right, even among the sort of people who do not habitually read pre-20th century editions of 17th-century commentaries on 13th-century updates of 12th-century dramatizations of 9th-century romantic fiction. I thought I might cheer myself up by translating it, and when I was done I thought my friends might enjoy it. I hope you will too.
+            </p>
+
+            <hr />
+
+            <p>
+              昔與斵山同客共住，霖雨十日，對床無聊，因約賭說快事，以破積悶。至今相距既二十年，亦都不自記憶。偶因讀《西廂》至“拷豔”一篇，見紅娘口中作如許快文，恨當時何不檢取共讀，何積悶之不破。於是反自追索，猶憶得數則，附之左方。但不能辨何句是斵山語，何句是聖嘆語矣。
+            </p>
+
+            <p>
+              <em>Once, when Zhuoshan</em>
+              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[2]</span></span><span class="mn-content">‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on <em>The Romance of the Western Chamber</em> to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “<em>Jin Shengtan nianpu</em> 金聖嘆年譜” in Xu, <em>Wan Ming qujia nianpu</em> 晚明曲家年譜, 1.735.</span></span>
+              <em> and I were lodging together, a ten-day stretch of rain left us stuck indoors with nothing to do but stare at the furniture, and we decided to go back and forth listing happy things to break up the boredom</em>.
+              <em> This was twenty years ago, and I’d forgotten all about it until I read this section of</em> <em>The Romance of the Western Chamber</em><em>, “The Questioning,” saw the wonderful lines the author gives Hongniang, and found myself wishing Zhuoshan and I had thought to read the play together. Boredom wouldn’t have stood a chance!</em>
+            </p>
+
+            <p>
+              <em>After searching my memory I was able to recover a few of the things we said, which I’ve listed below, but I can’t tell which lines are Zhuoshan’s and which are mine.</em>
+            </p>
+
+            <hr />
+
+            <p>
+              Summer: the seventh month, when the crimson sun parks itself in the sky and there’s no wind or clouds; when the front and back yards are furnaces; when no birds fly and the sweat runs down your body and you can’t make yourself touch the meal in front of you; when you call for a cool mat to lie on but the ground makes it instantly clammy, when flies are circling your head and trying to land on your nose and nothing will make them go away,
+            </p>
+
+            <p>
+              And you’re just about to throw up your hands when all of a sudden the sky goes dark and there's a rumbling and battering like a million battle drums, and the rain pours down in mighty cataracts from the eaves — and there’s your sweat gone, and the clamminess of the ground, and the flies too, and your appetite back again —
+            </p>
+
+            <p>
+              — and if <em>that</em> isn’t nice, I don’t know what is.
+            </p>
+
+            <hr />
+
+            <p>
+              A friend I haven't seen in ten years shows up one evening. I greet him and immediately dash back inside, even before asking how he got here or inviting him to have a seat, to ask my wife: "I don't suppose you could make like Su Dongpo's old lady
+              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[3]</span></span><span class="mn-content">In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需)</span></span>
+              and bring us a dipperful of wine?" And she cheerfully pulls the gold pin out of her hair and we figure it'll cover three days' worth of drinking —
+            </p>
+
+            <p>
+              — if <em>that</em>’s not nice, what is?
+            </p>
+
+            <hr />
+
+            <p>
+              I’m on a little boat when a favorable wind rises, and me without a sail to catch it. A big junk passes, moving quick as the wind, and since I’ve nothing better to do I try throwing my grapnel at it a few times. It catches, to my surprise, and the cable drags me along in the larger boat’s wake, singing Du Fu’s “Unmooring”
+              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[4]</span></span><span class="mn-content">Not gonna lie, I really wanted to translate the title as "I'm On A Boat".</span></span>
+              at the top of my lungs and laughing for joy —
+            </p>
+
+            <blockquote>
+              <p>Green: too soon the peaks and ridges pass.</p>
+              <p>(The orange is the citrus trees ahead.)</p>
+            </blockquote>
+
+            <p>
+              — talk about happiness!
+            </p>
+
+            <hr />
+
+            <p>
+              Reading <em>The Stranger with the Curly Beard</em>
+              <span class="mn-wrapper"><span class="mn-anchor"><span class="fn-marker">[5]</span></span><span class="mn-content">Like Yuan Zhen’s 元稹 <em>The Tale of Yingying</em> 鶯鶯傳, which <em>Western Chamber</em> is based on, <em>The Stranger with the Curly Beard</em> is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's <em>Tang Dynasty Tales: A Guided Reader</em>, 189 ff.</span></span>
+              —
+            </p>
+
+            <p>
+              We'll leave Jin Shengtan here for now, reading his books and remembering happier times. The next time we check in with him it'll be almost a quarter century after his conversation with Zhuoshan. We'll talk about snappy retorts, vegetarian ham recipes, official corruption, the transfer of New World food crops, and one last ‘ <em>bù yì kuài zāi</em>.’ There'll be some ground to cover between now and then, and probably a lot of tangents, detours, and wild goose chases — but hopefully it'll be worth the going.
+            </p>
+
+            <p>Have a nice one. See you next time.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        function alignMarginNotes() {
+          const wrappers = document.querySelectorAll('.mn-wrapper');
+
+          wrappers.forEach((wrapper) => {
+            const anchor = wrapper.querySelector('.mn-anchor');
+            const noteContent = wrapper.querySelector('.mn-content');
+
+            if (!anchor || !noteContent) return;
+
+            const computed = window.getComputedStyle(noteContent);
+            if (computed.position !== 'absolute' && computed.position !== 'fixed') {
+              noteContent.style.opacity = 1;
+              noteContent.style.top = '';
+              noteContent.style.transform = '';
+              return;
+            }
+
+            const anchorRect = anchor.getBoundingClientRect();
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const anchorTopWithinWrapper = anchorRect.top - wrapperRect.top;
+
+            noteContent.style.top = `${Math.round(anchorTopWithinWrapper)}px`;
+            noteContent.style.opacity = 1;
+          });
+        }
+
+        function scheduleAlign() {
+          window.requestAnimationFrame(alignMarginNotes);
+        }
+
+        window.addEventListener('load', scheduleAlign);
+        window.addEventListener('resize', scheduleAlign);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(scheduleAlign);
+        }
+      })();
+    </script>
+  </body>
+</html>
