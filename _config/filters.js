@@ -2,18 +2,20 @@ import { DateTime } from "luxon";
 
 export default function (eleventyConfig) {
   eleventyConfig.addFilter("readableDate", (dateObj, format, zone) => {
-    // Formatting tokens for Luxon: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
     return DateTime.fromJSDate(dateObj, { zone: zone || "utc" }).toFormat(
       format || "dd LLLL yyyy"
     );
   });
 
   eleventyConfig.addFilter("htmlDateString", (dateObj) => {
-    // dateObj input: https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string
     return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat("yyyy-LL-dd");
   });
 
-  // Get the first `n` elements of a collection.
+  // RFC 3339 timestamps for feeds (Atom/JSON)
+  eleventyConfig.addFilter("dateToRfc3339", (dateObj) => {
+    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toISO({ suppressMilliseconds: true });
+  });
+
   eleventyConfig.addFilter("head", (array, n) => {
     if (!Array.isArray(array) || array.length === 0) {
       return [];
@@ -25,12 +27,10 @@ export default function (eleventyConfig) {
     return array.slice(0, n);
   });
 
-  // Return the smallest number argument
   eleventyConfig.addFilter("min", (...numbers) => {
     return Math.min.apply(null, numbers);
   });
 
-  // Return the keys used in an object
   eleventyConfig.addFilter("getKeys", (target) => {
     return Object.keys(target);
   });
@@ -43,8 +43,6 @@ export default function (eleventyConfig) {
     (strings || []).sort((b, a) => b.localeCompare(a))
   );
 
-  // Returns a list of unique tags used across a collection.
-  // Usage: collections.all | getAllTags | filterTagList
   eleventyConfig.addFilter("getAllTags", (collection) => {
     if (!Array.isArray(collection)) return [];
 
