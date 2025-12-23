@@ -1,0 +1,9 @@
+{#
+  This template is used by @11ty/eleventy-plugin-rss.
+  It must not call htmlBaseUrl on items with url:false (e.g. permalink:false pages).
+#}
+{%- for post in collections.posts | reverse %}
+{%- if post.url and post.url != false %}
+  {# Nothing else needed here; this template only exists to provide a title in some configurations. #}
+{%- endif %}
+{%- endfor %}
