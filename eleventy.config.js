@@ -1,7 +1,7 @@
 import {
   IdAttributePlugin,
   InputPathToUrlTransformPlugin,
-  // HtmlBasePlugin, // disabled for baseline smoke test
+  HtmlBasePlugin,
 } from "@11ty/eleventy";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
@@ -49,14 +49,11 @@ export default async function (eleventyConfig) {
   });
   eleventyConfig.addPlugin(pluginNavigation);
 
-  // HtmlBasePlugin is disabled for baseline smoke test.
-  // eleventyConfig.addPlugin(HtmlBasePlugin);
-
+  // Re-enabled now that permalink:false docs are excluded from collections.
+  eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
 
-  // NOTE: feedPlugin is temporarily disabled for baseline smoke test.
-  // It currently crashes due to htmlBaseUrl(false) when a `posts` item has `url:false`.
-  // We'll re-enable feeds after we tighten the posts collection and publish gating.
+  // NOTE: feeds remain disabled until we generate email-variant pages.
 
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
     formats: ["avif", "webp", "auto"],
@@ -76,7 +73,7 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addPlugin(IdAttributePlugin, {});
 
-  // Keep existing shortcodes; they shouldn't block a baseline serve.
+  // Keep existing shortcodes; they shouldn't block.
   eleventyConfig.addPairedShortcode("mn", function (content, anchor) {
     const renderedContent = md.render(content);
 
