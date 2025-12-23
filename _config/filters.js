@@ -13,7 +13,21 @@ export default function (eleventyConfig) {
 
   // RFC 3339 timestamps for feeds (Atom/JSON)
   eleventyConfig.addFilter("dateToRfc3339", (dateObj) => {
-    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toISO({ suppressMilliseconds: true });
+    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toISO({
+      suppressMilliseconds: true,
+    });
+  });
+
+  // Newest date in a collection (used by Atom feed <updated>)
+  eleventyConfig.addFilter("getNewestCollectionItemDate", (collection) => {
+    if (!Array.isArray(collection) || collection.length === 0) {
+      return new Date();
+    }
+
+    return collection
+      .map((item) => item?.date)
+      .filter(Boolean)
+      .sort((a, b) => b.getTime() - a.getTime())[0];
   });
 
   eleventyConfig.addFilter("head", (array, n) => {
