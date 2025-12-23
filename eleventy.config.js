@@ -3,6 +3,7 @@ import {
   InputPathToUrlTransformPlugin,
   HtmlBasePlugin,
 } from "@11ty/eleventy";
+import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import MarkdownIt from "markdown-it";
@@ -14,7 +15,7 @@ const md = new MarkdownIt();
 
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 export default async function (eleventyConfig) {
-  // Drafts
+  // Drafts, see also _data/eleventyDataSchema.js
   eleventyConfig.addPreprocessor("drafts", "*", (data) => {
     if (data.draft) {
       data.title = `${data.title} (draft)`;
@@ -51,11 +52,30 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
 
-  // Collection safety: exclude url:false items (permalink:false) from posts.
-  eleventyConfig.addCollection("posts", (collectionApi) => {
-    return collectionApi
-      .getFilteredByTag("posts")
-      .filter((item) => item && item.url && item.url !== false);
+  // Starter feed plugin (baseline)
+  eleventyConfig.addPlugin(feedPlugin, {
+    type: "atom",
+    outputPath: "/feed/feed.xml",
+    stylesheet: "pretty-atom-feed.xsl",
+    templateData: {
+      eleventyNavigation: {
+        key: "Feed",
+        order: 4,
+      },
+    },
+    collection: {
+      name: "posts",
+      limit: 10,
+    },
+    metadata: {
+      language: "en",
+      title: "Blog Title",
+      subtitle: "This is a longer description about your blog.",
+      base: "https://example.com/",
+      author: {
+        name: "Your Name",
+      },
+    },
   });
 
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
@@ -74,19 +94,9 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addPlugin(pluginFilters);
 
-  eleventyConfig.addFilter("slugify", (str) => {
-    if (!str) return "";
-    return String(str)
-      .toLowerCase()
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-  });
-
   eleventyConfig.addPlugin(IdAttributePlugin, {});
 
-  // Existing mn/fn shortcodes (legacy). We'll replace these when we wire true mn/endnote variants.
+  // Keep existing shortcodes; they shouldn't block a baseline serve.
   eleventyConfig.addPairedShortcode("mn", function (content, anchor) {
     const renderedContent = md.render(content);
 
