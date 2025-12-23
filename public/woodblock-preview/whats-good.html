@@ -19,8 +19,8 @@
         --font-body: "Vollkorn", ui-serif, Georgia, serif;
         --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-        /* 22pt ≈ 29.33px. Using rem keeps it user-scalable. */
-        --body-size: 1.833rem;
+        /* Preview scale: you asked for ~half the previous size. */
+        --body-size: 1.0rem;
         --body-leading: 1.4;
       }
 
@@ -30,6 +30,7 @@
       body {
         background: var(--paper);
         color: var(--ink);
+        overflow-x: hidden; /* prevent margin notes from forcing horizontal scrolling */
       }
 
       .wb-shell {
@@ -91,7 +92,7 @@
 
       .mn-marker {
         font-family: var(--font-sans);
-        font-size: 0.70em;
+        font-size: 0.78em;
         vertical-align: super;
         margin-left: 0.08em;
         cursor: pointer;
@@ -105,11 +106,12 @@
         left: calc(100% + 2.25rem);
         width: 260px;
         font-family: var(--font-sans);
-        font-size: 0.62em;
+        font-size: 0.78em; /* roughly half of prior margin note size */
         line-height: 1.35;
         color: var(--muted-ink);
         margin: 0;
         opacity: 0;
+        max-width: calc(100vw - 2rem);
       }
       .mn-note p { margin: 0 0 0.6em; }
       .mn-note p:last-child { margin-bottom: 0; }
@@ -124,7 +126,6 @@
           position: static;
           width: auto;
           opacity: 1;
-          font-size: 0.85em;
           margin: 0 0 1.1em;
           padding-left: 1.0em;
           border-left: 1px solid var(--rule);
@@ -244,6 +245,11 @@
           return window.matchMedia && window.matchMedia('(max-width: 950px)').matches;
         }
 
+        function getFrameContainer() {
+          // Position notes relative to the framed area, not the whole article.
+          return document.querySelector('.wb-frame');
+        }
+
         function setNoteVisibilityForViewport() {
           const mobile = isMobile();
           document.querySelectorAll('.mn-note').forEach((note) => {
@@ -253,6 +259,8 @@
               note.style.opacity = 0;
               note.style.transform = '';
               note.style.top = '';
+              note.style.left = '';
+              note.style.maxWidth = '';
             }
           });
 
@@ -263,7 +271,7 @@
 
         function wireToggles() {
           document.querySelectorAll('.mn-marker').forEach((marker) => {
-            marker.addEventListener('click', (e) => {
+            marker.addEventListener('click', () => {
               const id = marker.getAttribute('data-mn-id');
               if (!id) return;
               const note = document.getElementById(id);
@@ -280,10 +288,17 @@
         function alignDesktopMarginNotes() {
           if (isMobile()) return;
 
-          // Align all notes relative to the article container so they share a coordinate space.
-          const container = document.querySelector('.wb-prose');
-          if (!container) return;
-          const containerRect = container.getBoundingClientRect();
+          const frame = getFrameContainer();
+          if (!frame) return;
+          const frameRect = frame.getBoundingClientRect();
+
+          const grid = document.querySelector('.wb-grid');
+          const marginColumn = grid ? grid.getBoundingClientRect() : null;
+
+          // Compute the left edge for margin notes to keep them inside the viewport/frame.
+          // We anchor to the right side of the grid (main content + margin column) but clamp within frame.
+          const baseLeft = marginColumn ? (marginColumn.right - frameRect.left - 260) : (frameRect.width - 260 - 16);
+          const left = Math.max(0, Math.min(baseLeft, frameRect.width - 260));
 
           const entries = [];
 
@@ -296,27 +311,27 @@
             // Ensure note is measurable.
             note.hidden = false;
 
-            const markerRect = marker.getBoundingClientRect();
-            const desiredTop = markerRect.top - containerRect.top;
+            // Place horizontally within the frame.
+            note.style.left = `${Math.round(left)}px`;
+            note.style.maxWidth = `${Math.round(frameRect.width - left)}px`;
 
-            entries.push({ marker, note, desiredTop });
+            const markerRect = marker.getBoundingClientRect();
+
+            // Align top to the marker, relative to the frame.
+            const desiredTop = markerRect.top - frameRect.top;
+
+            entries.push({ note, desiredTop });
           });
 
-          // Sort by desired top, then push down to avoid overlaps.
           entries.sort((a, b) => a.desiredTop - b.desiredTop);
 
           const GAP = 10; // px gap between margin notes
-          let cursor = -Infinity;
+          let cursor = 0;
 
           entries.forEach((entry) => {
             const { note, desiredTop } = entry;
 
-            // Reset any previous transforms before measuring height.
-            note.style.transform = '';
-
-            // Compute final top with simple collision avoidance.
             const top = Math.max(desiredTop, cursor);
-
             note.style.top = `${Math.round(top)}px`;
             note.style.opacity = 1;
 
