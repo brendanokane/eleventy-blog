@@ -1,0 +1,125 @@
+---
+layout: layouts/base.njk
+---
+{#
+  Temporary preview layout.
+  This will be iterated on and later factored into the real theme.
+#}
+<style>
+  :root {
+    --paper: #f4f0e6;
+    --ink: #231f1a;
+    --muted-ink: rgba(35, 31, 26, 0.70);
+    --rule: rgba(35, 31, 26, 0.18);
+
+    --font-body: "Vollkorn", ui-serif, Georgia, serif;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /* 22pt ≈ 29.33px. Using rem keeps it user-scalable. */
+    --body-size: 1.833rem;
+    --body-leading: 1.4;
+  }
+
+  /* Page */
+  html, body { max-width: none; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  /* Simple "woodblock" frame */
+  .wb-shell {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+  .wb-frame {
+    border: 1px solid var(--rule);
+    padding: 2rem 2rem;
+    background: rgba(255,255,255,0.35);
+  }
+
+  /* Type */
+  .wb-prose {
+    font-family: var(--font-body);
+    font-size: var(--body-size);
+    line-height: var(--body-leading);
+  }
+  .wb-prose p { margin: 0 0 1.1em; }
+  .wb-prose h1, .wb-prose h2, .wb-prose h3 {
+    letter-spacing: 0.01em;
+  }
+  .wb-prose h1 { font-size: 1.45em; margin: 0 0 0.6em; }
+  .wb-prose h2 { font-size: 1.12em; margin: 1.6em 0 0.5em; }
+
+  /* Two-column: main + margin */
+  .wb-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 2.25rem;
+    align-items: start;
+  }
+
+  /* Margin notes: improved baseline alignment hooks */
+  .mn-wrapper { position: relative; }
+  .mn-anchor {
+    border-bottom: 1px dotted var(--rule);
+    cursor: help;
+  }
+  .mn-content {
+    position: absolute;
+    left: calc(100% + 2.25rem);
+    width: 260px;
+    font-family: var(--font-sans);
+    font-size: 0.62em;
+    line-height: 1.35;
+    color: var(--muted-ink);
+    opacity: 0;
+  }
+
+  /* Blockquotes are for quotations: indentation only */
+  .wb-prose blockquote {
+    margin: 1.2em 0 1.2em 0;
+    padding-left: 1.1em;
+    border-left: none;
+  }
+
+  /* Poetry / preformatted: preserve line breaks, no code styling */
+  .wb-prose pre {
+    font-family: var(--font-body);
+    font-size: 0.92em;
+    line-height: 1.35;
+    background: transparent;
+    padding: 0;
+    margin: 1.1em 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  @media (max-width: 950px) {
+    .wb-grid { grid-template-columns: 1fr; }
+    .mn-content {
+      position: static;
+      display: inline;
+      width: auto;
+      margin-left: 0.25em;
+      opacity: 1;
+      font-size: 0.85em;
+    }
+  }
+</style>
+
+{# Load Vollkorn from Google Fonts for quick preview. Later we can self-host. #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+<div class="wb-shell">
+  <div class="wb-frame">
+    <div class="wb-grid">
+      <article class="wb-prose">
+        {{ content | safe }}
+      </article>
+    </div>
+  </div>
+</div>
