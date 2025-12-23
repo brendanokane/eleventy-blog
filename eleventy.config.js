@@ -3,7 +3,6 @@ import {
   InputPathToUrlTransformPlugin,
   // HtmlBasePlugin, // disabled for baseline smoke test
 } from "@11ty/eleventy";
-import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import MarkdownIt from "markdown-it";
@@ -51,36 +50,13 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginNavigation);
 
   // HtmlBasePlugin is disabled for baseline smoke test.
-  // We will re-enable it once we finish the publish-gating/collections cleanup.
   // eleventyConfig.addPlugin(HtmlBasePlugin);
 
   eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
 
-  // Starter feed plugin (baseline)
-  eleventyConfig.addPlugin(feedPlugin, {
-    type: "atom",
-    outputPath: "/feed/feed.xml",
-    stylesheet: "pretty-atom-feed.xsl",
-    templateData: {
-      eleventyNavigation: {
-        key: "Feed",
-        order: 4,
-      },
-    },
-    collection: {
-      name: "posts",
-      limit: 10,
-    },
-    metadata: {
-      language: "en",
-      title: "Blog Title",
-      subtitle: "This is a longer description about your blog.",
-      base: "https://example.com/",
-      author: {
-        name: "Your Name",
-      },
-    },
-  });
+  // NOTE: feedPlugin is temporarily disabled for baseline smoke test.
+  // It currently crashes due to htmlBaseUrl(false) when a `posts` item has `url:false`.
+  // We'll re-enable feeds after we tighten the posts collection and publish gating.
 
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
     formats: ["avif", "webp", "auto"],
