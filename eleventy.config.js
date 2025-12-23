@@ -69,7 +69,7 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addPlugin(IdAttributePlugin, {});
 
-  // Email variant helper: convert margin note HTML markers/asides into numeric endnotes.
+  // Email variant helper: convert margin note HTML markers/asides into numeric endnotes with backlinks.
   eleventyConfig.addFilter("emailifyMarginNotes", (html) => {
     const input = String(html || "");
 
@@ -81,7 +81,6 @@ export default async function (eleventyConfig) {
     while ((m = asideRe.exec(input)) !== null) {
       const id = m[1];
       const full = m[0];
-      // Strip outer <aside ...> and </aside>
       const inner = full
         .replace(/^<aside[\s\S]*?>/i, "")
         .replace(/<\/aside>$/i, "")
@@ -92,7 +91,6 @@ export default async function (eleventyConfig) {
     // Remove asides from body
     let body = input.replace(asideRe, "");
 
-    // Replace markers with numeric refs and collect endnotes in appearance order
     const endnotes = [];
     const seen = new Map();
 
@@ -105,10 +103,18 @@ export default async function (eleventyConfig) {
         seen.set(id, endnotes.length);
       }
       const n = seen.get(id);
-      return `<sup class="fn">${n}</sup>`;
+      // Footnote-style anchors: marker links to note, note links back to marker.
+      return `<sup class="fn" id="fnref-${n}"><a href="#fn-${n}">${n}</a></sup>`;
     });
 
-    return { content: body, endnotes };
+    // Add backlink at the end of each note.
+    const endnotesWithBacklinks = endnotes.map((noteHtml, idx) => {
+      const n = idx + 1;
+      const backlink = ` <a href="#fnref-${n}" aria-label="Back to reference">↩</a>`;
+      return `<span id="fn-${n}">${noteHtml}${backlink}</span>`;
+    });
+
+    return { content: body, endnotes: endnotesWithBacklinks };
   });
 
   // Keep existing shortcodes; they shouldn't block.
