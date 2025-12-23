@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;1,400;1,600&family=Alegreya:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 
     <style>
       :root {
@@ -16,6 +16,7 @@
         --muted-ink: rgba(35, 31, 26, 0.70);
         --rule: rgba(35, 31, 26, 0.18);
 
+        /* Defaults controlled by the tuner */
         --font-body: "Vollkorn", ui-serif, Georgia, serif;
         --font-mn: "Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
@@ -24,13 +25,11 @@
 
         --main-measure: 72ch;
 
-        /* Tighten based on CJK 'character widths': 1ch ~ width of '0', 1em ~ font-size.
-           Using em here makes it scale with the current text size.
-           Requested: margin notes ~5 Chinese character-widths narrower, gutter ~3 narrower.
-           Approximating 1 Chinese character-width ~ 1em.
-        */
         --mn-width: 280px;
         --mn-gutter: 2.5rem;
+
+        --frame-pad-x: 2rem;
+        --shell-pad-x: 1.5rem;
       }
 
       * { box-sizing: border-box; }
@@ -47,15 +46,71 @@
         height: auto;
       }
 
+      /* Tuner UI */
+      .tuner {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(244, 240, 230, 0.92);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--rule);
+      }
+      .tuner__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0.75rem var(--shell-pad-x);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        font-family: var(--font-mn);
+        font-size: 0.9rem;
+        line-height: 1.2;
+      }
+      .tuner__row {
+        display: grid;
+        grid-template-columns: 200px 1fr 90px;
+        gap: 0.75rem;
+        align-items: center;
+      }
+      .tuner label { color: rgba(35,31,26,0.85); }
+      .tuner select,
+      .tuner input[type="range"],
+      .tuner button {
+        font: inherit;
+      }
+      .tuner select {
+        width: 100%;
+        padding: 0.25rem 0.35rem;
+        border: 1px solid var(--rule);
+        background: rgba(255,255,255,0.6);
+      }
+      .tuner input[type="range"] { width: 100%; }
+      .tuner__value {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        color: rgba(35,31,26,0.75);
+      }
+      .tuner__actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .tuner button {
+        padding: 0.35rem 0.6rem;
+        border: 1px solid var(--rule);
+        background: rgba(255,255,255,0.65);
+        cursor: pointer;
+      }
+
       .wb-shell {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 2.5rem 1.5rem 4rem;
+        padding: 2.5rem var(--shell-pad-x) 4rem;
       }
 
       .wb-frame {
         border: 1px solid var(--rule);
-        padding: 2rem 2rem;
+        padding: 2rem var(--frame-pad-x);
         background: rgba(255,255,255,0.35);
         position: relative;
         overflow-x: clip;
@@ -77,7 +132,6 @@
 
       .wb-prose p { margin: 0 0 1.1em; }
       .wb-prose h1 { font-size: 1.55em; margin: 0 0 0.6em; letter-spacing: 0.01em; }
-      .wb-prose h2 { font-size: 1.12em; margin: 1.6em 0 0.5em; letter-spacing: 0.01em; }
 
       .wb-prose a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
@@ -97,11 +151,6 @@
         overflow-x: auto;
       }
 
-      /*
-        Prevent superscript marker from affecting line box metrics:
-        - use inline-block with fixed line-height
-        - position it relative instead of relying on vertical-align: super
-      */
       .mn-marker {
         font-family: var(--font-mn);
         font-size: 0.78em;
@@ -131,6 +180,9 @@
       .footnotes { display: none; }
 
       @media (max-width: 950px) {
+        .tuner__row { grid-template-columns: 1fr; }
+        .tuner__value { text-align: left; }
+
         .wb-grid { grid-template-columns: 1fr; justify-content: stretch; }
 
         .mn-note {
@@ -147,6 +199,62 @@
     </style>
   </head>
   <body>
+    <div class="tuner" id="tuner">
+      <div class="tuner__inner">
+        <div class="tuner__row">
+          <label for="fontBody">Body font</label>
+          <select id="fontBody">
+            <option value="Vollkorn">Vollkorn</option>
+            <option value="Alegreya">Alegreya</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Palatino">Palatino</option>
+          </select>
+          <div class="tuner__value" id="fontBodyReadout">Vollkorn</div>
+        </div>
+
+        <div class="tuner__row">
+          <label for="lineHeight">Line height</label>
+          <input id="lineHeight" type="range" min="1.2" max="1.9" step="0.01" value="1.50" />
+          <div class="tuner__value" id="lineHeightReadout">1.50</div>
+        </div>
+
+        <div class="tuner__row">
+          <label for="gutter">Gutter width</label>
+          <input id="gutter" type="range" min="1" max="6" step="0.05" value="2.50" />
+          <div class="tuner__value" id="gutterReadout">2.50rem</div>
+        </div>
+
+        <div class="tuner__row">
+          <label for="shellPad">Page margin (outer)</label>
+          <input id="shellPad" type="range" min="0.5" max="4" step="0.05" value="1.50" />
+          <div class="tuner__value" id="shellPadReadout">1.50rem</div>
+        </div>
+
+        <div class="tuner__row">
+          <label for="framePad">Page margin (inner frame)</label>
+          <input id="framePad" type="range" min="0.5" max="4" step="0.05" value="2.00" />
+          <div class="tuner__value" id="framePadReadout">2.00rem</div>
+        </div>
+
+        <div class="tuner__row">
+          <label for="bodyWidth">Body text width</label>
+          <input id="bodyWidth" type="range" min="45" max="95" step="1" value="72" />
+          <div class="tuner__value" id="bodyWidthReadout">72ch</div>
+        </div>
+
+        <div class="tuner__row">
+          <label for="mnWidth">Margin note width</label>
+          <input id="mnWidth" type="range" min="160" max="520" step="5" value="280" />
+          <div class="tuner__value" id="mnWidthReadout">280px</div>
+        </div>
+
+        <div class="tuner__actions">
+          <button type="button" id="resetTuner">Reset</button>
+          <button type="button" id="copySettings">Copy settings</button>
+        </div>
+      </div>
+    </div>
+
     <div class="wb-shell">
       <div class="wb-frame">
         <div class="wb-grid">
@@ -252,6 +360,196 @@
 
     <script>
       (function () {
+        const root = document.documentElement;
+
+        const stateDefaults = {
+          fontBody: 'Vollkorn',
+          lineHeight: 1.5,
+          gutterRem: 2.5,
+          shellPadRem: 1.5,
+          framePadRem: 2.0,
+          bodyWidthCh: 72,
+          mnWidthPx: 280,
+        };
+
+        function fontToCssStack(name) {
+          switch (name) {
+            case 'Vollkorn':
+              return '"Vollkorn", ui-serif, Georgia, serif';
+            case 'Alegreya':
+              return '"Alegreya", ui-serif, Georgia, serif';
+            case 'Georgia':
+              return 'Georgia, serif';
+            case 'Palatino':
+              return '"Palatino Linotype", Palatino, "Book Antiqua", serif';
+            default:
+              return '"Vollkorn", ui-serif, Georgia, serif';
+          }
+        }
+
+        function setVar(name, value) {
+          root.style.setProperty(name, value);
+        }
+
+        function fmt(num, digits = 2) {
+          return Number(num).toFixed(digits);
+        }
+
+        function applyState(s) {
+          setVar('--font-body', fontToCssStack(s.fontBody));
+          setVar('--body-leading', String(s.lineHeight));
+          setVar('--mn-gutter', `${s.gutterRem}rem`);
+          setVar('--shell-pad-x', `${s.shellPadRem}rem`);
+          setVar('--frame-pad-x', `${s.framePadRem}rem`);
+          setVar('--main-measure', `${s.bodyWidthCh}ch`);
+          setVar('--mn-width', `${s.mnWidthPx}px`);
+
+          // Re-run margin note positioning after layout changes
+          scheduleAlign();
+        }
+
+        function loadState() {
+          try {
+            const raw = localStorage.getItem('wbTuner');
+            if (!raw) return { ...stateDefaults };
+            return { ...stateDefaults, ...JSON.parse(raw) };
+          } catch {
+            return { ...stateDefaults };
+          }
+        }
+
+        function saveState(s) {
+          try {
+            localStorage.setItem('wbTuner', JSON.stringify(s));
+          } catch {
+            // ignore
+          }
+        }
+
+        const els = {
+          fontBody: document.getElementById('fontBody'),
+          fontBodyReadout: document.getElementById('fontBodyReadout'),
+          lineHeight: document.getElementById('lineHeight'),
+          lineHeightReadout: document.getElementById('lineHeightReadout'),
+          gutter: document.getElementById('gutter'),
+          gutterReadout: document.getElementById('gutterReadout'),
+          shellPad: document.getElementById('shellPad'),
+          shellPadReadout: document.getElementById('shellPadReadout'),
+          framePad: document.getElementById('framePad'),
+          framePadReadout: document.getElementById('framePadReadout'),
+          bodyWidth: document.getElementById('bodyWidth'),
+          bodyWidthReadout: document.getElementById('bodyWidthReadout'),
+          mnWidth: document.getElementById('mnWidth'),
+          mnWidthReadout: document.getElementById('mnWidthReadout'),
+          reset: document.getElementById('resetTuner'),
+          copy: document.getElementById('copySettings'),
+        };
+
+        let state = loadState();
+
+        function syncUiFromState() {
+          els.fontBody.value = state.fontBody;
+          els.fontBodyReadout.textContent = state.fontBody;
+
+          els.lineHeight.value = String(state.lineHeight);
+          els.lineHeightReadout.textContent = fmt(state.lineHeight, 2);
+
+          els.gutter.value = String(state.gutterRem);
+          els.gutterReadout.textContent = `${fmt(state.gutterRem, 2)}rem`;
+
+          els.shellPad.value = String(state.shellPadRem);
+          els.shellPadReadout.textContent = `${fmt(state.shellPadRem, 2)}rem`;
+
+          els.framePad.value = String(state.framePadRem);
+          els.framePadReadout.textContent = `${fmt(state.framePadRem, 2)}rem`;
+
+          els.bodyWidth.value = String(state.bodyWidthCh);
+          els.bodyWidthReadout.textContent = `${state.bodyWidthCh}ch`;
+
+          els.mnWidth.value = String(state.mnWidthPx);
+          els.mnWidthReadout.textContent = `${state.mnWidthPx}px`;
+        }
+
+        function attachHandlers() {
+          els.fontBody.addEventListener('change', () => {
+            state.fontBody = els.fontBody.value;
+            els.fontBodyReadout.textContent = state.fontBody;
+            saveState(state);
+            applyState(state);
+          });
+
+          els.lineHeight.addEventListener('input', () => {
+            state.lineHeight = Number(els.lineHeight.value);
+            els.lineHeightReadout.textContent = fmt(state.lineHeight, 2);
+            saveState(state);
+            applyState(state);
+          });
+
+          els.gutter.addEventListener('input', () => {
+            state.gutterRem = Number(els.gutter.value);
+            els.gutterReadout.textContent = `${fmt(state.gutterRem, 2)}rem`;
+            saveState(state);
+            applyState(state);
+          });
+
+          els.shellPad.addEventListener('input', () => {
+            state.shellPadRem = Number(els.shellPad.value);
+            els.shellPadReadout.textContent = `${fmt(state.shellPadRem, 2)}rem`;
+            saveState(state);
+            applyState(state);
+          });
+
+          els.framePad.addEventListener('input', () => {
+            state.framePadRem = Number(els.framePad.value);
+            els.framePadReadout.textContent = `${fmt(state.framePadRem, 2)}rem`;
+            saveState(state);
+            applyState(state);
+          });
+
+          els.bodyWidth.addEventListener('input', () => {
+            state.bodyWidthCh = Number(els.bodyWidth.value);
+            els.bodyWidthReadout.textContent = `${state.bodyWidthCh}ch`;
+            saveState(state);
+            applyState(state);
+          });
+
+          els.mnWidth.addEventListener('input', () => {
+            state.mnWidthPx = Number(els.mnWidth.value);
+            els.mnWidthReadout.textContent = `${state.mnWidthPx}px`;
+            saveState(state);
+            applyState(state);
+          });
+
+          els.reset.addEventListener('click', () => {
+            state = { ...stateDefaults };
+            saveState(state);
+            syncUiFromState();
+            applyState(state);
+          });
+
+          els.copy.addEventListener('click', async () => {
+            const payload = {
+              fontBody: state.fontBody,
+              lineHeight: state.lineHeight,
+              gutterRem: state.gutterRem,
+              shellPadRem: state.shellPadRem,
+              framePadRem: state.framePadRem,
+              bodyWidthCh: state.bodyWidthCh,
+              mnWidthPx: state.mnWidthPx,
+            };
+            const text = JSON.stringify(payload, null, 2);
+            try {
+              await navigator.clipboard.writeText(text);
+              els.copy.textContent = 'Copied!';
+              setTimeout(() => (els.copy.textContent = 'Copy settings'), 900);
+            } catch {
+              // Fallback: prompt
+              window.prompt('Copy settings JSON:', text);
+            }
+          });
+        }
+
+        // Margin note behavior (same as before, but uses CSS vars for widths)
         function isMobile() {
           return window.matchMedia && window.matchMedia('(max-width: 950px)').matches;
         }
@@ -303,7 +601,6 @@
 
           const entries = [];
 
-          // Nudge up by one margin-note line height.
           const mnNote = document.querySelector('.mn-note');
           const mnLineHeightPx = mnNote ? parseFloat(getComputedStyle(mnNote).lineHeight) : 16;
           const nudgeUp = mnLineHeightPx;
@@ -318,7 +615,6 @@
             note.style.left = `${Math.round(marginLeft)}px`;
 
             const markerRect = marker.getBoundingClientRect();
-            // markerRect.bottom approximates baseline; subtract nudgeUp to lift note.
             const desiredTop = (markerRect.bottom - frameRect.top) - nudgeUp;
 
             entries.push({ note, desiredTop });
@@ -347,6 +643,11 @@
           setNoteVisibilityForViewport();
           scheduleAlign();
         }
+
+        // Init
+        syncUiFromState();
+        attachHandlers();
+        applyState(state);
 
         setNoteVisibilityForViewport();
         wireToggles();
