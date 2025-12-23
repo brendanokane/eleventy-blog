@@ -5,13 +5,14 @@ pagination:
   alias: post
 permalink: "/emails/{{ post.fileSlug }}/"
 layout: layouts/post-email.njk
+
+eleventyComputed:
+  title: "{{ post.data.title }}"
+  date: "{{ post.date }}"
+  webUrl: "{{ post.url }}"
+  transformed: "{{ post.templateContent | emailifyMarginNotes }}"
+  emailContent: "{{ transformed.content }}"
+  endnotes: "{{ transformed.endnotes }}"
 ---
 
-{# Provide layout vars in render scope #}
-{% set webUrl = post.url %}
-{% set transformed = post.templateContent | emailifyMarginNotes %}
-{% set emailContent = transformed.content %}
-{% set endnotes = transformed.endnotes %}
-
-{# Emit content so Eleventy processes templateContent and keeps variables in scope for layout. #}
-{{ "" }}
+{# Intentionally empty; layout renders emailContent/endnotes #}
