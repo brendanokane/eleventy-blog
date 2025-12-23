@@ -82,26 +82,13 @@
       }
 
       /*
-        Margin note markup uses <details>/<summary> so mobile can tap-to-expand.
-        On desktop, JS positions .mn-content in the margin.
-
-        NOTE: HTML does not allow <p> inside <p>. For multi-paragraph margin notes,
-        this preview wraps note content in a <div> so it can contain <p>, lists, etc.
+        Margin notes:
+        - Marker is an inline <sup> inside the paragraph (valid HTML, no paragraph splitting).
+        - Note content is a block <aside> immediately after the paragraph.
+        - On desktop, JS positions the <aside> into the right margin and aligns it to the marker.
+        - On mobile, notes stay in-flow after their paragraph and can be toggled by tapping the marker.
       */
 
-      .mn {
-        display: inline;
-        position: relative;
-      }
-
-      /* Remove default disclosure triangle/marker */
-      .mn > summary {
-        list-style: none;
-        display: inline;
-      }
-      .mn > summary::-webkit-details-marker { display: none; }
-
-      /* Marker appearance */
       .mn-marker {
         font-family: var(--font-sans);
         font-size: 0.70em;
@@ -109,10 +96,11 @@
         margin-left: 0.08em;
         cursor: pointer;
         user-select: none;
+        border-bottom: 1px dotted var(--rule);
       }
 
-      /* Margin note content (desktop: in margin) */
-      .mn-content {
+      .mn-note {
+        /* Desktop placement: moved to margin via absolute positioning + JS. */
         position: absolute;
         left: calc(100% + 2.25rem);
         width: 260px;
@@ -120,33 +108,30 @@
         font-size: 0.62em;
         line-height: 1.35;
         color: var(--muted-ink);
+        margin: 0;
         opacity: 0;
       }
-
-      /* When opened on mobile, show inline in flow */
-      @media (max-width: 950px) {
-        .wb-grid { grid-template-columns: 1fr; }
-
-        .mn-content {
-          position: static;
-          display: inline;
-          width: auto;
-          margin-left: 0.25em;
-          opacity: 1;
-          font-size: 0.85em;
-        }
-
-        /* Only show content when open (so tap-to-expand works) */
-        details.mn:not([open]) .mn-content { display: none; }
-
-        /* Make opened note read a bit like an aside */
-        details.mn[open] .mn-content {
-          display: inline;
-        }
-      }
+      .mn-note p { margin: 0 0 0.6em; }
+      .mn-note p:last-child { margin-bottom: 0; }
 
       /* Hide the original footnotes section in this preview */
       .footnotes { display: none; }
+
+      @media (max-width: 950px) {
+        .wb-grid { grid-template-columns: 1fr; }
+
+        .mn-note {
+          position: static;
+          width: auto;
+          opacity: 1;
+          font-size: 0.85em;
+          margin: 0 0 1.1em;
+          padding-left: 1.0em;
+          border-left: 1px solid var(--rule);
+        }
+
+        .mn-note[hidden] { display: none; }
+      }
     </style>
   </head>
   <body>
@@ -174,14 +159,12 @@
 
             <p>
               Is all hope lost? (No.) Will true love prevail? (Yes.) But before you can find out what happens next, you’re confronted with a chatty little digression from the commentator: a list of delightful things, each ending with the words 不亦快哉 <em>bù yì kuài zāi</em> — “Is <em>that</em> not a delight?”
-              <details class="mn">
-                <summary class="mn-marker" aria-label="Margin note">※</summary>
-                <div class="mn-content">
-                  <p>Lin Yutang's translation, the only other one I know of in English, consistently renders <em>bù yì kuài zāi</em> as “Ah, is this not happiness?” while Pierre Ryckmans' French translation goes with “Ah, quel délice!” throughout.</p>
-                  <p>I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.</p>
-                </div>
-              </details>
+              <sup class="mn-marker" data-mn-id="mn-1" aria-controls="mn-1" aria-expanded="false" title="Toggle note">※</sup>
             </p>
+            <aside class="mn-note" id="mn-1" data-mn-id="mn-1" hidden>
+              <p>Lin Yutang's translation, the only other one I know of in English, consistently renders <em>bù yì kuài zāi</em> as “Ah, is this not happiness?” while Pierre Ryckmans' French translation goes with “Ah, quel délice!” throughout.</p>
+              <p>I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.</p>
+            </aside>
 
             <p>
               Stories from a Burning House is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
@@ -199,15 +182,13 @@
 
             <p>
               <em>Once, when Zhuoshan</em>
-              <details class="mn">
-                <summary class="mn-marker" aria-label="Margin note">※</summary>
-                <div class="mn-content">
-                  <p>‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on <em>The Romance of the Western Chamber</em> to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “<em>Jin Shengtan nianpu</em> 金聖嘆年譜” in Xu, <em>Wan Ming qujia nianpu</em> 晚明曲家 nianpu_, 1.735.</p>
-                </div>
-              </details>
+              <sup class="mn-marker" data-mn-id="mn-2" aria-controls="mn-2" aria-expanded="false" title="Toggle note">※</sup>
               <em> and I were lodging together, a ten-day stretch of rain left us stuck indoors with nothing to do but stare at the furniture, and we decided to go back and forth listing happy things to break up the boredom</em>.
               <em> This was twenty years ago, and I’d forgotten all about it until I read this section of</em> <em>The Romance of the Western Chamber</em><em>, “The Questioning,” saw the wonderful lines the author gives Hongniang, and found myself wishing Zhuoshan and I had thought to read the play together. Boredom wouldn’t have stood a chance!</em>
             </p>
+            <aside class="mn-note" id="mn-2" data-mn-id="mn-2" hidden>
+              <p>‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on <em>The Romance of the Western Chamber</em> to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “<em>Jin Shengtan nianpu</em> 金聖嘆年譜” in Xu, <em>Wan Ming qujia nianpu</em> 晚明曲家年譜, 1.735.</p>
+            </aside>
 
             <p>
               <em>After searching my memory I was able to recover a few of the things we said, which I’ve listed below, but I can’t tell which lines are Zhuoshan’s and which are mine.</em>
@@ -217,25 +198,21 @@
 
             <p>
               A friend I haven't seen in ten years shows up one evening. I greet him and immediately dash back inside, even before asking how he got here or inviting him to have a seat, to ask my wife: "I don't suppose you could make like Su Dongpo's old lady
-              <details class="mn">
-                <summary class="mn-marker" aria-label="Margin note">※</summary>
-                <div class="mn-content">
-                  <p>In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需)</p>
-                </div>
-              </details>
+              <sup class="mn-marker" data-mn-id="mn-3" aria-controls="mn-3" aria-expanded="false" title="Toggle note">※</sup>
               and bring us a dipperful of wine?" And she cheerfully pulls the gold pin out of her hair and we figure it'll cover three days' worth of drinking —
             </p>
+            <aside class="mn-note" id="mn-3" data-mn-id="mn-3" hidden>
+              <p>In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需)</p>
+            </aside>
 
             <p>
               I’m on a little boat when a favorable wind rises, and me without a sail to catch it. A big junk passes, moving quick as the wind, and since I’ve nothing better to do I try throwing my grapnel at it a few times. It catches, to my surprise, and the cable drags me along in the larger boat’s wake, singing Du Fu’s “Unmooring”
-              <details class="mn">
-                <summary class="mn-marker" aria-label="Margin note">※</summary>
-                <div class="mn-content">
-                  <p>Not gonna lie, I really wanted to translate the title as "I'm On A Boat".</p>
-                </div>
-              </details>
+              <sup class="mn-marker" data-mn-id="mn-4" aria-controls="mn-4" aria-expanded="false" title="Toggle note">※</sup>
               at the top of my lungs and laughing for joy —
             </p>
+            <aside class="mn-note" id="mn-4" data-mn-id="mn-4" hidden>
+              <p>Not gonna lie, I really wanted to translate the title as "I'm On A Boat".</p>
+            </aside>
 
             <blockquote>
               <p>Green: too soon the peaks and ridges pass.</p>
@@ -244,14 +221,12 @@
 
             <p>
               Reading <em>The Stranger with the Curly Beard</em>
-              <details class="mn">
-                <summary class="mn-marker" aria-label="Margin note">※</summary>
-                <div class="mn-content">
-                  <p>Like Yuan Zhen’s 元稹 <em>The Tale of Yingying</em> 鶯鶯傳, which <em>Western Chamber</em> is based on, <em>The Stranger with the Curly Beard</em> is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's <em>Tang Dynasty Tales: A Guided Reader</em>, 189 ff.</p>
-                </div>
-              </details>
+              <sup class="mn-marker" data-mn-id="mn-5" aria-controls="mn-5" aria-expanded="false" title="Toggle note">※</sup>
               —
             </p>
+            <aside class="mn-note" id="mn-5" data-mn-id="mn-5" hidden>
+              <p>Like Yuan Zhen’s 元稹 <em>The Tale of Yingying</em> 鶯鶯傳, which <em>Western Chamber</em> is based on, <em>The Stranger with the Curly Beard</em> is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's <em>Tang Dynasty Tales: A Guided Reader</em>, 189 ff.</p>
+            </aside>
 
             <p>
               We'll leave Jin Shengtan here for now, reading his books and remembering happier times. The next time we check in with him it'll be almost a quarter century after his conversation with Zhuoshan. We'll talk about snappy retorts, vegetarian ham recipes, official corruption, the transfer of New World food crops, and one last ‘ <em>bù yì kuài zāi</em>.’ There'll be some ground to cover between now and then, and probably a lot of tangents, detours, and wild goose chases — but hopefully it'll be worth the going.
@@ -265,40 +240,111 @@
 
     <script>
       (function () {
-        function alignMarginNotes() {
-          const notes = document.querySelectorAll('details.mn');
+        function isMobile() {
+          return window.matchMedia && window.matchMedia('(max-width: 950px)').matches;
+        }
 
-          notes.forEach((note) => {
-            const marker = note.querySelector('summary.mn-marker');
-            const content = note.querySelector('.mn-content');
-            if (!marker || !content) return;
-
-            // If CSS has made notes static (e.g. mobile), don't try to position.
-            const computed = window.getComputedStyle(content);
-            if (computed.position !== 'absolute' && computed.position !== 'fixed') {
-              content.style.opacity = 1;
-              content.style.top = '';
-              content.style.transform = '';
-              return;
+        function setNoteVisibilityForViewport() {
+          const mobile = isMobile();
+          document.querySelectorAll('.mn-note').forEach((note) => {
+            // On mobile: default to hidden (tap-to-expand). On desktop: show.
+            note.hidden = mobile;
+            if (!mobile) {
+              note.style.opacity = 0;
+              note.style.transform = '';
+              note.style.top = '';
             }
+          });
+
+          document.querySelectorAll('.mn-marker').forEach((marker) => {
+            marker.setAttribute('aria-expanded', String(!mobile));
+          });
+        }
+
+        function wireToggles() {
+          document.querySelectorAll('.mn-marker').forEach((marker) => {
+            marker.addEventListener('click', (e) => {
+              const id = marker.getAttribute('data-mn-id');
+              if (!id) return;
+              const note = document.getElementById(id);
+              if (!note) return;
+
+              if (!isMobile()) return; // Desktop stays always-on in this preview.
+
+              note.hidden = !note.hidden;
+              marker.setAttribute('aria-expanded', String(!note.hidden));
+            });
+          });
+        }
+
+        function alignDesktopMarginNotes() {
+          if (isMobile()) return;
+
+          // Align all notes relative to the article container so they share a coordinate space.
+          const container = document.querySelector('.wb-prose');
+          if (!container) return;
+          const containerRect = container.getBoundingClientRect();
+
+          const entries = [];
+
+          document.querySelectorAll('.mn-marker').forEach((marker) => {
+            const id = marker.getAttribute('data-mn-id');
+            if (!id) return;
+            const note = document.getElementById(id);
+            if (!note) return;
+
+            // Ensure note is measurable.
+            note.hidden = false;
 
             const markerRect = marker.getBoundingClientRect();
-            const noteRect = note.getBoundingClientRect();
-            const topWithinNote = markerRect.top - noteRect.top;
+            const desiredTop = markerRect.top - containerRect.top;
 
-            content.style.top = `${Math.round(topWithinNote)}px`;
-            content.style.opacity = 1;
+            entries.push({ marker, note, desiredTop });
+          });
+
+          // Sort by desired top, then push down to avoid overlaps.
+          entries.sort((a, b) => a.desiredTop - b.desiredTop);
+
+          const GAP = 10; // px gap between margin notes
+          let cursor = -Infinity;
+
+          entries.forEach((entry) => {
+            const { note, desiredTop } = entry;
+
+            // Reset any previous transforms before measuring height.
+            note.style.transform = '';
+
+            // Compute final top with simple collision avoidance.
+            const top = Math.max(desiredTop, cursor);
+
+            note.style.top = `${Math.round(top)}px`;
+            note.style.opacity = 1;
+
+            const height = note.getBoundingClientRect().height;
+            cursor = top + height + GAP;
           });
         }
 
         function scheduleAlign() {
-          window.requestAnimationFrame(alignMarginNotes);
+          window.requestAnimationFrame(alignDesktopMarginNotes);
         }
 
+        function onResize() {
+          setNoteVisibilityForViewport();
+          scheduleAlign();
+        }
+
+        setNoteVisibilityForViewport();
+        wireToggles();
+
         window.addEventListener('load', scheduleAlign);
-        window.addEventListener('resize', scheduleAlign);
+        window.addEventListener('resize', onResize);
+
         if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(scheduleAlign);
+          document.fonts.ready.then(() => {
+            setNoteVisibilityForViewport();
+            scheduleAlign();
+          });
         }
       })();
     </script>
