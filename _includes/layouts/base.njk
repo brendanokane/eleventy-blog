@@ -3,8 +3,98 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>{{ title or metadata.title }}</title>
-		<meta name="description" content="{{ description or metadata.description }}">
+
+		{#-
+			SEO/OG/Twitter metadata
+			Per-page/frontmatter overrides supported (all optional):
+			- title, description
+			- canonical_url
+			- og_title, og_description, og_image, og_image_alt, og_type
+			- twitter_card, twitter_title, twitter_description, twitter_image
+			- robots
+		#}
+
+		{# Canonical + absolute URL helpers (Nunjucks-safe; no JS methods/ternaries) #}
+		{% set siteUrl = (metadata.url or "") | trim %}
+		{% if siteUrl %}
+			{% set lastChar = siteUrl | slice(-1) %}
+			{% if lastChar == "/" %}
+				{% set siteUrl = siteUrl | slice(0, -1) %}
+			{% endif %}
+		{% endif %}
+		{% set pageUrl = page.url or "/" %}
+		{% if siteUrl %}
+			{% set absPageUrl = siteUrl + pageUrl %}
+		{% else %}
+			{% set absPageUrl = pageUrl %}
+		{% endif %}
+		{% set canonicalUrl = canonical_url or absPageUrl %}
+
+		{# Title/description fallbacks #}
+		{% set pageTitle = title or metadata.title %}
+		{% set pageDescription = description or metadata.description %}
+
+		{# OG fallbacks #}
+		{% set ogTitle = og_title or pageTitle %}
+		{% set ogDescription = og_description or pageDescription %}
+		{% set ogType = og_type or (metadata.og and metadata.og.type) or "website" %}
+		{% set ogImage = og_image or (metadata.og and metadata.og.defaultImage) %}
+		{% if ogImage and siteUrl and (ogImage | slice(0, 1)) == "/" %}
+			{% set ogImageAbs = siteUrl + ogImage %}
+		{% else %}
+			{% set ogImageAbs = ogImage %}
+		{% endif %}
+		{% set ogImageAlt = og_image_alt or (metadata.og and metadata.og.imageAlt) or pageTitle %}
+		{% set ogSiteName = (metadata.og and metadata.og.siteName) or metadata.title %}
+
+		{# Twitter fallbacks #}
+		{% set twitterCard = twitter_card or (metadata.twitter and metadata.twitter.card) or "summary" %}
+		{% if ogImageAbs %}
+			{% set twitterCard = twitter_card or (metadata.twitter and metadata.twitter.card) or "summary_large_image" %}
+		{% endif %}
+		{% set twitterTitle = twitter_title or ogTitle %}
+		{% set twitterDescription = twitter_description or ogDescription %}
+		{% set twitterImage = twitter_image or ogImageAbs %}
+		{% set twitterSite = (metadata.twitter and metadata.twitter.site) %}
+		{% set twitterCreator = (metadata.twitter and metadata.twitter.creator) %}
+
+		{# Robots fallback #}
+		{% set robotsValue = robots or (metadata.seo and metadata.seo.robots) or "index,follow" %}
+
+		<title>{{ pageTitle }}</title>
+		<meta name="description" content="{{ pageDescription }}">
+		<link rel="canonical" href="{{ canonicalUrl }}">
+
+		<meta name="robots" content="{{ robotsValue }}">
+
+		{# OpenGraph #}
+		<meta property="og:site_name" content="{{ ogSiteName }}">
+		<meta property="og:type" content="{{ ogType }}">
+		<meta property="og:title" content="{{ ogTitle }}">
+		<meta property="og:description" content="{{ ogDescription }}">
+		<meta property="og:url" content="{{ canonicalUrl }}">
+		{% if ogImageAbs %}
+		<meta property="og:image" content="{{ ogImageAbs }}">
+		<meta property="og:image:alt" content="{{ ogImageAlt }}">
+		{% endif %}
+		{% if metadata.locale %}
+		<meta property="og:locale" content="{{ metadata.locale }}">
+		{% endif %}
+
+		{# Twitter Card #}
+		<meta name="twitter:card" content="{{ twitterCard }}">
+		<meta name="twitter:title" content="{{ twitterTitle }}">
+		<meta name="twitter:description" content="{{ twitterDescription }}">
+		{% if twitterImage %}
+		<meta name="twitter:image" content="{{ twitterImage }}">
+		{% endif %}
+		{% if twitterSite %}
+		<meta name="twitter:site" content="{{ twitterSite }}">
+		{% endif %}
+		{% if twitterCreator %}
+		<meta name="twitter:creator" content="{{ twitterCreator }}">
+		{% endif %}
+
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="{{ metadata.title }}">
 
 		{#- Uncomment this if you’d like folks to know that you used Eleventy to build your site!  #}

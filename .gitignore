@@ -1,4 +1,7 @@
 _site/
 node_modules/
-package-lock.json
 .cache
+
+# Build-time generated mirror of per-post assets to support blog-less URLs:
+# Mirrors: content/blog/<slug>/assets/** -> content/<slug>/assets/**
+content/*/assets/
