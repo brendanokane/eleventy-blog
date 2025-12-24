@@ -7,7 +7,7 @@ bluesky_thread:
 ---
 # Tao Yuanming - “Home Again” 
 
-[![](images/tao-yuanming-home-again-guiqulai/431e9e10-c72e-4eb6-843e-9b5197824e7c_6422x2000.jpeg)](images/tao-yuanming-home-again-guiqulai/431e9e10-c72e-4eb6-843e-9b5197824e7c_6422x2000.jpeg) Tao Yuanming, “Home Again,” in the calligraphy of Zhao Mengfu 趙孟頫
+[![](/tao-yuanming-home-again/assets/431e9e10-c72e-4eb6-843e-9b5197824e7c_6422x2000.jpeg)](/tao-yuanming-home-again/assets/431e9e10-c72e-4eb6-843e-9b5197824e7c_6422x2000.jpeg) Tao Yuanming, “Home Again,” in the calligraphy of Zhao Mengfu 趙孟頫
 
 > 結廬在人境，而無車馬喧。
 >

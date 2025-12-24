@@ -13,7 +13,7 @@ Happy Mid-Autumn! May there be as many or as few yolks as you prefer in your moo
 
 * * *
 
-[![](images/mid-autumn-on-tiger-hill/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg)](images/mid-autumn-on-tiger-hill/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg) Shen Zhou 沈周, “A Farewell on Tiger Hill” (虎丘餞別圖)
+[![](/mid-autumn-tiger-hill-late-ming/assets/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg)](/mid-autumn-tiger-hill-late-ming/assets/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg) Shen Zhou 沈周, “A Farewell on Tiger Hill” (虎丘餞別圖)
 
 On the fifteenth day of the eighth month they came to Tiger Hill: locals and visitors; scholar-officials with families in tow; chanteuses and accompanists; courtesans, actresses, and other belles of the demimonde; commoner wives and respectable daughters; hustlers and prettyboys; rakehells and wastrels; idlers and spongers; serving boys and confidence men, all packed together like scales on a fish. They laid out mats anywhere they could find a place to sit: on the stone ledge where Daosheng preached the Dharma so movingly that even the pebbles nodded, or on Thousand-Man Rock beneath it; between Crane Brook and Sword Pond; in front of the shrine to Grand Secretary Shen and even all the way to the Swordcleft Stone and past the first and second temple gates. From above, the crowds looked like geese flocking on a sandbar, or sunset clouds gathering over a river. The sky darkened, the moon rose, and from a hundred different spots rose a clamor of pipes and percussion, clashing cymbal ensembles and a thundering Yuyang drumbeat that shook earth and sky and drowned out even the loudest shouts.
 
@@ -23,4 +23,4 @@ By the second watch the crowds had quieted and all the instruments fallen silent
 
 By the third watch, the moon hung alone in the sky, a chill had come into the air, and everyone was perfectly silent, even the mosquitoes. A lone figure strode out onto a rock high above, sat down, and sang, unaccompanied by flute or clapper, in a voice as fine as silk thread that rose and fell but never wavered, powerful enough to split stones and pierce clouds, every word as clear as a carving. The listeners sat transfixed, listening raptly to every subtle modulation of his voice. Nobody dared clap along. The hundred-odd people who sat there like stranded geese could only nod their heads in mute approval. Where but Suzhou could you find such connoisseurs!
 
-[![](images/mid-autumn-on-tiger-hill/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg)](images/mid-autumn-on-tiger-hill/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg) Mooncake-eating competition, Philadelphia Chinatown, 2024
+[![](/mid-autumn-tiger-hill-late-ming/assets/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg)](/mid-autumn-tiger-hill-late-ming/assets/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg) Mooncake-eating competition, Philadelphia Chinatown, 2024

@@ -51,7 +51,7 @@ Thanks for reading Stories from a Burning House! Subscribe for free to receive n
 
 * * *
 
-[![](images/chen-caoan-has-advice-for-being-online/4311a3ba-2376-4846-bd77-a24ad91e4fb2.heic)](images/chen-caoan-has-advice-for-being-online/4311a3ba-2376-4846-bd77-a24ad91e4fb2.heic) Detail, [Wu Zhen, “Fisherman,”](https://www.metmuseum.org/art/collection/search/41468) ca. 1350.
+[![](/chen-cao-an-has-advice-for-being-online-in-an-election-year/assets/4311a3ba-2376-4846-bd77-a24ad91e4fb2.jpg)](/chen-cao-an-has-advice-for-being-online-in-an-election-year/assets/4311a3ba-2376-4846-bd77-a24ad91e4fb2.jpg) Detail, [Wu Zhen, “Fisherman,”](https://www.metmuseum.org/art/collection/search/41468) ca. 1350.
 
 I’m putting my thumb on the interpretive scale a bit in this draft with my handling of the lines about “fishermen” and “woodcutters.” To see why, let’s bop over to Crump’s _Song-Poems from Xanadu_, where I first saw the poem, and where Crump says he “still puzzle\[s\] over the author’s cranky Taoist message" in what he reads as follows:
 

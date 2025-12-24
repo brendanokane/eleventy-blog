@@ -9,7 +9,7 @@ bluesky_thread:
 
 _Hi all— Below is a letter to the Substack founders that I helped draft as part of a group of publishers seeking answers to questions about the platforming and monetizing of Nazis. We are all publishing [the letter](https://docs.google.com/document/d/1-IFF6pyxKkgG3CWuyNmZVE8L1EL6Khxo3QPAqrHOTaw/edit#) on our own individual Substacks today for visibility, and to make our readers aware of our asks and concerns. Thanks for reading._
 
-[![Substackers Against Nazis](images/substackers-against-nazis/3e596c53-6ddd-41ff-bf3e-cc08ae98da72.heic)](images/substackers-against-nazis/3e596c53-6ddd-41ff-bf3e-cc08ae98da72.heic)
+[![Substackers Against Nazis](/substackers-against-nazis/assets/3e596c53-6ddd-41ff-bf3e-cc08ae98da72.jpg)](/substackers-against-nazis/assets/3e596c53-6ddd-41ff-bf3e-cc08ae98da72.jpg)
 
 Dear Chris, Hamish & Jairaj:
 

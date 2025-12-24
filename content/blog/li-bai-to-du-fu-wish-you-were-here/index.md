@@ -15,7 +15,7 @@ A lot happened in the 20th century.
 </aside>
 
 
-[![](images/li-bai-to-du-fu-wish-you-were-here/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png)](images/li-bai-to-du-fu-wish-you-were-here/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png) Li Bai and Du Fu, as depicted in _Chang’an_. Which is probably fun; I haven’t watched it.
+[![](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png)](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png) Li Bai and Du Fu, as depicted in _Chang’an_. Which is probably fun; I haven’t watched it.
 
 #### Du Fu 杜甫 - To Li Bai 贈李白
 

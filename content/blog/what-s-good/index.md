@@ -7,7 +7,7 @@ bluesky_thread:
 ---
 # What's Good?
 
-[![A scan of the Jinguyuan edition of Jin Shengtan's version of The Romance of the Western Chamber, open to the pages translated here](https://substackcdn.com/image/fetch/$s_!VmLi!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb9cca365-1abb-4ee8-bcde-4447efd0b32f_2620x2048.jpeg)](https://substackcdn.com/image/fetch/$s_!VmLi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb9cca365-1abb-4ee8-bcde-4447efd0b32f_2620x2048.jpeg) Jin Shengtan's introduction to "33 Nice Things," 清書坊金谷園刊本
+[![A scan of the Jinguyuan edition of Jin Shengtan's version of The Romance of the Western Chamber, open to the pages translated here](/what-s-good/assets/image-bb106374ccca.jpeg)](https://substackcdn.com/image/fetch/$s_!VmLi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb9cca365-1abb-4ee8-bcde-4447efd0b32f_2620x2048.jpeg) Jin Shengtan's introduction to "33 Nice Things," 清書坊金谷園刊本
 
 So you're reading _The Romance of the Western Chamber_ 西廂記, as one does, and you're reading it in an old woodblock edition, because obviously, and you're hooked. Young Student Zhang has driven away the Flying Tiger and his bandits, and for a moment it looks like there'll be nothing more to stand in the way of his marriage to the well-bred Cui Yingying – but Yingying's mother is having second thoughts about the promise she made. The young lovers have been relying on Yingying's sassy maidservant Hongniang to pass messages, but Yingying's mother is onto them.
 

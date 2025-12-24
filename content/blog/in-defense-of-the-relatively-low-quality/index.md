@@ -7,7 +7,7 @@ bluesky_thread:
 ---
 # In Defense of the 'Relatively Low Quality'
 
-[![Screenshot of an article that irritated me years ago when I was reading for my quals: the author says 'even literary texts of relatively low quality, such as the 'rhyme verses' (qu) of the Yuan dynasty....have been included in the category of high literature' and, like, (1) what are you talking about man, nobody reads these, and (2) go absolutely widdle up a rope!](images/in-defense-of-the-relatively-low-quality/30270519-a008-496e-828c-5fec614267c3.heic)](images/in-defense-of-the-relatively-low-quality/30270519-a008-496e-828c-5fec614267c3.heic) Okay _buddy_, let’s see _you_ write thematically diverse lyrics to a repertoire of now-lost tunes in a highly demanding yet metrically flexible verse form, _pal_.
+[![Screenshot of an article that irritated me years ago when I was reading for my quals: the author says 'even literary texts of relatively low quality, such as the 'rhyme verses' (qu) of the Yuan dynasty....have been included in the category of high literature' and, like, (1) what are you talking about man, nobody reads these, and (2) go absolutely widdle up a rope!](/in-defense-of-the-relatively-low-quality/assets/30270519-a008-496e-828c-5fec614267c3.jpg)](/in-defense-of-the-relatively-low-quality/assets/30270519-a008-496e-828c-5fec614267c3.jpg) Okay _buddy_, let’s see _you_ write thematically diverse lyrics to a repertoire of now-lost tunes in a highly demanding yet metrically flexible verse form, _pal_.
 
 I say “Tang,” you say “ _shi_ 詩.” I say “Song,” you say “ _ci_ 詞.” I say “Yuan,” you cough and shuffle your feet and mumble “ _qu_ 曲,” hoping I’ll hurry up and move on to the Ming-Qing part of the call-and-response, but no, not today. I’ve got a soft spot for _sanqu_ 散曲, an overlooked little form from an embarrassing little dynasty. James Crump calls them “song-poems,” and I’ve used “ditties” in the past, just to distinguish them more strongly from _cí_ lyrics, but the name doesn’t really matter; the main thing is that _sanqu_ is a form that the nerds never got a chance to ruin.
 
@@ -71,7 +71,7 @@ Even without reading Chinese, you can see that the meter here is much more varie
 >
 > Or dust-mop with a nasty bite?
 
-[![](images/in-defense-of-the-relatively-low-quality/208673e9-6508-499f-8f13-b2ca99e020c1.heic)](images/in-defense-of-the-relatively-low-quality/208673e9-6508-499f-8f13-b2ca99e020c1.heic) In loving memory of Hobbes, a horrible little dog, a champion snuggler, and one of history’s greatest villains. He’s burning or reigning in Hell forever now.
+[![](/in-defense-of-the-relatively-low-quality/assets/208673e9-6508-499f-8f13-b2ca99e020c1.jpg)](/in-defense-of-the-relatively-low-quality/assets/208673e9-6508-499f-8f13-b2ca99e020c1.jpg) In loving memory of Hobbes, a horrible little dog, a champion snuggler, and one of history’s greatest villains. He’s burning or reigning in Hell forever now.
 
 This works great for humor. But it works great for other things, too: the language of _sanqu_ is much closer to speech than anything else you’ll find in Chinese poetry, and it allows for a simplicity and plainness rare in other forms, as in this verse, written by Guan Daosheng 管道昇 (1262–1319) to her husband Zhao Mengfu:
 
@@ -95,7 +95,7 @@ This works great for humor. But it works great for other things, too: the langua
 >
 > and in yours would be me.
 
-[![](images/in-defense-of-the-relatively-low-quality/d5029b0e-692e-4f86-bff9-605078762ea0.heic)](images/in-defense-of-the-relatively-low-quality/d5029b0e-692e-4f86-bff9-605078762ea0.heic) I like to think she would have written the poem about gummi bears, if the technology had only existed at the time.
+[![](/in-defense-of-the-relatively-low-quality/assets/d5029b0e-692e-4f86-bff9-605078762ea0.jpg)](/in-defense-of-the-relatively-low-quality/assets/d5029b0e-692e-4f86-bff9-605078762ea0.jpg) I like to think she would have written the poem about gummi bears, if the technology had only existed at the time.
 
 More coming soon.
 

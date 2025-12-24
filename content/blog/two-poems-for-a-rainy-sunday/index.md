@@ -41,7 +41,7 @@ That said, please do let me know if you’ve got an edition of Lu’s poems that
 </aside>
 
 
-[![](images/two-poems-for-a-rainy-sunday/276c9f08-0f16-4677-aa30-17e8248eba00_936x702.jpeg)](images/two-poems-for-a-rainy-sunday/276c9f08-0f16-4677-aa30-17e8248eba00_936x702.jpeg) Detail from painting of a kitten by an anonymous Song court painter. Collection of the National Palace Museum, Taipei, I think.
+[![](/two-poems-for-a-rainy-sunday/assets/276c9f08-0f16-4677-aa30-17e8248eba00_936x702.jpeg)](/two-poems-for-a-rainy-sunday/assets/276c9f08-0f16-4677-aa30-17e8248eba00_936x702.jpeg) Detail from painting of a kitten by an anonymous Song court painter. Collection of the National Palace Museum, Taipei, I think.
 
 > **得貓於近村以雪兒名之戲為作詩**
 >

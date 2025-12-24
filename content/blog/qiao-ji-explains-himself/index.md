@@ -112,7 +112,7 @@ But having nothing left to lose is just another way of describing freedom, as Kr
 
 * * *
 
-[![](images/qiao-ji-explains-himself/7e5eb4fe-088a-4fd1-98e4-40605feca89d.heic)](images/qiao-ji-explains-himself/7e5eb4fe-088a-4fd1-98e4-40605feca89d.heic) Detail from [“Fishermen, after Jing Hao” 仿荊浩 漁父圖](https://asia.si.edu/explore-art-culture/collections/search/edanmdm:fsg_F1937.12/), collection of the Smithsonian National Museum of Asian Art. Check out the full painting in the second image, it’s great.
+[![](/qiao-ji-explains-himself/assets/7e5eb4fe-088a-4fd1-98e4-40605feca89d.jpg)](/qiao-ji-explains-himself/assets/7e5eb4fe-088a-4fd1-98e4-40605feca89d.jpg) Detail from [“Fishermen, after Jing Hao” 仿荊浩 漁父圖](https://asia.si.edu/explore-art-culture/collections/search/edanmdm:fsg_F1937.12/), collection of the Smithsonian National Museum of Asian Art. Check out the full painting in the second image, it’s great.
 
 That’s it; that’s the poem I wanted to share, and well-adjusted people can stop reading here. But I started talking about _sanqu_ in the first place partly because I wanted to talk about translation — some people have expressed an interest in hearing more about my translation process; consider your bluff called.
 

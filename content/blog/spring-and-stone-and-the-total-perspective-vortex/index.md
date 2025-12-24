@@ -49,7 +49,7 @@ I also have a soft spot for the characteristically boozy response to this poem b
 
 * * *
 
-[![](images/spring-and-stone-and-perspective/f86767e9-62ab-4a05-89a8-82a5649e1ebb.heic)](images/spring-and-stone-and-perspective/f86767e9-62ab-4a05-89a8-82a5649e1ebb.heic) Ka- _pow._
+[![](/spring-and-stone-and-the-total-perspective-vortex/assets/f86767e9-62ab-4a05-89a8-82a5649e1ebb.jpg)](/spring-and-stone-and-the-total-perspective-vortex/assets/f86767e9-62ab-4a05-89a8-82a5649e1ebb.jpg) Ka- _pow._
 
 Say what you will about the humanities — everyone does anyway — but there's nothing better than poetry for getting an uncomfortably accurate sense of perspective, with the possible exception of geology. Here's the Yuan official and poet Zhang Yanghao 張養浩 (1270-1329) on the site of Tong Pass, control of which could (and did) change the fortunes of emperors:
 

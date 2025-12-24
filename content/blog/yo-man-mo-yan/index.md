@@ -21,7 +21,7 @@ Thanks for reading Stories from a Burning House! Subscribe for free to get new p
 
 * * *
 
-[![](images/yo-man-mo-yan/5ea90d83-5e56-448d-8c95-445430f5ce8d.heic)](images/yo-man-mo-yan/5ea90d83-5e56-448d-8c95-445430f5ce8d.heic) This is a man who wants to be left alone. (Photo credit: [Jonathan Wong](https://www.scmp.com/news/china/politics/article/3254696/chinas-nobel-winning-novelist-mo-yan-targeted-growing-band-online-nationalists))
+[![](/yo-man-mo-yan/assets/5ea90d83-5e56-448d-8c95-445430f5ce8d.jpg)](/yo-man-mo-yan/assets/5ea90d83-5e56-448d-8c95-445430f5ce8d.jpg) This is a man who wants to be left alone. (Photo credit: [Jonathan Wong](https://www.scmp.com/news/china/politics/article/3254696/chinas-nobel-winning-novelist-mo-yan-targeted-growing-band-online-nationalists))
 
 _(Originally published October 15, 2012)_
 

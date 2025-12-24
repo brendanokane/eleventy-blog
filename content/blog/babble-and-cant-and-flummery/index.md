@@ -83,7 +83,7 @@ Oh, and if you were wondering, “seven-figure salary” is literally “ten tho
 
 * * *
 
-[![Wang Shuo, looking like he's up to no good, though in fairness that's how he always looks. The original text for the caption below is '真希望在电影里过日子，下一个镜头就是一行字幕：多年以后。'](images/babble-and-cant-and-flummery/e9f4607f-dadf-4d37-b7c5-3d59fe171fa1.heic)](images/babble-and-cant-and-flummery/e9f4607f-dadf-4d37-b7c5-3d59fe171fa1.heic)“I _wish_ life was like the movies. Next shot, title card: ‘MANY YEARS LATER.’”
+[![Wang Shuo, looking like he's up to no good, though in fairness that's how he always looks. The original text for the caption below is '真希望在电影里过日子，下一个镜头就是一行字幕：多年以后。'](/babble-and-cant-and-flummery/assets/e9f4607f-dadf-4d37-b7c5-3d59fe171fa1.jpg)](/babble-and-cant-and-flummery/assets/e9f4607f-dadf-4d37-b7c5-3d59fe171fa1.jpg)“I _wish_ life was like the movies. Next shot, title card: ‘MANY YEARS LATER.’”
 
 But it _did_ remind me of something else — a [passage](https://book.douban.com/annotation/90666771/) from the late-1989 (!) _Not Even Human_ (千万别把我当人) by Wang Shuo 王朔, the king of “lowlife lit” 痞子文学, in which the residents of a Beijing hutong welcome a visiting official in the highest fashion they can manage. I hope you’ll forgive the contemporaneity. It’s just too good:
 

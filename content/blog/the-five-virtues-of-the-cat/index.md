@@ -27,7 +27,7 @@ Also, I’m freely turning Chinese nouns (… _-ish_) into nonstandard translati
 
 * * *
 
-[![A close-up of the eponymous crouching cat, which is done in such a simple, almost naive style that you aren't ready for how fierce its eyes are.](images/the-five-virtues-of-the-cat/39b5e86e-7db6-42d7-953d-02d9eefd1bd4.heic)](images/the-five-virtues-of-the-cat/39b5e86e-7db6-42d7-953d-02d9eefd1bd4.heic) Detail from Bada Shanren 八大山人, [“Crouching Cat” 艾虎圖](https://asia.si.edu/explore-art-culture/collections/search/edanmdm:fsg_F1998.49/), 1699\.
+[![A close-up of the eponymous crouching cat, which is done in such a simple, almost naive style that you aren't ready for how fierce its eyes are.](/the-five-virtues-of-the-cat/assets/39b5e86e-7db6-42d7-953d-02d9eefd1bd4.jpg)](/the-five-virtues-of-the-cat/assets/39b5e86e-7db6-42d7-953d-02d9eefd1bd4.jpg) Detail from Bada Shanren 八大山人, [“Crouching Cat” 艾虎圖](https://asia.si.edu/explore-art-culture/collections/search/edanmdm:fsg_F1998.49/), 1699\.
 
 While I was writing “ [The Naming of Cats](http://burninghou.se/p/the-naming-of-cats-and-an-offering),” I came across a bunch of little cat-related tidbits and anecdotes that were extremely cute but didn’t really fit with the whole lexicography-and-grief thing.
 

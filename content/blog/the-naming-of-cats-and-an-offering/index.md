@@ -7,7 +7,7 @@ bluesky_thread:
 ---
 # The Naming of Cats, and an Offering
 
-[![Woodblock print of a startlingly bright-eyed cat, surrounded by the text of the contract in a spiral.](images/the-naming-of-cats-and-an-offering/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg)](images/the-naming-of-cats-and-an-offering/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg) A “cat contract” 納貓兒契式 listing the cat's obligations: patrolling tirelessly, catching mice, leaving the numnums alone. From 銜蟬小錄 _Xianchan xiaolu_.
+[![Woodblock print of a startlingly bright-eyed cat, surrounded by the text of the contract in a spiral.](/the-naming-of-cats-and-an-offering/assets/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg)](/the-naming-of-cats-and-an-offering/assets/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg) A “cat contract” 納貓兒契式 listing the cat's obligations: patrolling tirelessly, catching mice, leaving the numnums alone. From 銜蟬小錄 _Xianchan xiaolu_.
 
 If you can read Classical Chinese, you can have a moderately good time looking in pre-20th century reference texts to see what they have for “cat.”
 
@@ -149,7 +149,7 @@ Would I have loved a poem that began “Me and Biscuits, my white cat?”
 
 * * *
 
-[![A 17th century painting of a fluffy cat perched atop a stone and demonstrating, contra Chomsky, that it is entirely possible to sleep furiously.](images/the-naming-of-cats-and-an-offering/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png)](images/the-naming-of-cats-and-an-offering/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png) Detail: ["Cat on Stone" (貓石圖) by Bada Shanren 八大山人](https://www.dpm.org.cn/collection/paint/229606.html). Summer, 1696.
+[![A 17th century painting of a fluffy cat perched atop a stone and demonstrating, contra Chomsky, that it is entirely possible to sleep furiously.](/the-naming-of-cats-and-an-offering/assets/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png)](/the-naming-of-cats-and-an-offering/assets/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png) Detail: ["Cat on Stone" (貓石圖) by Bada Shanren 八大山人](https://www.dpm.org.cn/collection/paint/229606.html). Summer, 1696.
 
 The _Xiang mao jing_ 相貓經 ( _Guide to Cat Physiognomy_), quoted extensively in Huang Han’s 1852 _Mao yuan_ 貓苑 ( _A Garden of Cats_), lists ways of describing the physical appearance of cats. A cat with a pure-colored coat of any color was “Good All Year Round” (四時好). “Dark Clouds Over Snow” (烏雲蓋雪) was a black cat with white fur on its belly and paws — but if only the paws were white, it was “Walking Through Snow in Search of Plums” (踏雪尋梅). A white cat with ginger spots was an “Embroidered Tiger” (繡虎); a ginger cat with a white tummy was a “Golden Quilt on a Silver Bed” (金被銀床); a calico cat, somewhat confusingly, was a “Tortie” 玳瑁猫. But these were terms used by connoisseurs to describe _categories_ of cats, not actual cat names.
 
@@ -235,4 +235,4 @@ The best solution I can think of is the one I’ve gone with: prefacing the poem
 >
 > I'll be weeping for you a while yet.
 
-[![A grey and white tabby curled up in a corner of his bed, first drowsing, then blearily interested, then consenting to chin-chucks, then narrowing his eyes in enjoyment and tilting his head to make sure I knew where to skritch. He was a beautiful boy and a great little dude.](images/the-naming-of-cats-and-an-offering/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg)](images/the-naming-of-cats-and-an-offering/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg) _For Nemo, who was Somebody to me._
+[![A grey and white tabby curled up in a corner of his bed, first drowsing, then blearily interested, then consenting to chin-chucks, then narrowing his eyes in enjoyment and tilting his head to make sure I knew where to skritch. He was a beautiful boy and a great little dude.](/the-naming-of-cats-and-an-offering/assets/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg)](/the-naming-of-cats-and-an-offering/assets/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg) _For Nemo, who was Somebody to me._

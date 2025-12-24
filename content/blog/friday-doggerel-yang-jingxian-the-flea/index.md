@@ -7,7 +7,7 @@ bluesky_thread:
 ---
 # Friday Doggerel: Yang Jingxian - "The Flea"
 
-[![A handsomely produced color print illustration of...bugs. Sorry, I can't describe them intelligently other than to say that there are bugs of various sizes, colors, and proportions depicted here.](images/yang-jingxian-the-flea/cf6aef19-ce7a-41f2-9e72-52ffd92734d1.heic)](images/yang-jingxian-the-flea/cf6aef19-ce7a-41f2-9e72-52ffd92734d1.heic) Some gnarly-looking little dudes (though no fleas) from _[An Epitome of the Natural History of the Insects of China](https://old.shuge.org/ebook/natural-history-of-the-insects-of-china/)_ (1798)
+[![A handsomely produced color print illustration of...bugs. Sorry, I can't describe them intelligently other than to say that there are bugs of various sizes, colors, and proportions depicted here.](/friday-doggerel-yang-jingxian-the-flea/assets/cf6aef19-ce7a-41f2-9e72-52ffd92734d1.jpg)](/friday-doggerel-yang-jingxian-the-flea/assets/cf6aef19-ce7a-41f2-9e72-52ffd92734d1.jpg) Some gnarly-looking little dudes (though no fleas) from _[An Epitome of the Natural History of the Insects of China](https://old.shuge.org/ebook/natural-history-of-the-insects-of-china/)_ (1798)
 
 A bit of doggerel for your weekend, courtesy of the late-Yuan poet and playwright Yang Jingxian 楊景賢:
 

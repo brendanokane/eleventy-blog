@@ -42,7 +42,7 @@ bluesky_thread:
 
 * * *
 
-[![](images/tao-yuanming-reads-on-a-summer-evening/f993de39-ae98-4723-8285-49a33baa19b2_1220x746.png)](images/tao-yuanming-reads-on-a-summer-evening/f993de39-ae98-4723-8285-49a33baa19b2_1220x746.png) Tao Yuanming, detail from “To Serve or Withdraw” (出處圖) by Chen Hongshou 陳洪綬 (1599-1652). Sold to a private collector in 2010.
+[![](/tao-yuanming-reads-on-a-summer-evening/assets/f993de39-ae98-4723-8285-49a33baa19b2_1220x746.png)](/tao-yuanming-reads-on-a-summer-evening/assets/f993de39-ae98-4723-8285-49a33baa19b2_1220x746.png) Tao Yuanming, detail from “To Serve or Withdraw” (出處圖) by Chen Hongshou 陳洪綬 (1599-1652). Sold to a private collector in 2010.
 
 If you were wondering where Tao Yuanming 陶淵明 (365-427) ended up after [“Home Again” (歸去來兮辭)](https://www.burninghou.se/p/tao-yuanming-home-again-guiqulai), here’s part of your answer.
 

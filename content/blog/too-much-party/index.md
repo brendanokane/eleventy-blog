@@ -9,7 +9,7 @@ bluesky_thread:
 
 A while ago, during my big _[sanqu](http://burninghou.se/p/in-defense-of-the-relatively-low-quality)_ kick, I started working on a set of linked verses by the playwright and poet Ma Zhiyuan 馬致遠 (ca. 1250-1321). Partly this was a translation exercise — refrains and repeating rhyme words are hard to handle well — but mostly it was just because I like them. Some of my favorite _sanqu_ still carry [a boozy whiff](http://burninghou.se/p/qiao-ji-explains-himself) of the social gatherings they were composed at and for, and in my evidence-free but canonical-to-me reading, Ma wrote these for a friend’s retirement party.
 
-[![](images/too-much-party/e9ba3c2f-3771-489d-a031-2b5452381ab4.heic)](images/too-much-party/e9ba3c2f-3771-489d-a031-2b5452381ab4.heic) A Yuan-dynasty wine jar with advertising - “Good Grape Wine” - in ʼPhags-pa script, from the British Museum. One of the cooler things I’ve seen.
+[![](/too-much-party/assets/e9ba3c2f-3771-489d-a031-2b5452381ab4.jpg)](/too-much-party/assets/e9ba3c2f-3771-489d-a031-2b5452381ab4.jpg) A Yuan-dynasty wine jar with advertising - “Good Grape Wine” - in ʼPhags-pa script, from the British Museum. One of the cooler things I’ve seen.
 
 I’ll post the whole set at some point further down the line, once I’ve got drafts I’m happier with, but for now some of the ones that currently seem more successful to me:
 

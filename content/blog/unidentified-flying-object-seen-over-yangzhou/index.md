@@ -7,7 +7,7 @@ bluesky_thread:
 ---
 # Unidentified Flying Object Seen Over Yangzhou
 
-[![](images/yangzhou-ufo/dbeb9bbc-fa5c-4a3e-9009-deb49e5a6adc_1500x1079.png)](images/yangzhou-ufo/dbeb9bbc-fa5c-4a3e-9009-deb49e5a6adc_1500x1079.png) Star map from Su Song’s 蘇頌 _Xinyi xiangfa yao_ 新儀象法要 _,_ featuring revisions based on Shen Kuo’s observations. I got this from [Wikipedia](https://en.wikipedia.org/wiki/Shen_Kuo).
+[![](/unidentified-flying-object-seen-over-yangzhou/assets/dbeb9bbc-fa5c-4a3e-9009-deb49e5a6adc_1500x1079.png)](/unidentified-flying-object-seen-over-yangzhou/assets/dbeb9bbc-fa5c-4a3e-9009-deb49e5a6adc_1500x1079.png) Star map from Su Song’s 蘇頌 _Xinyi xiangfa yao_ 新儀象法要 _,_ featuring revisions based on Shen Kuo’s observations. I got this from [Wikipedia](https://en.wikipedia.org/wiki/Shen_Kuo).
 
 Objects! Objects in the sky! Car- or three-bus-sized objects of unclear but presumably sinister import! Possibly alien, but definitely objects!
 
