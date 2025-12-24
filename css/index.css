@@ -18,9 +18,11 @@ Audience priorities:
 	--rule: color-mix(in srgb, var(--ink), var(--paper) 70%);
 
 	/* Typography */
+	/* NOTE: font-family names depend on what your Adobe Fonts kit provides.
+	   If Aldine/Alegreya don't apply, inspect computed styles and adjust names here. */
 	--font-body: "Alegreya", ui-serif, Georgia, serif;
-	--font-display: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-		"Apple Color Emoji", "Segoe UI Emoji";
+	--font-display: "Adobe Aldine", "Aldine", "Alegreya Sans", ui-sans-serif, system-ui,
+		-apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 
 	--text-size: 18px;
 	--leading: 1.6;
@@ -56,13 +58,22 @@ html {
 
 body {
 	margin: 0;
+	font-weight: 500; /* Alegreya Medium sweet spot */
 }
 
 /* Linen-ish background using subtle layered gradients (no heavy texture) */
 body {
 	background:
-		radial-gradient(1200px 600px at 20% 0%, color-mix(in srgb, var(--paper-2), transparent 35%) 0%, transparent 60%),
-		radial-gradient(900px 500px at 90% 10%, color-mix(in srgb, var(--paper-2), transparent 35%) 0%, transparent 55%),
+		radial-gradient(
+			1200px 600px at 20% 0%,
+			color-mix(in srgb, var(--paper-2), transparent 35%) 0%,
+			transparent 60%
+		),
+		radial-gradient(
+			900px 500px at 90% 10%,
+			color-mix(in srgb, var(--paper-2), transparent 35%) 0%,
+			transparent 55%
+		),
 		linear-gradient(0deg, color-mix(in srgb, var(--paper), #ffffff 3%), var(--paper));
 	min-height: 100vh;
 }
@@ -136,10 +147,10 @@ header {
 
 .nav-item a {
 	font-family: var(--font-display);
-	font-weight: 700;
+	font-weight: 800;
 	letter-spacing: 0.01em;
 	text-decoration: none;
-	color: var(--ink);
+	color: var(--paper);
 	padding: 10px 12px;
 	border-radius: var(--ink-block-radius);
 	background:
