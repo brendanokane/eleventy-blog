@@ -51,8 +51,34 @@ layout: layouts/base.njk
     font-family: var(--email-font-sans);
     font-size: 0.75em;
     vertical-align: super;
+    line-height: 0;
+  }
+
+  sup.fn a {
+    text-decoration: none;
+    color: var(--email-ink);
+    padding: 0 0.1em;
+  }
+
+  sup.fn a:hover {
+    text-decoration: underline;
+  }
+
+  .endnotes li {
+    position: relative;
+  }
+
+  .endnotes .backlink {
+    font-family: var(--email-font-sans);
+    font-size: 0.85em;
+    text-decoration: none;
+    margin-left: 0.3em;
   }
 </style>
+
+{% set transformed = content | emailifyMarginNotes %}
+{% set emailContent = transformed.content %}
+{% set endnotes = transformed.endnotes %}
 
 <div class="email-shell">
   <h1>{{ title }}</h1>
@@ -63,5 +89,19 @@ layout: layouts/base.njk
     <a href="{{ webUrl }}">View on the web</a>
   </p>
 
-  {{ content | safe }}
+  {{ emailContent | safe }}
+
+  {%- if endnotes and endnotes.length %}
+  <section class="endnotes">
+    <h2>Notes</h2>
+    <ol>
+      {%- for note in endnotes %}
+      <li id="fn-{{ loop.index }}">
+        {{ note | safe }}
+        <a href="#fnref-{{ loop.index }}" class="backlink" aria-label="Back to reference {{ loop.index }}">↩</a>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
 </div>

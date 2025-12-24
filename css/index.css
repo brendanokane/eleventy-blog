@@ -20,9 +20,14 @@ Audience priorities:
 	/* Typography */
 	/* NOTE: font-family names depend on what your Adobe Fonts kit provides.
 	   If Aldine/Alegreya don't apply, inspect computed styles and adjust names here. */
-	--font-body: "Alegreya", ui-serif, Georgia, serif;
-	--font-display: "Adobe Aldine", "Aldine", "Alegreya Sans", ui-sans-serif, system-ui,
-		-apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+	--font-body:
+		"Alegreya", "Noto Serif TC", "Source Han Serif TC", "Source Han Serif",
+		ui-serif, Georgia, serif;
+	--font-display:
+		"Adobe Aldine", "Aldine", "Alegreya Sans", "Noto Sans TC",
+		"Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui,
+		-apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+		"Segoe UI Emoji";
 
 	--text-size: 18px;
 	--leading: 1.6;
@@ -74,7 +79,11 @@ body {
 			color-mix(in srgb, var(--paper-2), transparent 35%) 0%,
 			transparent 55%
 		),
-		linear-gradient(0deg, color-mix(in srgb, var(--paper), #ffffff 3%), var(--paper));
+		linear-gradient(
+			0deg,
+			color-mix(in srgb, var(--paper), #ffffff 3%),
+			var(--paper)
+		);
 	min-height: 100vh;
 }
 
@@ -153,12 +162,11 @@ header {
 	color: var(--paper);
 	padding: 10px 12px;
 	border-radius: var(--ink-block-radius);
-	background:
-		linear-gradient(
-			170deg,
-			color-mix(in srgb, var(--ink), transparent 0%) 0%,
-			color-mix(in srgb, var(--ink), transparent 20%) 100%
-		);
+	background: linear-gradient(
+		170deg,
+		color-mix(in srgb, var(--ink), transparent 0%) 0%,
+		color-mix(in srgb, var(--ink), transparent 20%) 100%
+	);
 	box-shadow:
 		0 1px 0 color-mix(in srgb, var(--paper), transparent 40%) inset,
 		0 10px 24px color-mix(in srgb, #000, transparent 86%);
@@ -174,7 +182,10 @@ header {
 }
 
 /* Typography basics */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
 	font-family: var(--font-display);
 	color: var(--ink);
 	line-height: 1.15;

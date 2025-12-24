@@ -10,21 +10,8 @@ eleventyComputed:
   title: "{{ post.data.title }}"
   date: "{{ post.date }}"
   webUrl: "{{ post.url }}"
+  robots: "noindex,follow"
+  canonical_url: "{{ post.url }}"
 ---
 
-{% set transformed = post.templateContent | emailifyMarginNotes %}
-{% set emailContent = transformed.content %}
-{% set endnotes = transformed.endnotes %}
-
-{{ emailContent | safe }}
-
-{%- if endnotes and endnotes.length %}
-<section class="endnotes">
-  <h2>Notes</h2>
-  <ol>
-    {%- for note in endnotes %}
-    <li>{{ note | safe }}</li>
-    {%- endfor %}
-  </ol>
-</section>
-{%- endif %}
+{{ post.templateContent | safe }}

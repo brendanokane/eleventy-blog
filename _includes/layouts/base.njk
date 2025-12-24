@@ -39,10 +39,16 @@
 		{% set ogDescription = og_description or pageDescription %}
 		{% set ogType = og_type or (metadata.og and metadata.og.type) or "website" %}
 		{% set ogImage = og_image or (metadata.og and metadata.og.defaultImage) %}
-		{% if ogImage and siteUrl and (ogImage | slice(0, 1)) == "/" %}
-			{% set ogImageAbs = siteUrl + ogImage %}
+		{% if ogImage %}
+			{% if "http" in ogImage %}
+				{# Already absolute URL #}
+				{% set ogImageAbs = ogImage %}
+			{% else %}
+				{# Relative URL - make it absolute #}
+				{% set ogImageAbs = siteUrl + ogImage %}
+			{% endif %}
 		{% else %}
-			{% set ogImageAbs = ogImage %}
+			{% set ogImageAbs = "" %}
 		{% endif %}
 		{% set ogImageAlt = og_image_alt or (metadata.og and metadata.og.imageAlt) or pageTitle %}
 		{% set ogSiteName = (metadata.og and metadata.og.siteName) or metadata.title %}

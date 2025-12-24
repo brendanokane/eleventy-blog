@@ -36,7 +36,7 @@ export default {
 	og: {
 		siteName: "Burning House",
 		type: "website",
-		defaultImage: "/assets/og/default.png", // create this file or replace with your preferred path
+		defaultImage: "/assets/og/default.jpg", // Tao Yuanming calligraphy image
 		imageAlt: "Burning House",
 	},
 

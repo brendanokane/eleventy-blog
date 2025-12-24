@@ -18,7 +18,11 @@ function toJsDate(value) {
 export default function (eleventyConfig) {
 	eleventyConfig.addFilter("readableDate", (dateObj, format, zone) => {
 		// Prefer Luxon DateTime if provided.
-		if (dateObj && typeof dateObj.setZone === "function" && typeof dateObj.toFormat === "function") {
+		if (
+			dateObj &&
+			typeof dateObj.setZone === "function" &&
+			typeof dateObj.toFormat === "function"
+		) {
 			return dateObj.setZone(zone).toFormat(format);
 		}
 
@@ -81,11 +85,13 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
-		return (tags || []).filter((tag) => ["all", "nav", "post"].indexOf(tag) === -1);
+		return (tags || []).filter(
+			(tag) => ["all", "nav", "post"].indexOf(tag) === -1,
+		);
 	});
 
 	eleventyConfig.addFilter("sortAlphabetically", (strings) =>
-		(strings || []).sort((a, b) => a.localeCompare(b))
+		(strings || []).sort((a, b) => a.localeCompare(b)),
 	);
 
 	eleventyConfig.addFilter("getAllTags", (collection) => {
@@ -98,11 +104,65 @@ export default function (eleventyConfig) {
 
 	// Email-friendly transform for margin notes.
 	//
-	// For now this is a no-op to keep the email templates rendering even if
-	// margin-note HTML varies across layouts.
+	// Converts margin note HTML into numbered endnotes suitable for email and RSS feed output.
+	// Handles two patterns:
+	// 1. Shortcode output: <span class="mn-wrapper">...</span>
+	// 2. Substack import HTML: <sup class="mn-marker" data-mn-id="mn-X"> + <aside class="mn-note" id="mn-X">
 	//
-	// Later: convert margin notes to endnotes/footnotes for email/RSS output.
+	// Output: { content: transformed HTML, endnotes: [array of note content] }
 	eleventyConfig.addFilter("emailifyMarginNotes", (html) => {
-		return html;
+		if (!html || typeof html !== "string") {
+			return { content: html || "", endnotes: [] };
+		}
+
+		let endnotes = [];
+		let noteCounter = 0;
+		let transformed = html;
+
+		// Pattern 1: Handle Substack import HTML with <aside> tags
+		// First, extract all aside notes and build a map
+		const asideNotes = new Map();
+		const asidePattern =
+			/<aside class="mn-note" id="([^"]+)"[^>]*>(.*?)<\/aside>/gs;
+		let asideMatch;
+
+		while ((asideMatch = asidePattern.exec(html)) !== null) {
+			const [fullMatch, noteId, noteContent] = asideMatch;
+			asideNotes.set(noteId, noteContent.trim());
+		}
+
+		// Replace aside tags (remove them from content)
+		transformed = transformed.replace(asidePattern, "");
+
+		// Replace markers with numbered references
+		asideNotes.forEach((noteContent, noteId) => {
+			noteCounter++;
+			endnotes.push(noteContent);
+
+			// Match the marker: <sup class="mn-marker" data-mn-id="mn-X"...>※</sup>
+			const markerPattern = new RegExp(
+				`<sup class="mn-marker"[^>]*data-mn-id="${noteId}"[^>]*>.*?<\/sup>`,
+				"g",
+			);
+			transformed = transformed.replace(
+				markerPattern,
+				`<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">[${noteCounter}]</a></sup>`,
+			);
+		});
+
+		// Pattern 2: Handle shortcode output with <span class="mn-wrapper">
+		const wrapperPattern =
+			/<span class="mn-wrapper"><span class="mn-anchor">.*?<\/span><span class="mn-content">(.*?)<\/span><\/span>/gs;
+
+		transformed = transformed.replace(wrapperPattern, (match, noteContent) => {
+			noteCounter++;
+			endnotes.push(noteContent.trim());
+			return `<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">[${noteCounter}]</a></sup>`;
+		});
+
+		return {
+			content: transformed,
+			endnotes: endnotes,
+		};
 	});
 }

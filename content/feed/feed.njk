@@ -17,14 +17,28 @@ eleventyExcludeFromCollections: true
 	{%- for post in collections.posts | reverse %}
 	{%- if post.url and post.url != false %}
 	{% set absolutePostUrl %}{{ post.url | htmlBaseUrl(metadata.url) }}{% endset %}
-	{% set emailUrl %}{{ ('/emails/' ~ post.fileSlug ~ '/') | htmlBaseUrl(metadata.url) }}{% endset %}
+	{% set transformed = post.templateContent | emailifyMarginNotes %}
+	{% set feedContent = transformed.content %}
+	{% set endnotes = transformed.endnotes %}
 	<entry>
 		<title>{{ post.data.title }}</title>
 		<link href="{{ absolutePostUrl }}"/>
 		<updated>{{ post.date | dateToRfc3339 }}</updated>
 		<id>{{ absolutePostUrl }}</id>
-		<content type="html">{{ collections.emailPages[post.fileSlug] | dump | safe }}</content>
-		<link rel="alternate" type="text/html" href="{{ emailUrl }}" title="Email version"/>
+		<content type="html"><![CDATA[
+			{{ feedContent | safe }}
+			{%- if endnotes and endnotes.length %}
+			<hr style="margin-top: 2rem; border: 0; border-top: 1px solid #ccc;" />
+			<h2 style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Notes</h2>
+			<ol style="padding-left: 1.5rem;">
+				{%- for note in endnotes %}
+				<li id="fn-{{ loop.index }}" style="margin-bottom: 0.5rem;">{{ note | safe }}</li>
+				{%- endfor %}
+			</ol>
+			{%- endif %}
+			<hr style="margin-top: 2rem; border: 0; border-top: 1px solid #ccc;" />
+			<p style="font-style: italic;"><a href="{{ absolutePostUrl }}">View this post on Burning House</a></p>
+		]]></content>
 	</entry>
 	{%- endif %}
 	{%- endfor %}
