@@ -18,10 +18,10 @@ Audience priorities:
 	--rule: color-mix(in srgb, var(--ink), var(--paper) 70%);
 
 	/* Typography */
-	/* NOTE: font-family names depend on what your Adobe Fonts kit provides.
-	   If Aldine/Alegreya don't apply, inspect computed styles and adjust names here. */
+	/* NOTE: Adobe Fonts family names come from the kit CSS.
+	   For this kit, Aldine is exposed as `adobe-aldine-variable`. */
 	--font-body: "Alegreya", ui-serif, Georgia, serif;
-	--font-display: "Adobe Aldine", "Aldine", "Alegreya Sans", ui-sans-serif, system-ui,
+	--font-display: "adobe-aldine-variable", "Alegreya Sans", ui-sans-serif, system-ui,
 		-apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 
 	--text-size: 18px;
