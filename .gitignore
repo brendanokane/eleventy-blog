@@ -5,3 +5,4 @@ node_modules/
 # Build-time generated mirror of per-post assets to support blog-less URLs:
 # Mirrors: content/blog/<slug>/assets/** -> content/<slug>/assets/**
 content/*/assets/
+.DS_Store
