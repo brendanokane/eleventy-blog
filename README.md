@@ -1,116 +1,385 @@
-# eleventy-base-blog v9
+# Burning House — Eleventy Blog
 
-A starter repository showing how to build a blog with the [Eleventy](https://www.11ty.dev/) site generator (using the [v3.0 release](https://github.com/11ty/eleventy/releases/tag/v3.0.0)).
-
-## Getting Started
-
-* [Want a more generic/detailed getting started guide?](https://www.11ty.dev/docs/getting-started/)
-
-1. Make a directory and navigate to it:
-
-```
-mkdir my-blog-name
-cd my-blog-name
-```
-
-2. Clone this Repository
-
-```
-git clone https://github.com/11ty/eleventy-base-blog.git .
-```
-
-_Optional:_ Review `eleventy.config.js` and `_data/metadata.js` to configure the site’s options and data.
-
-3. Install dependencies
-
-```
-npm install
-```
-
-4. Run Eleventy
-
-Generate a production-ready build to the `_site` folder:
-
-```
-npx @11ty/eleventy
-```
-
-Or build and host on a local development server:
-
-```
-npx @11ty/eleventy --serve
-```
-
-Or you can run [debug mode](https://www.11ty.dev/docs/debugging/) to see all the internals.
+A bilingual (English/Traditional Chinese) literary translation blog with a woodblock-inspired design and sophisticated margin notes system.
 
 ## Features
 
-- Using [Eleventy v3](https://github.com/11ty/eleventy/releases/tag/v3.0.0) with zero-JavaScript output.
-	- Content is exclusively pre-rendered (this is a static site).
-	- Can easily [deploy to a subfolder without changing any content](https://www.11ty.dev/docs/plugins/html-base/)
-	- All URLs are decoupled from the content’s location on the file system.
-	- Configure templates via the [Eleventy Data Cascade](https://www.11ty.dev/docs/data-cascade/)
-- **Performance focused**: four-hundos Lighthouse score out of the box!
-	- _0 Cumulative Layout Shift_
-	- _0ms Total Blocking Time_
-- Local development live reload provided by [Eleventy Dev Server](https://www.11ty.dev/docs/dev-server/).
-- Content-driven [navigation menu](https://www.11ty.dev/docs/plugins/navigation/)
-- Fully automated [Image optimization](https://www.11ty.dev/docs/plugins/image/)
-	- Zero-JavaScript output.
-	- Support for modern image formats automatically (e.g. AVIF and WebP)
-	- Processes images on-request during `--serve` for speedy local builds.
-	- Prefers `<img>` markup if possible (single image format) but switches automatically to `<picture>` for multiple image formats.
-	- Automated `<picture>` syntax markup with `srcset` and optional `sizes`
-	- Includes `width`/`height` attributes to avoid [content layout shift](https://web.dev/cls/).
-	- Includes `loading="lazy"` for native lazy loading without JavaScript.
-	- Includes [`decoding="async"`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding)
-	- Images can be co-located with blog post files.
-- Per page CSS bundles [via `eleventy-plugin-bundle`](https://github.com/11ty/eleventy-plugin-bundle).
-- Built-in [syntax highlighter](https://www.11ty.dev/docs/plugins/syntaxhighlight/) (zero-JavaScript output).
-- Draft content: use `draft: true` to mark any template as a draft. Drafts are **only** included during `--serve`/`--watch` and are excluded from full builds. This is driven by the `addPreprocessor` configuration API in `eleventy.config.js`. Schema validator will show an error if non-boolean value is set in data cascade.
-- Blog Posts
-	- Automated next/previous links
-	- Accessible deep links to headings
-- Generated Pages
-	- Home, Archive, and About pages.
-	- [Atom feed included (with easy one-line swap to use RSS or JSON)](https://www.11ty.dev/docs/plugins/rss/)
-	- `sitemap.xml`
-	- Zero-maintenance tag pages ([View on the Demo](https://eleventy-base-blog.netlify.app/tags/))
-	- Content not found (404) page
+- 🎨 **Woodblock-inspired design** — Ink-on-linen aesthetic with thoughtful typography
+- 📝 **Margin notes** — Align vertically with markers in text, responsive behavior
+- 🌏 **Bilingual support** — Optimized for English and Traditional Chinese
+- 📧 **Email integration** — Buttondown API for newsletter distribution
+- 🖼️ **Image optimization** — Automatic responsive images via eleventy-img
+- 📱 **Responsive design** — Graceful degradation from desktop to mobile
+- 🔍 **Dual output** — Web (with margin notes) and email (with endnotes) variants
 
-## Demos
+## Quick Start
 
-- [Netlify](https://eleventy-base-blog.netlify.app/)
-- [Vercel](https://demo-base-blog.11ty.dev/)
-- [Cloudflare Pages](https://eleventy-base-blog-d2a.pages.dev/)
-- [GitHub Pages](https://11ty.github.io/eleventy-base-blog/)
+### Prerequisites
 
-## Deploy this to your own site
+- Node.js 18+ 
+- npm or yarn
+- Git
 
-Deploy this Eleventy site in just a few clicks on these services:
+### Installation
 
-- Read more about [Deploying an Eleventy project](https://www.11ty.dev/docs/deployment/) to the web.
-- [Deploy this to **Netlify**](https://app.netlify.com/start/deploy?repository=https://github.com/11ty/eleventy-base-blog)
-- [Deploy this to **Vercel**](https://vercel.com/import/project?template=11ty%2Feleventy-base-blog)
-- Look in `.github/workflows/gh-pages.yml.sample` for information on [Deploying to **GitHub Pages**](https://www.11ty.dev/docs/deployment/#deploy-an-eleventy-project-to-git-hub-pages).
-- [Try it out on **Stackblitz**](https://stackblitz.com/github/11ty/eleventy-base-blog)
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd eleventy-blog
 
-### Implementation Notes
+# Install dependencies
+npm install
 
-- `content/about/index.md` is an example of a content page.
-- `content/blog/` has the blog posts but really they can live in any directory. They need only the `posts` tag to be included in the blog posts [collection](https://www.11ty.dev/docs/collections/).
-- Use the `eleventyNavigation` key (via the [Eleventy Navigation plugin](https://www.11ty.dev/docs/plugins/navigation/)) in your front matter to add a template to the top level site navigation. This is in use on `content/index.njk` and `content/about/index.md`.
-- Content can be in _any template format_ (blog posts needn’t exclusively be markdown, for example). Configure your project’s supported templates in `eleventy.config.js` -> `templateFormats`.
-- The `public` folder in your input directory will be copied to the output folder (via `addPassthroughCopy` in the `eleventy.config.js` file). This means `./public/css/*` will live at `./_site/css/*` after your build completes.
-- This project uses three [Eleventy Layouts](https://www.11ty.dev/docs/layouts/):
-	- `_includes/layouts/base.njk`: the top level HTML structure
-	- `_includes/layouts/home.njk`: the home page template (wrapped into `base.njk`)
-	- `_includes/layouts/post.njk`: the blog post template (wrapped into `base.njk`)
-- `_includes/postslist.njk` is a Nunjucks include and is a reusable component used to display a list of all the posts. `content/index.njk` has an example of how to use it.
+# Start development server
+npm run start
+```
 
-#### Content Security Policy
+The site will be available at `http://localhost:8080/`
 
-If your site enforces a [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (as public-facing sites should), you have a few choices (pick one):
+## Project Structure
 
-1. In `base.njk`, remove `<style>{% getBundle "css" %}</style>` and uncomment `<link rel="stylesheet" href="{% getBundleFileUrl "css" %}">`
-2. Configure the server with the CSP directive `style-src: 'unsafe-inline'` (less secure).
+```
+eleventy-blog/
+├── content/
+│   ├── blog/
+│   │   └── <slug>/
+│   │       ├── index.md           # Post content (Markdown + frontmatter)
+│   │       └── assets/            # Images and files for this post
+│   ├── feed/                      # RSS/Atom feed templates
+│   └── emails/                    # Email variant collection
+├── _includes/
+│   └── layouts/
+│       ├── post-woodblock.njk     # Main post layout (web version)
+│       └── post-email.njk         # Email variant layout
+├── _config/
+│   ├── filters.js                 # Eleventy filters (including emailifyMarginNotes)
+│   └── localize-substack-images.mjs
+├── scripts/
+│   └── publish-to-buttondown.mjs  # Email publishing script
+├── public/
+│   ├── css/
+│   └── design-playground.html     # Typography testing playground
+├── _site/                         # Build output (generated, not in git)
+└── PUBLISHING.md                  # Complete publishing workflow guide
+```
+
+### Key Concepts
+
+**Source of truth:** Everything lives in `content/blog/<slug>/`
+- `index.md` — Post content
+- `assets/` — Images (git-tracked)
+
+**Published URLs:** Blog-less for cleaner paths
+- Post: `/<slug>/`
+- Images: `/<slug>/assets/image.jpg`
+
+**Dual variants:**
+- Web: `/<slug>/` (woodblock layout with margin notes)
+- Email: `/emails/<slug>/` (endnotes for email clients)
+
+## Writing Posts
+
+### 1. Create a New Post
+
+```bash
+mkdir -p content/blog/my-new-post/assets
+touch content/blog/my-new-post/index.md
+```
+
+### 2. Frontmatter
+
+```yaml
+---
+title: "Your Post Title"
+date: 2025-01-15
+publish: false         # Set to true when ready
+draft: true            # Optional, for your own organization
+tags:
+  - translation
+  - poetry
+---
+```
+
+### 3. Margin Notes
+
+Use the `{% mn %}` shortcode for margin notes:
+
+```markdown
+This is body text with a note.{% mn "anchor text" %}
+This is the content of the margin note. It can contain *markdown*.
+{% endmn %}
+```
+
+**Important:** Margin notes should be brief. Long notes may overlap. For extended commentary, consider regular paragraphs or footnotes.
+
+### 4. Images
+
+Place images in `content/blog/<slug>/assets/` and reference them:
+
+```markdown
+![Alt text](/<slug>/assets/image.jpg)
+```
+
+Eleventy will automatically optimize and create responsive variants.
+
+### 5. Chinese Text
+
+Wrap Chinese text with `lang` attribute for proper typography:
+
+```markdown
+<span lang="zh-Hant">繁體中文</span>
+```
+
+Chinese text is never italicized (even in `<em>` tags), but other text within the same element can be.
+
+## Development Commands
+
+### Building
+
+```bash
+npm run build              # Build site to _site/
+npm run start              # Dev server with hot reload
+npm run debug              # Build with debug output
+```
+
+### Assets
+
+```bash
+npm run assets:organize    # Organize local images
+npm run assets:localize    # Download Substack images to local
+```
+
+### Email Publishing
+
+```bash
+npm run buttondown:list              # List posts ready to send
+npm run buttondown:send:dry <slug>   # Preview (safe)
+npm run buttondown:send <slug>       # Actually send email
+```
+
+See `PUBLISHING.md` for complete workflow.
+
+## Publishing Workflow
+
+### 1. Preview Locally
+
+```bash
+npm run start
+```
+
+Check both:
+- Web version: `http://localhost:8080/<slug>/`
+- Email version: `http://localhost:8080/emails/<slug>/`
+
+### 2. Publish to Web
+
+Update frontmatter:
+
+```yaml
+publish: true
+```
+
+Build and deploy:
+
+```bash
+npm run build
+# Deploy _site/ to your hosting
+```
+
+### 3. Send Email (First Publication Only)
+
+Set your Buttondown API key:
+
+```bash
+export BUTTONDOWN_API_KEY="your-api-key"
+```
+
+Send email:
+
+```bash
+npm run buttondown:send <slug>
+```
+
+The script automatically:
+- Gets HTML from `_site/emails/<slug>/`
+- Sends to Buttondown API
+- Updates frontmatter with `buttondown_sent: true`
+- Prevents duplicate sends
+
+Subsequent edits update the web/feed but don't trigger emails.
+
+## Design System
+
+### Typography
+
+**Body text:**
+- Font: Vollkorn (Latin), Noto Serif TC (Chinese)
+- Size: 1.2rem
+- Line height: 1.7
+
+**Headlines:**
+- Font: Noto Sans (Latin/Chinese)
+- H1: 2.5em, weight 800
+- H2: 1.75em, weight 700
+
+**Margin notes:**
+- Font: Gill Sans (Latin), Noto Sans TC (Chinese)
+- Size: 0.85rem
+- Line height: 1.3
+
+### Colors
+
+- Paper: `#f6f0e8` (warm beige)
+- Ink: `#241425` (dark purple-brown)
+- Muted ink: `#3a223a`
+- Marker: `#8f1d14` (dark red)
+
+### Testing Typography
+
+Open `http://localhost:8080/design-playground.html` for live typography controls. Export settings as JSON to apply to production.
+
+### Responsive Behavior
+
+1. **Desktop (>950px):** Two columns with margin notes
+2. **Margins shrink first:** 12rem → 8rem → 4rem → 2rem → 1rem at breakpoints
+3. **Mobile (≤950px):** Single column, margin notes hidden by default, tap markers to toggle
+
+## Margin Notes System
+
+### How It Works
+
+1. **HTML structure:** Substack imports use `<sup class="mn-marker">` + `<aside class="mn-note">`
+2. **JavaScript alignment:** On page load, notes are moved to be direct children of `.wb-grid` and positioned to align with markers
+3. **Responsive:** Recalculates on window resize (debounced)
+4. **Mobile:** Notes start hidden, toggle on marker tap
+
+### Email Variant
+
+The `emailifyMarginNotes` filter converts margin notes to numbered endnotes for email:
+
+- Markers become superscript numbers with anchor links
+- Notes appear at end with backlinks
+- Works with both shortcode and Substack HTML
+
+## Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+Output is in `_site/` directory.
+
+### Hosting Options
+
+**DigitalOcean:**
+- App Platform (automatic deployments from git)
+- Droplet + nginx (full control)
+- Spaces (static hosting)
+
+**Cloudflare Pages:**
+- Connect git repository
+- Build command: `npm run build`
+- Output directory: `_site`
+- Automatic edge deployment
+
+**Netlify/Vercel:**
+- Similar to Cloudflare Pages
+- One-click deployment from git
+
+### Environment Variables
+
+Set these in your hosting platform:
+
+```
+BUTTONDOWN_API_KEY=your-api-key-here
+```
+
+## Content Management
+
+### Current: Manual Editing
+
+Edit markdown files directly in `content/blog/<slug>/index.md`
+
+### Future: CMS Options
+
+Evaluating:
+- **PagesCMS** — Git-based, works with existing structure
+- **Decap CMS** (formerly Netlify CMS)
+- **Tina CMS** — Visual editing with git backing
+- **Obsidian** — With custom CSS snippets (for drafting)
+
+## Troubleshooting
+
+### Margin notes overlapping
+
+Keep notes brief (3-4 sentences max). Long notes may overlap. Consider editing down or converting to regular paragraphs/endnotes.
+
+### Images not loading
+
+- Check path: `/<slug>/assets/image.jpg` (note: no `/blog/` in URL)
+- Run `npm run build` to ensure assets are copied
+- Check `_site/<slug>/assets/` exists
+
+### Email variant missing
+
+Run `npm run build` first. Email HTML must exist at `_site/emails/<slug>/index.html` before sending to Buttondown.
+
+### "Post already sent to Buttondown"
+
+The post has `buttondown_sent: true` in frontmatter. This prevents duplicate sends. To override (BE CAREFUL):
+
+```bash
+node scripts/publish-to-buttondown.mjs --post <slug> --force
+```
+
+## Technical Details
+
+### Stack
+
+- **Eleventy 3.x** — Static site generator
+- **Markdown-it** — Markdown parsing with custom rendering
+- **eleventy-img** — Image optimization
+- **Nunjucks** — Templating
+- **Buttondown** — Email newsletter service
+
+### Custom Features
+
+1. **Synchronous margin note rendering** — Uses markdown-it directly to avoid async issues
+2. **Dual output strategy** — Same content, two layouts (web + email)
+3. **Asset copying via Eleventy events** — Avoids cluttering source directories
+4. **Frontmatter-based email tracking** — Prevents duplicate sends
+
+### Browser Support
+
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- CSS Grid required
+- JavaScript required for margin note alignment
+- Progressive enhancement: Notes visible but not aligned if JS fails
+
+## Contributing
+
+This is a personal blog, but if you're working on it:
+
+1. Test both web and email variants
+2. Check responsive behavior at multiple breakpoints
+3. Verify margin note alignment after CSS changes
+4. Run `npm run build` before committing to catch errors
+
+## Documentation
+
+- `PUBLISHING.md` — Complete publishing workflow
+- `TYPOGRAPHY.md` — Typography details and rationale
+- `PREFLIGHT.md` — Pre-launch checklist
+- This README — Project overview and setup
+
+## License
+
+[Your license here]
+
+## Acknowledgments
+
+- Eleventy starter blog by Zach Leatherman
+- Typography inspired by Ming dynasty woodblock prints
+- Margin notes inspired by Tufte CSS and LessWrong

@@ -3,26 +3,137 @@ layout: layouts/home.njk
 eleventyNavigation:
   key: Home
   order: 1
-numberOfLatestPostsToShow: 3
 ---
-{% set postsCount = collections.posts | length %}
-{% set latestPostsCount = postsCount | min(numberOfLatestPostsToShow) %}
-<h1>Latest {{ latestPostsCount }} Post{% if latestPostsCount != 1 %}s{% endif %}</h1>
 
-{% set postslist = collections.posts | head(-1 * numberOfLatestPostsToShow) %}
-{% set postslistCounter = postsCount %}
-{% include "postslist.njk" %}
+{# Get all published posts, sorted by date (newest first) #}
+{% set allPosts = collections.posts | reverse %}
+{% set publishedPosts = [] %}
+{% for post in allPosts %}
+  {% if post.data.publish %}
+    {% set publishedPosts = (publishedPosts.push(post), publishedPosts) %}
+  {% endif %}
+{% endfor %}
 
-{% set morePosts = postsCount - numberOfLatestPostsToShow %}
-{% if morePosts > 0 %}
-<p>{{ morePosts }} more post{% if morePosts != 1 %}s{% endif %} can be found in <a href="/blog/">the archive</a>.</p>
-{% endif %}
+<div class="magazine-layout">
 
-{# List every content page in the project #}
-{#
-<ul>
-	{%- for entry in collections.all %}
-	<li><a href="{{ entry.url }}"><code>{{ entry.url }}</code></a></li>
-	{%- endfor %}
-</ul>
-#}
+  {% if publishedPosts.length > 0 %}
+    {# Featured Story - Most Recent Post #}
+    {% set featured = publishedPosts[0] %}
+    <article class="featured-story {% if not featured.data.post_image %}featured-story-no-image{% endif %}">
+      <a href="{{ featured.url }}">
+        {% if featured.data.post_image %}
+          <img
+            src="{{ featured.data.post_image }}"
+            alt="{{ featured.data.post_image_alt or featured.data.title }}"
+            class="featured-story-image"
+            loading="eager"
+          >
+        {% endif %}
+
+        <h2 class="featured-story-title">{{ featured.data.title }}</h2>
+
+        {% if featured.data.subtitle %}
+          <p class="featured-story-subtitle">{{ featured.data.subtitle }}</p>
+        {% endif %}
+
+        {% if featured.data.summary %}
+          <p class="featured-story-excerpt">{{ featured.data.summary }}</p>
+        {% elif featured.data.description %}
+          <p class="featured-story-excerpt">{{ featured.data.description }}</p>
+        {% endif %}
+
+        <div class="featured-story-meta">
+          <time datetime="{{ featured.date | htmlDateString }}">
+            {{ featured.date | readableDate("MMMM d, yyyy") }}
+          </time>
+          {% if featured.data.tags %}
+            <span class="featured-story-tags">
+              {% for tag in featured.data.tags %}
+                {% if tag != "posts" and tag != "post" %}
+                  · {{ tag }}
+                {% endif %}
+              {% endfor %}
+            </span>
+          {% endif %}
+        </div>
+      </a>
+    </article>
+  {% endif %}
+
+  {% if publishedPosts.length > 1 %}
+    {# Hero Stories - Next 3-4 Posts #}
+    {% set heroCount = 3 %}
+    {% if publishedPosts.length > 10 %}
+      {% set heroCount = 4 %}
+    {% endif %}
+
+    <section class="hero-stories">
+      {% for post in publishedPosts %}
+        {% if loop.index0 > 0 and loop.index0 <= heroCount %}
+          <article class="hero-story {% if not post.data.post_image %}hero-story-no-image{% endif %}">
+            <a href="{{ post.url }}">
+              {% if post.data.post_image %}
+                <img
+                  src="{{ post.data.post_image }}"
+                  alt="{{ post.data.post_image_alt or post.data.title }}"
+                  class="hero-story-image"
+                  loading="lazy"
+                >
+              {% endif %}
+
+              <h3 class="hero-story-title">{{ post.data.title }}</h3>
+
+              {% if post.data.summary %}
+                <p class="hero-story-excerpt">{{ post.data.summary }}</p>
+              {% elif post.data.description %}
+                <p class="hero-story-excerpt">{{ post.data.description }}</p>
+              {% endif %}
+
+              <div class="hero-story-meta">
+                <time datetime="{{ post.date | htmlDateString }}">
+                  {{ post.date | readableDate("MMMM d, yyyy") }}
+                </time>
+              </div>
+            </a>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if publishedPosts.length > (heroCount + 1) %}
+    {# Smaller Stories Grid - Remaining Posts #}
+    <section class="story-grid">
+      {% for post in publishedPosts %}
+        {% if loop.index0 > heroCount %}
+          <article class="story-card">
+            <a href="{{ post.url }}">
+              <h4 class="story-card-title">{{ post.data.title }}</h4>
+
+              {% if post.data.summary %}
+                <p class="story-card-excerpt">{{ post.data.summary | truncate(120) }}</p>
+              {% elif post.data.description %}
+                <p class="story-card-excerpt">{{ post.data.description | truncate(120) }}</p>
+              {% endif %}
+
+              <div class="story-card-meta">
+                <time datetime="{{ post.date | htmlDateString }}">
+                  {{ post.date | readableDate("MMM d, yyyy") }}
+                </time>
+              </div>
+            </a>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if publishedPosts.length == 0 %}
+    <div style="text-align: center; padding: 4em 2em;">
+      <h2>Welcome to Burning House</h2>
+      <p style="color: var(--ink-2); font-size: 1.1em;">Essays and translations on classical Chinese literature.</p>
+      <p style="color: var(--ink-2);">Posts will appear here once published.</p>
+    </div>
+  {% endif %}
+
+</div>

@@ -25,7 +25,7 @@ export default {
 
 	// Social profiles/usernames (optional)
 	social: {
-		bluesky: "", // e.g. "handle.bsky.social"
+		bluesky: "burninghou.se", // Bluesky handle
 		mastodon: "", // e.g. "https://mastodon.social/@handle"
 		twitter: "", // e.g. "@handle" (only if you still want Twitter cards)
 		github: "", // e.g. "bokane"

@@ -1,0 +1,139 @@
+{#
+  Related Posts Component
+
+  Usage: {% include "components/related-posts.njk" %}
+
+  Requires: related_posts array in frontmatter with post slugs
+  Example:
+    related_posts:
+      - tao-yuanming-home-again
+      - pangur-ban-translation
+#}
+
+{% if related_posts and related_posts.length > 0 %}
+<aside class="related-posts">
+  <h2 class="related-heading">Related Reading</h2>
+
+  <div class="related-list">
+    {% for slug in related_posts %}
+      {# Find the post by slug #}
+      {% set relatedPost = collections.all | findBySlug(slug) %}
+
+      {% if relatedPost and relatedPost.data.publish %}
+        <article class="related-item">
+          <h3 class="related-title">
+            <a href="{{ relatedPost.url }}">{{ relatedPost.data.title }}</a>
+          </h3>
+
+          {% if relatedPost.data.subtitle %}
+            <p class="related-subtitle">{{ relatedPost.data.subtitle }}</p>
+          {% endif %}
+
+          {% if relatedPost.data.excerpt or relatedPost.data.summary %}
+            <p class="related-excerpt">
+              {{ relatedPost.data.excerpt or relatedPost.data.summary }}
+            </p>
+          {% endif %}
+
+          <p class="related-meta">
+            {% if relatedPost.data.date %}
+              <time datetime="{{ relatedPost.data.date | htmlDateString }}">
+                {{ relatedPost.data.date | readableDate }}
+              </time>
+            {% endif %}
+          </p>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</aside>
+
+<style>
+  .related-posts {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--rule);
+  }
+
+  .related-heading {
+    font-family: var(--font-display);
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    color: var(--ink);
+  }
+
+  .related-list {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .related-item {
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.02);
+    border-left: 3px solid var(--marker-color);
+    transition: all 0.2s;
+  }
+
+  .related-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-left-color: var(--ink);
+  }
+
+  .related-title {
+    font-family: var(--font-display);
+    font-size: 1.25em;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+  }
+
+  .related-title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .related-title a:hover {
+    color: var(--marker-color);
+  }
+
+  .related-subtitle {
+    margin: 0 0 0.75rem;
+    color: var(--muted-ink);
+    font-style: italic;
+    font-size: 0.95em;
+  }
+
+  .related-excerpt {
+    margin: 0.75rem 0 0;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .related-meta {
+    margin: 0.75rem 0 0;
+    font-size: 0.875rem;
+    color: var(--muted-ink);
+  }
+
+  @media (min-width: 950px) {
+    .related-list {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+  }
+
+  @media (max-width: 950px) {
+    .related-posts {
+      margin-top: 3rem;
+    }
+
+    .related-item {
+      padding: 1rem;
+    }
+
+    .related-title {
+      font-size: 1.1em;
+    }
+  }
+</style>
+{% endif %}

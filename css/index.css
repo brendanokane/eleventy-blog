@@ -219,3 +219,438 @@ footer {
 	clip: rect(1px, 1px, 1px, 1px);
 	white-space: nowrap;
 }
+
+/* Content Utilities */
+
+/* Captions - for images, figures, etc. */
+.caption {
+	font-family: var(--font-display);
+	font-size: 0.85rem;
+	line-height: 1.4;
+	color: var(--ink-2);
+	margin-top: 0.5em;
+	margin-bottom: 1.5em;
+	font-style: italic;
+}
+
+figcaption,
+.figcaption {
+	font-family: var(--font-display);
+	font-size: 0.85rem;
+	line-height: 1.4;
+	color: var(--ink-2);
+	margin-top: 0.75em;
+	font-style: italic;
+	text-align: center;
+}
+
+/* Poem formatting */
+.poem {
+	font-family: var(--font-body);
+	white-space: pre-line;
+	line-height: 1.8;
+	margin: 2em 0;
+	padding-left: 2em;
+	border-left: 3px solid var(--rule);
+}
+
+.poem.centered {
+	padding-left: 0;
+	border-left: none;
+	text-align: center;
+}
+
+.verse {
+	display: block;
+	margin: 0.3em 0;
+}
+
+.verse-indent-1 {
+	padding-left: 2em;
+}
+
+.verse-indent-2 {
+	padding-left: 4em;
+}
+
+/* Preformatted poetry - preserves spacing exactly */
+.poem-pre {
+	font-family: var(--font-body);
+	white-space: pre;
+	line-height: 1.8;
+	margin: 2em 0;
+	overflow-x: auto;
+}
+
+/* Chinese poetry specific styles */
+.poem[lang="zh"],
+.poem[lang="zh-Hant"] {
+	font-style: normal; /* Never italicize Chinese */
+	line-height: 2;
+	letter-spacing: 0.05em;
+}
+
+/* Header Image System */
+
+/* Base header container */
+.post-header-with-image {
+	margin-bottom: 3em;
+}
+
+/* Variant 1: Image left, title floats right */
+.header-image-l {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2em;
+	align-items: center;
+	margin-bottom: 2em;
+}
+
+.header-image-l img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.header-image-l .header-content {
+	padding-left: 1em;
+}
+
+/* Variant 2: Image right, title floats left */
+.header-image-r {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2em;
+	align-items: center;
+	margin-bottom: 2em;
+}
+
+.header-image-r img {
+	width: 100%;
+	height: auto;
+	display: block;
+	grid-column: 2;
+	grid-row: 1;
+}
+
+.header-image-r .header-content {
+	grid-column: 1;
+	grid-row: 1;
+	padding-right: 1em;
+}
+
+/* Variant 3: Full width of central column */
+.header-image {
+	margin-bottom: 2em;
+}
+
+.header-image img {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: var(--radius);
+}
+
+/* Variant 4: Full bleed viewport width */
+.header-image-f {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+	margin-bottom: 2em;
+}
+
+.header-image-f img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* Responsive adjustments for header images */
+@media (max-width: 768px) {
+	.header-image-l,
+	.header-image-r {
+		grid-template-columns: 1fr;
+		gap: 1em;
+	}
+
+	.header-image-r img {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.header-image-r .header-content {
+		grid-column: 1;
+		grid-row: 2;
+		padding-right: 0;
+	}
+
+	.header-image-l .header-content {
+		padding-left: 0;
+	}
+}
+
+/* Blockquote styling for Chinese text */
+blockquote[lang="zh"],
+blockquote[lang="zh-Hant"] {
+	font-style: normal; /* Never italicize Chinese */
+	border-left: 4px solid var(--vermillion);
+	padding-left: 1.5em;
+	margin-left: 0;
+	margin-right: 0;
+	font-size: 1.05em;
+	line-height: 2;
+	letter-spacing: 0.05em;
+}
+
+/* Pull quotes */
+.pullquote {
+	font-family: var(--font-display);
+	font-size: 1.3em;
+	line-height: 1.4;
+	font-weight: 600;
+	margin: 2em 0;
+	padding: 1em 2em;
+	border-left: 4px solid var(--vermillion);
+	color: var(--ink);
+}
+
+.pullquote[lang="zh"],
+.pullquote[lang="zh-Hant"] {
+	font-family: var(--font-body);
+	font-style: normal;
+	font-weight: 500;
+	letter-spacing: 0.08em;
+}
+
+/* Magazine-Style Homepage Layout */
+
+.magazine-layout {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: var(--page-pad);
+}
+
+/* Featured Story - Large Hero */
+.featured-story {
+	margin-bottom: 4em;
+	border-bottom: 3px solid var(--rule);
+	padding-bottom: 3em;
+}
+
+.featured-story a {
+	text-decoration: none;
+	display: block;
+}
+
+.featured-story a:hover {
+	opacity: 0.95;
+}
+
+.featured-story-image {
+	width: 100%;
+	height: auto;
+	max-height: 500px;
+	object-fit: cover;
+	border-radius: var(--radius);
+	margin-bottom: 1.5em;
+	box-shadow: 0 4px 12px color-mix(in srgb, #000, transparent 90%);
+}
+
+.featured-story-title {
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 3.5vw, 3.2rem);
+	font-weight: 800;
+	line-height: 1.1;
+	margin: 0.5em 0;
+	color: var(--ink);
+}
+
+.featured-story-subtitle {
+	font-family: var(--font-display);
+	font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+	font-weight: 400;
+	line-height: 1.4;
+	color: var(--ink-2);
+	margin-bottom: 1em;
+}
+
+.featured-story-excerpt {
+	font-size: 1.05rem;
+	line-height: 1.7;
+	color: var(--ink);
+	margin-bottom: 1em;
+}
+
+.featured-story-meta {
+	font-family: var(--font-display);
+	font-size: 0.9rem;
+	color: var(--ink-2);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Hero Stories Grid - 3 columns */
+.hero-stories {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 3em;
+	margin-bottom: 4em;
+	padding-bottom: 3em;
+	border-bottom: 2px solid var(--rule);
+}
+
+.hero-story {
+	display: flex;
+	flex-direction: column;
+}
+
+.hero-story a {
+	text-decoration: none;
+	display: block;
+	height: 100%;
+}
+
+.hero-story a:hover {
+	opacity: 0.95;
+}
+
+.hero-story-image {
+	width: 100%;
+	height: 250px;
+	object-fit: cover;
+	border-radius: var(--radius);
+	margin-bottom: 1em;
+	box-shadow: 0 2px 8px color-mix(in srgb, #000, transparent 92%);
+}
+
+.hero-story-title {
+	font-family: var(--font-display);
+	font-size: clamp(1.3rem, 2vw, 1.6rem);
+	font-weight: 700;
+	line-height: 1.2;
+	margin: 0.5em 0;
+	color: var(--ink);
+}
+
+.hero-story-excerpt {
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: var(--ink);
+	margin-bottom: 0.75em;
+	flex-grow: 1;
+}
+
+.hero-story-meta {
+	font-family: var(--font-display);
+	font-size: 0.85rem;
+	color: var(--ink-2);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Smaller Stories Grid */
+.story-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 2em;
+	margin-bottom: 3em;
+}
+
+.story-card {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5em;
+	border-radius: var(--radius);
+	background: color-mix(in srgb, var(--paper-2), transparent 50%);
+	transition: background 0.2s ease;
+}
+
+.story-card:hover {
+	background: var(--paper-2);
+}
+
+.story-card a {
+	text-decoration: none;
+	display: block;
+}
+
+.story-card-title {
+	font-family: var(--font-display);
+	font-size: 1.1rem;
+	font-weight: 600;
+	line-height: 1.3;
+	margin-bottom: 0.5em;
+	color: var(--ink);
+}
+
+.story-card-title:hover {
+	text-decoration: underline;
+	text-decoration-color: var(--vermillion);
+}
+
+.story-card-excerpt {
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: var(--ink-2);
+	margin-bottom: 0.75em;
+	flex-grow: 1;
+}
+
+.story-card-meta {
+	font-family: var(--font-display);
+	font-size: 0.8rem;
+	color: var(--ink-2);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Fallback if no featured image */
+.featured-story-no-image .featured-story-title,
+.hero-story-no-image .hero-story-title {
+	margin-top: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+	.hero-stories {
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2em;
+	}
+}
+
+@media (max-width: 768px) {
+	.featured-story {
+		margin-bottom: 3em;
+		padding-bottom: 2em;
+	}
+
+	.featured-story-image {
+		max-height: 350px;
+	}
+
+	.hero-stories {
+		grid-template-columns: 1fr;
+		gap: 2.5em;
+		margin-bottom: 3em;
+		padding-bottom: 2em;
+	}
+
+	.hero-story-image {
+		height: 200px;
+	}
+
+	.story-grid {
+		grid-template-columns: 1fr;
+		gap: 1.5em;
+	}
+}
+
+@media (max-width: 480px) {
+	.featured-story-image {
+		max-height: 250px;
+	}
+
+	.hero-story-image {
+		height: 180px;
+	}
+}

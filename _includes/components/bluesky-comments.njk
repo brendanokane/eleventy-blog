@@ -1,0 +1,602 @@
+{#
+  Bluesky Comments Component (Hybrid Cached)
+
+  Strategy:
+  - Server-renders comments at build time (cached, fast, SEO-friendly)
+  - Client-side checks for new comments and shows "New" badge
+  - Falls back gracefully if Bluesky API is down
+  - You own the comment archive
+
+  Usage: {% include "components/bluesky-comments.njk" %}
+
+  Requires: bluesky_thread variable in context
+#}
+
+{% if bluesky_thread %}
+<section class="bluesky-comments" id="comments" data-pagefind-ignore>
+  <h2 class="comments-heading">Discussion</h2>
+
+  {% set comments = bluesky_thread | getBlueskyComments %}
+
+  <div class="comments-intro">
+    <p class="comment-count" data-initial-count="{{ comments.length }}">
+      {{ comments.length }} {{ "reply" if comments.length == 1 else "replies" }} on
+      <a href="{{ bluesky_thread }}" class="bluesky-link" target="_blank" rel="noopener noreferrer">
+        Bluesky
+      </a>
+    </p>
+    <p class="comments-cta">
+      <a href="{{ bluesky_thread }}" class="join-discussion" target="_blank" rel="noopener noreferrer">
+        Join the conversation →
+      </a>
+    </p>
+  </div>
+
+  {% if comments.length > 0 %}
+  <div class="comments-list" data-thread="{{ bluesky_thread }}">
+    {% for comment in comments %}
+    <article class="comment"
+             data-depth="{{ comment.depth }}"
+             data-timestamp="{{ comment.timestamp }}"
+             style="--comment-depth: {{ comment.depth }};">
+      <header class="comment-header">
+        <a href="https://bsky.app/profile/{{ comment.author.handle }}"
+           class="comment-author-link"
+           target="_blank"
+           rel="noopener noreferrer">
+          <img src="{{ comment.author.avatar }}"
+               alt=""
+               class="comment-avatar"
+               width="48"
+               height="48"
+               loading="lazy">
+          <div class="comment-author">
+            <strong class="comment-author-name">{{ comment.author.displayName }}</strong>
+            <span class="comment-author-handle">@{{ comment.author.handle }}</span>
+          </div>
+        </a>
+        <a href="{{ comment.url }}"
+           class="comment-timestamp"
+           target="_blank"
+           rel="noopener noreferrer"
+           title="{{ comment.timestamp }}">
+          <time datetime="{{ comment.timestamp }}">{{ comment.relativeTime }}</time>
+        </a>
+      </header>
+
+      <div class="comment-body">
+        <p class="comment-text">{{ comment.text }}</p>
+      </div>
+
+      {% if comment.likeCount > 0 or comment.replyCount > 0 or comment.repostCount > 0 %}
+      <footer class="comment-footer">
+        <div class="comment-stats">
+          {% if comment.likeCount > 0 %}
+            <span class="stat stat-likes">
+              <span class="stat-icon">❤️</span>
+              <span class="stat-count">{{ comment.likeCount }}</span>
+            </span>
+          {% endif %}
+          {% if comment.replyCount > 0 %}
+            <span class="stat stat-replies">
+              <span class="stat-icon">💬</span>
+              <span class="stat-count">{{ comment.replyCount }}</span>
+            </span>
+          {% endif %}
+          {% if comment.repostCount > 0 %}
+            <span class="stat stat-reposts">
+              <span class="stat-icon">🔄</span>
+              <span class="stat-count">{{ comment.repostCount }}</span>
+            </span>
+          {% endif %}
+        </div>
+      </footer>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="no-comments">No replies yet.</p>
+  {% endif %}
+
+  {# Client-side: Check for new comments and mark them #}
+  <script type="module">
+    const BLUESKY_API = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread';
+    const commentsList = document.querySelector('.comments-list[data-thread]');
+    const threadUrl = commentsList?.dataset.thread;
+
+    if (threadUrl && commentsList) {
+      checkForNewComments();
+    }
+
+    function extractPostUri(url) {
+      const match = url.match(/bsky\.app\/profile\/([^\/]+)\/post\/([^\/\?#]+)/);
+      if (!match) return null;
+      const [, handle, postId] = match;
+      return `at://${handle}/app.bsky.feed.post/${postId}`;
+    }
+
+    function parseComments(thread) {
+      if (!thread?.thread?.replies) return [];
+      const comments = [];
+
+      function traverse(reply, depth = 0) {
+        if (!reply?.post) return;
+        const post = reply.post;
+
+        comments.push({
+          timestamp: post.record?.createdAt,
+          author: {
+            handle: post.author.handle,
+            displayName: post.author.displayName || post.author.handle,
+            avatar: post.author.avatar,
+          },
+          text: post.record?.text || '',
+          likeCount: post.likeCount || 0,
+          replyCount: post.replyCount || 0,
+          repostCount: post.repostCount || 0,
+          depth,
+          url: `https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`,
+        });
+
+        if (reply.replies && Array.isArray(reply.replies)) {
+          reply.replies.forEach(child => traverse(child, depth + 1));
+        }
+      }
+
+      if (Array.isArray(thread.thread.replies)) {
+        thread.thread.replies.forEach(reply => traverse(reply, 0));
+      }
+
+      return comments;
+    }
+
+    function formatRelativeTime(timestamp) {
+      const now = Date.now();
+      const then = new Date(timestamp).getTime();
+      const diff = now - then;
+
+      const minute = 60 * 1000;
+      const hour = 60 * minute;
+      const day = 24 * hour;
+
+      if (diff < minute) return 'just now';
+      if (diff < hour) return `${Math.floor(diff / minute)}m ago`;
+      if (diff < day) return `${Math.floor(diff / hour)}h ago`;
+      return `${Math.floor(diff / day)}d ago`;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function checkForNewComments() {
+      try {
+        const uri = extractPostUri(threadUrl);
+        if (!uri) return;
+
+        const response = await fetch(`${BLUESKY_API}?uri=${encodeURIComponent(uri)}&depth=10`);
+        if (!response.ok) {
+          console.warn('Could not fetch fresh comments (API unavailable)');
+          return; // Graceful degradation - cached comments still visible
+        }
+
+        const data = await response.json();
+        const freshComments = parseComments(data);
+
+        // Get timestamps of existing (cached) comments
+        const existingTimestamps = new Set(
+          Array.from(commentsList.querySelectorAll('.comment'))
+            .map(el => el.dataset.timestamp)
+        );
+
+        // Find new comments (not in cache)
+        const newComments = freshComments.filter(c =>
+          !existingTimestamps.has(c.timestamp)
+        );
+
+        if (newComments.length > 0) {
+          appendNewComments(newComments);
+          updateCommentCount(freshComments.length);
+        }
+      } catch (error) {
+        console.warn('Failed to check for new comments:', error);
+        // Fail silently - cached comments are still visible
+      }
+    }
+
+    function appendNewComments(comments) {
+      comments.forEach(comment => {
+        const article = document.createElement('article');
+        article.className = 'comment comment-new';
+        article.dataset.depth = comment.depth;
+        article.dataset.timestamp = comment.timestamp;
+        article.style.setProperty('--comment-depth', comment.depth);
+
+        article.innerHTML = `
+          <div class="new-badge">New</div>
+          <header class="comment-header">
+            <a href="https://bsky.app/profile/${escapeHtml(comment.author.handle)}"
+               class="comment-author-link"
+               target="_blank"
+               rel="noopener noreferrer">
+              <img src="${escapeHtml(comment.author.avatar)}"
+                   alt=""
+                   class="comment-avatar"
+                   width="48"
+                   height="48"
+                   loading="lazy">
+              <div class="comment-author">
+                <strong class="comment-author-name">${escapeHtml(comment.author.displayName)}</strong>
+                <span class="comment-author-handle">@${escapeHtml(comment.author.handle)}</span>
+              </div>
+            </a>
+            <a href="${escapeHtml(comment.url)}"
+               class="comment-timestamp"
+               target="_blank"
+               rel="noopener noreferrer"
+               title="${comment.timestamp}">
+              <time datetime="${comment.timestamp}">${formatRelativeTime(comment.timestamp)}</time>
+            </a>
+          </header>
+          <div class="comment-body">
+            <p class="comment-text">${escapeHtml(comment.text)}</p>
+          </div>
+          ${comment.likeCount > 0 || comment.replyCount > 0 || comment.repostCount > 0 ? `
+            <footer class="comment-footer">
+              <div class="comment-stats">
+                ${comment.likeCount > 0 ? `<span class="stat"><span class="stat-icon">❤️</span> ${comment.likeCount}</span>` : ''}
+                ${comment.replyCount > 0 ? `<span class="stat"><span class="stat-icon">💬</span> ${comment.replyCount}</span>` : ''}
+                ${comment.repostCount > 0 ? `<span class="stat"><span class="stat-icon">🔄</span> ${comment.repostCount}</span>` : ''}
+              </div>
+            </footer>
+          ` : ''}
+        `;
+
+        commentsList.appendChild(article);
+      });
+
+      // Show notification
+      const notification = document.createElement('div');
+      notification.className = 'new-comments-notification';
+      notification.textContent = `${comments.length} new ${comments.length === 1 ? 'reply' : 'replies'}`;
+      document.body.appendChild(notification);
+
+      setTimeout(() => notification.classList.add('show'), 10);
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+      }, 4000);
+    }
+
+    function updateCommentCount(totalCount) {
+      const countElement = document.querySelector('.comment-count');
+      if (countElement) {
+        countElement.innerHTML = `${totalCount} ${totalCount === 1 ? 'reply' : 'replies'} on
+          <a href="${threadUrl}" class="bluesky-link" target="_blank" rel="noopener noreferrer">Bluesky</a>`;
+      }
+    }
+  </script>
+</section>
+
+<style>
+  .bluesky-comments {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--rule);
+  }
+
+  .comments-heading {
+    font-family: var(--font-display);
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    color: var(--ink);
+  }
+
+  .comments-intro {
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .comment-count {
+    margin: 0 0 0.5rem;
+    color: var(--muted-ink);
+  }
+
+  .comments-cta {
+    margin: 0;
+  }
+
+  .bluesky-link,
+  .join-discussion {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--marker-color);
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+
+  .bluesky-link:hover,
+  .join-discussion:hover {
+    color: var(--marker-color);
+  }
+
+  .no-comments {
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--muted-ink);
+  }
+
+  .comments-list {
+    margin: 1.5rem 0 0;
+  }
+
+  .comment {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    padding-left: calc(1rem + var(--comment-depth, 0) * 2rem);
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .comment:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .comment[data-depth="0"] {
+    border-left: 3px solid var(--marker-color);
+  }
+
+  .comment[data-depth="1"] {
+    border-left: 2px solid var(--muted-ink);
+  }
+
+  .comment[data-depth="2"],
+  .comment[data-depth="3"] {
+    border-left: 1px solid var(--rule);
+  }
+
+  .comment-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .comment-author-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .comment-author-link:hover .comment-author-name {
+    text-decoration: underline;
+    color: var(--marker-color);
+  }
+
+  .comment-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .comment-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .comment-author-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .comment-author-handle {
+    font-size: 0.875rem;
+    color: var(--muted-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .comment-timestamp {
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    color: var(--muted-ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .comment-timestamp:hover {
+    text-decoration: underline;
+  }
+
+  .comment-body {
+    margin: 0.75rem 0;
+  }
+
+  .comment-text {
+    margin: 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .comment-footer {
+    margin-top: 0.75rem;
+  }
+
+  .comment-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--muted-ink);
+  }
+
+  .stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stat-icon {
+    font-size: 0.9em;
+  }
+
+  /* New comment styling */
+  .comment-new {
+    animation: slideIn 0.4s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .new-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--marker-color);
+    color: var(--paper);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* New comments notification */
+  .new-comments-notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .new-comments-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 950px) {
+    .bluesky-comments {
+      margin-top: 3rem;
+    }
+
+    .comment {
+      padding: 0.75rem;
+      padding-left: calc(0.75rem + var(--comment-depth, 0) * 1rem);
+    }
+
+    .comment-avatar {
+      width: 40px;
+      height: 40px;
+    }
+
+    .comment-header {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .comment-timestamp {
+      align-self: flex-start;
+    }
+
+    .comment-author-name,
+    .comment-author-handle {
+      overflow: visible;
+      white-space: normal;
+    }
+
+    .new-badge {
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.65rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .new-comments-notification {
+      right: 1rem;
+      left: 1rem;
+      bottom: 1rem;
+      text-align: center;
+    }
+  }
+</style>
+
+{% else %}
+{# No Bluesky thread set #}
+<section class="bluesky-comments no-thread" data-pagefind-ignore>
+  <h2 class="comments-heading">Discussion</h2>
+  <p class="no-thread-message">
+    This post hasn't been shared on Bluesky yet.
+    <a href="https://bsky.app/intent/compose?text={{ title | urlencode }}%20{{ canonicalUrl | urlencode }}"
+       target="_blank"
+       rel="noopener noreferrer">
+      Start the conversation →
+    </a>
+  </p>
+
+  <style>
+    .no-thread {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--rule);
+    }
+
+    .no-thread-message {
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--muted-ink);
+      font-size: 0.95rem;
+    }
+
+    .no-thread-message a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--marker-color);
+    }
+
+    .no-thread-message a:hover {
+      color: var(--marker-color);
+    }
+  </style>
+</section>
+{% endif %}

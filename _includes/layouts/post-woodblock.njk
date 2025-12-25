@@ -3,23 +3,40 @@ layout: layouts/base.njk
 ---
 <style>
   :root {
-    --paper: #f4f0e6;
-    --ink: #231f1a;
-    --muted-ink: rgba(35, 31, 26, 0.70);
-    --rule: rgba(35, 31, 26, 0.18);
+    --paper: #f6f0e8;
+    --ink: #241425;
+    --muted-ink: #3a223a;
+    --rule: #241425;
+    --marker-color: #8f1d14;
 
-    --font-body: "Alegreya", "Noto Serif TC", "Source Han Serif TC", "Source Han Serif", ui-serif, Georgia, serif;
+    --font-body: "Vollkorn", "Noto Serif TC", "Source Han Serif TC", "Source Han Serif", ui-serif, Georgia, serif;
+    --font-display: "Noto Sans", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-mn: "Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-    --body-size: 1.05rem;
-    --body-leading: 1.6;
+    --body-size: 1.2rem;
+    --body-leading: 1.7;
 
-    --main-measure: 72ch;
-    --mn-width: 250px;
-    --mn-gutter: 2.5rem;
+    --main-measure: 64ch;
+    --mn-width: 270px;
+    --mn-gutter: 4rem;
 
-    --frame-pad-x: 2.05rem;
-    --shell-pad-x: 4rem;
+    --frame-pad-x: 0.75rem;
+    --shell-padding: 12rem;
+    --border-weight: 10px;
+  }
+
+  /* Responsive shell padding - shrink margins first */
+  @media (max-width: 1800px) {
+    :root { --shell-padding: 8rem; }
+  }
+  @media (max-width: 1600px) {
+    :root { --shell-padding: 4rem; }
+  }
+  @media (max-width: 1400px) {
+    :root { --shell-padding: 2rem; }
+  }
+  @media (max-width: 1200px) {
+    :root { --shell-padding: 1rem; }
   }
 
   /* Ensure media never causes horizontal scrolling */
@@ -36,13 +53,14 @@ layout: layouts/base.njk
   }
 
   .wb-shell {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2.5rem var(--shell-pad-x) 4rem;
+    max-width: none;
+    margin: 0;
+    padding: 2.5rem var(--shell-padding) 4rem;
   }
 
   .wb-frame {
-    border: 1px solid var(--rule);
+    border-left: var(--border-weight) solid var(--ink);
+    border-right: var(--border-weight) solid var(--ink);
     padding: 2rem var(--frame-pad-x);
     background: rgba(255,255,255,0.35);
     position: relative;
@@ -54,7 +72,11 @@ layout: layouts/base.njk
     grid-template-columns: minmax(0, var(--main-measure)) var(--mn-width);
     gap: var(--mn-gutter);
     align-items: start;
-    justify-content: center;
+  }
+
+  /* Full width for posts without margin notes */
+  .wb-grid:not(:has(.mn-note)) {
+    grid-template-columns: minmax(0, var(--main-measure));
   }
 
   .wb-prose {
@@ -64,17 +86,41 @@ layout: layouts/base.njk
 
     /* Better line breaking in supporting browsers */
     text-wrap: pretty;
-    -webkit-hyphenate-character: "‐";
-    hyphens: auto;
   }
 
   .wb-prose p { margin: 0 0 1.1em; }
-  .wb-prose h1 { font-size: 1.55em; margin: 0 0 0.6em; letter-spacing: 0.01em; }
+
+  .wb-prose h1 {
+    font-family: var(--font-display);
+    font-size: 2.5em;
+    line-height: 1.2;
+    margin: 0 0 0.6em;
+    letter-spacing: 0.01em;
+    font-weight: 800;
+  }
+
+  .wb-prose h2 {
+    font-family: var(--font-display);
+    font-size: 1.75em;
+    line-height: 1.3;
+    margin: 1.2em 0 0.5em;
+    font-weight: 700;
+  }
 
   /* Blockquotes are for quotations: indentation only */
   .wb-prose blockquote {
     margin: 1.2em 0;
     padding-left: 1.1em;
+  }
+
+  /* Prevent Chinese characters from being italicized */
+  .wb-prose em:lang(zh),
+  .wb-prose em:lang(zh-Hans),
+  .wb-prose em:lang(zh-Hant),
+  .wb-prose i:lang(zh),
+  .wb-prose i:lang(zh-Hans),
+  .wb-prose i:lang(zh-Hant) {
+    font-style: normal;
   }
 
   /* Poetry / preformatted: preserve line breaks */
@@ -91,44 +137,98 @@ layout: layouts/base.njk
 
   /* Margin note marker: do not perturb line-height */
   .mn-marker {
-    font-family: var(--font-mn);
     font-size: 0.78em;
-    display: inline-block;
-    line-height: 1;
+    vertical-align: baseline;
     position: relative;
-    top: -0.45em;
-    margin-left: 0.08em;
     cursor: pointer;
     user-select: none;
-    border-bottom: 1px dotted var(--rule);
+    color: var(--marker-color);
+    text-decoration: none;
+    border: none;
   }
 
   .mn-note {
-    position: absolute;
+    position: relative;
     width: var(--mn-width);
     font-family: var(--font-mn);
-    font-size: 0.78em;
-    line-height: 1.35;
+    font-size: 0.85rem;
+    line-height: 1.3;
     color: var(--muted-ink);
     margin: 0;
-    opacity: 0;
+    grid-column: 2;
+    align-self: start;
   }
+
+  .mn-note::before {
+    content: "※";
+    position: absolute;
+    left: -1rem;
+    top: 0;
+    color: var(--marker-color);
+    font-size: 0.7em;
+  }
+
   .mn-note p { margin: 0 0 0.6em; }
   .mn-note p:last-child { margin-bottom: 0; }
 
-  @media (max-width: 950px) {
-    .wb-grid { grid-template-columns: 1fr; justify-content: stretch; }
+  /* Allow italics in margin notes, but not for Chinese */
+  .mn-note em:lang(zh),
+  .mn-note em:lang(zh-Hans),
+  .mn-note em:lang(zh-Hant),
+  .mn-note i:lang(zh),
+  .mn-note i:lang(zh-Hans),
+  .mn-note i:lang(zh-Hant) {
+    font-style: normal;
+  }
 
-    .mn-note {
-      position: static;
-      width: auto;
-      opacity: 1;
-      margin: 0 0 1.1em;
-      padding-left: 1.0em;
-      border-left: 1px solid var(--rule);
+  @media (max-width: 950px) {
+    .wb-shell {
+      padding: 1.5rem 1rem 2rem;
+      max-width: 100%;
     }
 
-    .mn-note[hidden] { display: none; }
+    .wb-frame {
+      border-left-width: 2px;
+      border-right-width: 2px;
+      padding: 1rem;
+    }
+
+    .wb-grid {
+      display: block;
+      position: static;
+    }
+
+    .wb-prose { width: 100%; }
+
+    .mn-note {
+      position: static !important;
+      top: auto !important;
+      width: 100% !important;
+      margin: 0.8em 0 !important;
+      padding: 0.6em !important;
+      background: rgba(0,0,0,0.03);
+      border-left: 3px solid var(--marker-color);
+      grid-column: auto !important;
+      display: none;
+    }
+
+    .mn-note::before {
+      display: none;
+    }
+
+    .mn-note[hidden] {
+      display: none !important;
+    }
+
+    .mn-note:not([hidden]) {
+      display: block !important;
+    }
+
+    .mn-marker {
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
   }
 </style>
 
@@ -140,11 +240,11 @@ layout: layouts/base.njk
 <div class="wb-shell">
   <div class="wb-frame">
     <div class="wb-grid">
-      <article class="wb-prose">
-        <h1>{{ title }}</h1>
+      <article class="wb-prose" data-pagefind-body>
+        <h1 data-pagefind-meta="title">{{ title }}</h1>
 
-        <ul class="post-metadata">
-          <li><time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
+        <ul class="post-metadata" data-pagefind-ignore>
+          <li><time datetime="{{ page.date | htmlDateString }}" data-pagefind-meta="date">{{ page.date | readableDate }}</time></li>
           {%- if tags %}
           {%- for tag in tags | filterTagList %}
           {%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
@@ -163,34 +263,19 @@ layout: layouts/base.njk
 <script>
   (function () {
     function isMobile() {
-      return window.matchMedia && window.matchMedia('(max-width: 950px)').matches;
-    }
-
-    function setNoteVisibilityForViewport() {
-      const mobile = isMobile();
-      document.querySelectorAll('.mn-note').forEach((note) => {
-        note.hidden = mobile;
-        if (!mobile) {
-          note.style.opacity = 0;
-          note.style.top = '';
-          note.style.left = '';
-        }
-      });
-
-      document.querySelectorAll('.mn-marker').forEach((marker) => {
-        marker.setAttribute('aria-expanded', String(!mobile));
-      });
+      return window.innerWidth <= 950;
     }
 
     function wireToggles() {
       document.querySelectorAll('.mn-marker').forEach((marker) => {
-        marker.addEventListener('click', () => {
+        marker.addEventListener('click', (e) => {
+          if (!isMobile()) return;
+
+          e.preventDefault();
           const id = marker.getAttribute('data-mn-id');
           if (!id) return;
           const note = document.getElementById(id);
           if (!note) return;
-
-          if (!isMobile()) return;
 
           note.hidden = !note.hidden;
           marker.setAttribute('aria-expanded', String(!note.hidden));
@@ -199,51 +284,52 @@ layout: layouts/base.njk
     }
 
     function alignDesktopMarginNotes() {
-      if (isMobile()) return;
+      if (isMobile()) {
+        // Mobile: ensure notes are in their natural position
+        document.querySelectorAll('.mn-note').forEach(note => {
+          note.style.position = '';
+          note.style.top = '';
+          note.hidden = true;  // Start hidden on mobile
+        });
+        return;
+      }
 
-      const frame = document.querySelector('.wb-frame');
       const grid = document.querySelector('.wb-grid');
-      if (!frame || !grid) return;
+      if (!grid) return;
 
-      const frameRect = frame.getBoundingClientRect();
-      const gridRect = grid.getBoundingClientRect();
+      // FIRST: Move all notes to be direct children of the grid (not inside article)
+      document.querySelectorAll('.mn-note').forEach(note => {
+        if (note.parentElement !== grid) {
+          grid.appendChild(note);
+        }
+      });
 
-      const mnWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mn-width'));
-      const marginLeft = (gridRect.left - frameRect.left) + (gridRect.width - mnWidth);
+      // SECOND: Reset all notes to their natural grid position
+      document.querySelectorAll('.mn-note').forEach(note => {
+        note.style.position = 'relative';
+        note.style.top = '0px';
+        note.hidden = false;
+      });
 
-      const entries = [];
+      // Force a reflow by reading a layout property
+      grid.offsetHeight;
 
-      const mnNote = document.querySelector('.mn-note');
-      const mnLineHeightPx = mnNote ? parseFloat(getComputedStyle(mnNote).lineHeight) : 16;
-      const nudgeUp = mnLineHeightPx;
-
-      document.querySelectorAll('.mn-marker').forEach((marker) => {
+      // THIRD: Calculate offsets based on natural positions
+      document.querySelectorAll('.mn-marker').forEach(marker => {
         const id = marker.getAttribute('data-mn-id');
         if (!id) return;
+
         const note = document.getElementById(id);
         if (!note) return;
 
-        note.hidden = false;
-        note.style.left = `${Math.round(marginLeft)}px`;
-
         const markerRect = marker.getBoundingClientRect();
-        const desiredTop = (markerRect.bottom - frameRect.top) - nudgeUp;
+        const noteRect = note.getBoundingClientRect();
 
-        entries.push({ note, desiredTop });
-      });
+        // Calculate how much to shift the note vertically
+        const verticalOffset = markerRect.top - noteRect.top;
 
-      entries.sort((a, b) => a.desiredTop - b.desiredTop);
-
-      const GAP = 12;
-      let cursor = 0;
-
-      entries.forEach(({ note, desiredTop }) => {
-        const top = Math.max(desiredTop, cursor);
-        note.style.top = `${Math.round(top)}px`;
-        note.style.opacity = 1;
-
-        const height = note.getBoundingClientRect().height;
-        cursor = top + height + GAP;
+        note.style.position = 'relative';
+        note.style.top = verticalOffset + 'px';
       });
     }
 
@@ -252,11 +338,9 @@ layout: layouts/base.njk
     }
 
     function onResize() {
-      setNoteVisibilityForViewport();
       scheduleAlign();
     }
 
-    setNoteVisibilityForViewport();
     wireToggles();
 
     window.addEventListener('load', scheduleAlign);
@@ -264,8 +348,7 @@ layout: layouts/base.njk
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => {
-        setNoteVisibilityForViewport();
-        scheduleAlign();
+        setTimeout(scheduleAlign, 150);  // Allow time for font reflow
       });
     }
   })();

@@ -1,0 +1,260 @@
+---
+layout: layouts/base.njk
+title: Search
+permalink: /search/
+---
+
+<style>
+  .search-container {
+    max-width: 64ch;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .search-heading {
+    font-family: var(--font-display, sans-serif);
+    font-size: 2em;
+    margin: 0 0 1.5rem;
+    color: var(--ink, #241425);
+  }
+
+  .search-form {
+    margin-bottom: 2rem;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    font-family: var(--font-body, serif);
+    border: 2px solid var(--rule, #241425);
+    background: var(--paper, #f6f0e8);
+    color: var(--ink, #241425);
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--marker-color, #8f1d14);
+  }
+
+  .search-input::placeholder {
+    color: var(--muted-ink, #3a223a);
+    opacity: 0.6;
+  }
+
+  .search-results {
+    margin-top: 2rem;
+  }
+
+  .search-result {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--rule, rgba(0,0,0,0.1));
+  }
+
+  .search-result:last-child {
+    border-bottom: none;
+  }
+
+  .search-result-title {
+    font-family: var(--font-display, sans-serif);
+    font-size: 1.5em;
+    margin: 0 0 0.5rem;
+  }
+
+  .search-result-title a {
+    color: var(--ink, #241425);
+    text-decoration: none;
+  }
+
+  .search-result-title a:hover {
+    color: var(--marker-color, #8f1d14);
+  }
+
+  .search-result-excerpt {
+    margin: 0.5rem 0 0;
+    line-height: 1.6;
+    color: var(--ink, #241425);
+  }
+
+  .search-result-excerpt mark {
+    background: rgba(143, 29, 20, 0.15);
+    color: inherit;
+    font-weight: 600;
+    padding: 0.1em 0.2em;
+  }
+
+  .search-meta {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted-ink, #3a223a);
+  }
+
+  .search-count {
+    margin-bottom: 1rem;
+    color: var(--muted-ink, #3a223a);
+    font-size: 0.95rem;
+  }
+
+  .search-loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted-ink, #3a223a);
+  }
+
+  .search-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted-ink, #3a223a);
+  }
+
+  .search-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 950px) {
+    .search-container {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .search-heading {
+      font-size: 1.75em;
+    }
+
+    .search-input {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<div class="search-container">
+  <h1 class="search-heading">Search</h1>
+
+  <form class="search-form" role="search">
+    <label for="search-input" class="visually-hidden">Search posts</label>
+    <input
+      type="search"
+      id="search-input"
+      class="search-input"
+      placeholder="Search posts..."
+      autocomplete="off"
+      autofocus
+    >
+  </form>
+
+  <div id="search-results" class="search-results"></div>
+</div>
+
+<script>
+  // Initialize Pagefind after it's loaded
+  window.addEventListener('DOMContentLoaded', async () => {
+    const searchInput = document.getElementById('search-input');
+    const resultsContainer = document.getElementById('search-results');
+
+    if (!searchInput || !resultsContainer) return;
+
+    // Load Pagefind
+    let pagefind;
+    try {
+      pagefind = await import('/pagefind/pagefind.js');
+    } catch (e) {
+      console.error('Failed to load search:', e);
+      resultsContainer.innerHTML = '<p class="search-empty">Search is currently unavailable.</p>';
+      return;
+    }
+
+    // Configure Pagefind for CJK support
+    await pagefind.options({
+      excerptLength: 15,
+      // Use character-based indexing for Chinese
+      // This works better for classical Chinese than word segmentation
+    });
+
+    let debounceTimeout;
+
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(debounceTimeout);
+      const query = e.target.value.trim();
+
+      if (!query) {
+        resultsContainer.innerHTML = '';
+        return;
+      }
+
+      resultsContainer.innerHTML = '<div class="search-loading">Searching...</div>';
+
+      debounceTimeout = setTimeout(async () => {
+        await performSearch(query);
+      }, 300);
+    });
+
+    async function performSearch(query) {
+      try {
+        const results = await pagefind.search(query);
+
+        if (results.results.length === 0) {
+          resultsContainer.innerHTML = `
+            <div class="search-empty">
+              <div class="search-empty-icon">🔍</div>
+              <p>No results found for "${escapeHtml(query)}"</p>
+            </div>
+          `;
+          return;
+        }
+
+        resultsContainer.innerHTML = `
+          <p class="search-count">${results.results.length} result${results.results.length === 1 ? '' : 's'}</p>
+        `;
+
+        for (const result of results.results) {
+          const data = await result.data();
+
+          const resultElement = document.createElement('article');
+          resultElement.className = 'search-result';
+
+          resultElement.innerHTML = `
+            <h2 class="search-result-title">
+              <a href="${data.url}">${data.meta.title || 'Untitled'}</a>
+            </h2>
+            <div class="search-result-excerpt">${data.excerpt}</div>
+            ${data.meta.date ? `<p class="search-meta">Published ${formatDate(data.meta.date)}</p>` : ''}
+          `;
+
+          resultsContainer.appendChild(resultElement);
+        }
+      } catch (e) {
+        console.error('Search error:', e);
+        resultsContainer.innerHTML = '<p class="search-empty">An error occurred while searching.</p>';
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    // Check for query parameter and search immediately
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q');
+    if (initialQuery) {
+      searchInput.value = initialQuery;
+      await performSearch(initialQuery);
+    }
+  });
+</script>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>

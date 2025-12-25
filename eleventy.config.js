@@ -10,6 +10,7 @@ import MarkdownIt from "markdown-it";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 
 import pluginFilters from "./_config/filters.js";
+import blueskyComments from "./_config/bluesky-comments.js";
 
 const md = new MarkdownIt();
 
@@ -32,18 +33,44 @@ export default async function (eleventyConfig) {
 		.addPassthroughCopy({
 			"./public/": "/",
 		})
-		// Copy per-post asset folders through to the output (e.g. content/blog/<slug>/assets/*).
-		// With `dir.input = "content"`, this results in URLs like:
-		//   /blog/<slug>/assets/<file>
-		//
-		// NOTE: If you want blog-less URLs like:
-		//   /<slug>/assets/<file>
-		// Eleventy’s passthrough copy won’t rewrite the output path by itself. You’d need
-		// either:
-		// 1) move assets to `content/<slug>/assets/*`, or
-		// 2) add a build step to duplicate/copy `content/blog/<slug>/assets/*` to `content/<slug>/assets/*`.
-		.addPassthroughCopy("./content/blog/**/assets/**")
+		// Note: Post assets are copied via eleventy.after event below to achieve blog-less URLs
 		.addPassthroughCopy("./content/feed/pretty-atom-feed.xsl");
+
+	// Copy post assets directly to _site/<slug>/assets/ (blog-less URLs)
+	// This avoids cluttering content/ with mirrored directories
+	eleventyConfig.on(
+		"eleventy.after",
+		async ({ dir, results, runMode, outputMode }) => {
+			const fs = await import("node:fs/promises");
+			const path = await import("node:path");
+
+			const contentDir = path.join(dir.input, "blog");
+
+			try {
+				const posts = await fs.readdir(contentDir, { withFileTypes: true });
+
+				for (const post of posts) {
+					if (!post.isDirectory()) continue;
+
+					const slug = post.name;
+					const sourceAssets = path.join(contentDir, slug, "assets");
+					const destAssets = path.join(dir.output, slug, "assets");
+
+					// Check if source assets directory exists
+					try {
+						await fs.access(sourceAssets);
+					} catch {
+						continue; // No assets for this post
+					}
+
+					// Copy assets recursively
+					await fs.cp(sourceAssets, destAssets, { recursive: true });
+				}
+			} catch (err) {
+				console.warn("Warning: Could not copy post assets:", err.message);
+			}
+		},
+	);
 
 	// Run Eleventy when these files change:
 	// https://www.11ty.dev/docs/watch-serve/#add-your-own-watch-targets
@@ -127,6 +154,16 @@ export default async function (eleventyConfig) {
 
 	// Filters
 	eleventyConfig.addPlugin(pluginFilters);
+
+	// Bluesky comments integration (async filter)
+	eleventyConfig.addAsyncFilter(
+		"getBlueskyComments",
+		blueskyComments.getBlueskyComments,
+	);
+	eleventyConfig.addAsyncFilter(
+		"getCommentCount",
+		blueskyComments.getCommentCount,
+	);
 
 	eleventyConfig.addPlugin(IdAttributePlugin, {
 		// by default we use Eleventy’s built-in `slugify` filter:

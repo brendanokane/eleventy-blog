@@ -1,0 +1,184 @@
+{#
+  Bluesky Likes Component
+
+  Shows like count for the main Bluesky post (not comments).
+  Provides button to like on Bluesky.
+
+  Usage: {% include "components/bluesky-likes.njk" %}
+
+  Requires: bluesky_thread variable in context
+#}
+
+{% if bluesky_thread %}
+<aside class="bluesky-likes" data-thread="{{ bluesky_thread }}">
+  <div class="likes-container">
+    <span class="like-count" data-count="0">
+      <span class="like-icon">❤️</span>
+      <span class="like-number">—</span>
+      <span class="like-label">likes</span>
+    </span>
+    <a href="{{ bluesky_thread }}"
+       class="like-button"
+       target="_blank"
+       rel="noopener noreferrer"
+       title="Like this post on Bluesky">
+      <span class="button-icon">❤️</span>
+      <span class="button-text">Like on Bluesky</span>
+    </a>
+  </div>
+
+  <script type="module">
+    const BLUESKY_API = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread';
+    const likesContainer = document.querySelector('.bluesky-likes[data-thread]');
+    const threadUrl = likesContainer?.dataset.thread;
+
+    if (threadUrl && likesContainer) {
+      fetchLikeCount();
+    }
+
+    function extractPostUri(url) {
+      const match = url.match(/bsky\.app\/profile\/([^\/]+)\/post\/([^\/\?#]+)/);
+      if (!match) return null;
+      const [, handle, postId] = match;
+      return `at://${handle}/app.bsky.feed.post/${postId}`;
+    }
+
+    async function fetchLikeCount() {
+      try {
+        const uri = extractPostUri(threadUrl);
+        if (!uri) return;
+
+        const response = await fetch(`${BLUESKY_API}?uri=${encodeURIComponent(uri)}&depth=0`);
+        if (!response.ok) {
+          console.warn('Could not fetch like count');
+          return;
+        }
+
+        const data = await response.json();
+        const likeCount = data.thread?.post?.likeCount || 0;
+
+        updateLikeCount(likeCount);
+      } catch (error) {
+        console.warn('Failed to fetch like count:', error);
+      }
+    }
+
+    function updateLikeCount(count) {
+      const likeNumber = likesContainer.querySelector('.like-number');
+      const likeLabel = likesContainer.querySelector('.like-label');
+      const likeCountElement = likesContainer.querySelector('.like-count');
+
+      if (likeNumber && likeCountElement) {
+        likeNumber.textContent = count.toLocaleString();
+        likeCountElement.dataset.count = count;
+
+        if (likeLabel) {
+          likeLabel.textContent = count === 1 ? 'like' : 'likes';
+        }
+
+        // Animate the update
+        likeCountElement.classList.add('updated');
+        setTimeout(() => likeCountElement.classList.remove('updated'), 600);
+      }
+    }
+  </script>
+</aside>
+
+<style>
+  .bluesky-likes {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+  }
+
+  .likes-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .like-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--ink);
+    transition: all 0.3s ease;
+  }
+
+  .like-count.updated {
+    transform: scale(1.1);
+  }
+
+  .like-icon {
+    font-size: 1.2em;
+  }
+
+  .like-number {
+    font-weight: 600;
+    font-size: 1.1em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .like-label {
+    color: var(--muted-ink);
+  }
+
+  .like-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--paper);
+    color: var(--ink);
+    border: 2px solid var(--marker-color);
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .like-button:hover {
+    background: var(--marker-color);
+    color: var(--paper);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(143, 29, 20, 0.3);
+  }
+
+  .like-button:active {
+    transform: translateY(0);
+  }
+
+  .button-icon {
+    font-size: 1.1em;
+  }
+
+  @media (max-width: 950px) {
+    .bluesky-likes {
+      padding: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .likes-container {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+
+    .like-count {
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    .like-button {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+</style>
+{% endif %}

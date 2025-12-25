@@ -165,4 +165,13 @@ export default function (eleventyConfig) {
 			endnotes: endnotes,
 		};
 	});
+
+	// Find post by slug (for related posts)
+	eleventyConfig.addFilter("findBySlug", (collection, slug) => {
+		if (!collection || !slug) return null;
+		return collection.find((item) => {
+			const itemSlug = item.fileSlug || item.data.page?.fileSlug;
+			return itemSlug === slug;
+		});
+	});
 }
