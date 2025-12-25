@@ -85,6 +85,32 @@ body {
 			var(--paper)
 		);
 	min-height: 100vh;
+	position: relative;
+}
+
+/* Subtle paper texture overlay - barely perceptible */
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background-image:
+		repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.008) 2px,
+			rgba(0, 0, 0, 0.008) 4px
+		),
+		repeating-linear-gradient(
+			90deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.008) 2px,
+			rgba(0, 0, 0, 0.008) 4px
+		);
+	pointer-events: none;
+	opacity: 0.3;
+	z-index: -1;
 }
 
 a {
@@ -597,11 +623,41 @@ blockquote[lang="zh-Hant"] {
 }
 
 .story-card-meta {
-	font-family: var(--font-display);
 	font-size: 0.8rem;
 	color: var(--ink-2);
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
+}
+
+/* Woodblock Effects - Subtle */
+
+/* Organic border variation - very subtle displacement */
+.woodblock-border {
+	border-radius: 0;
+	/* Slightly irregular corners */
+	border-top-left-radius: 0.5px;
+	border-top-right-radius: 1px;
+	border-bottom-left-radius: 1px;
+	border-bottom-right-radius: 0.5px;
+}
+
+/* Apply to images in featured/hero stories */
+.featured-story-image,
+.hero-story-image {
+	border-radius: calc(var(--radius) * 0.8);
+	/* Subtle shadow for depth, like ink on paper */
+	box-shadow:
+		0 1px 2px color-mix(in srgb, #000, transparent 94%),
+		0 4px 8px color-mix(in srgb, #000, transparent 92%),
+		inset 0 0 0 1px color-mix(in srgb, var(--ink), transparent 90%);
+}
+
+/* Subtle ink spread effect on thick borders */
+.nav-item a {
+	box-shadow:
+		0 1px 0 color-mix(in srgb, var(--paper), transparent 40%) inset,
+		0 10px 24px color-mix(in srgb, #000, transparent 86%),
+		0 0 0 0.5px color-mix(in srgb, var(--ink), transparent 85%);
 }
 
 /* Fallback if no featured image */

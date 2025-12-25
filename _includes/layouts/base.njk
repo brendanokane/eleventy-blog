@@ -119,6 +119,27 @@
 		<link rel="stylesheet" href="https://use.typekit.net/jtc7wrn.css">
 	</head>
 	<body>
+		<!-- Woodblock SVG Filters -->
+		<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+			<defs>
+				<!-- Very subtle organic border distortion -->
+				<filter id="woodblock-border">
+					<feTurbulence
+						type="turbulence"
+						baseFrequency="0.015"
+						numOctaves="2"
+						result="turbulence"
+						seed="1"/>
+					<feDisplacementMap
+						in="SourceGraphic"
+						in2="turbulence"
+						scale="1.2"
+						xChannelSelector="R"
+						yChannelSelector="G"/>
+				</filter>
+			</defs>
+		</svg>
+
 		<a href="#main" id="skip-link" class="visually-hidden">Skip to main content</a>
 
 		<header>
