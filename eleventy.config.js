@@ -17,15 +17,16 @@ const md = new MarkdownIt();
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 export default async function (eleventyConfig) {
 	// Drafts, see also _data/eleventyDataSchema.js
-	eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
-		if (data.draft) {
-			data.title = `${data.title} (draft)`;
-		}
+	// TEMPORARILY COMMENTED OUT FOR TESTING - SHOW ALL POSTS
+	// eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
+	// 	if (data.draft) {
+	// 		data.title = `${data.title} (draft)`;
+	// 	}
 
-		if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
-			return false;
-		}
-	});
+	// 	if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
+	// 		return false;
+	// 	}
+	// });
 
 	// Copy the contents of the `public` folder to the output folder
 	// For example, `./public/css/` ends up in `_site/css/`

@@ -2,6 +2,9 @@
 // These values are computed at build time and can be overridden by frontmatter
 
 export default {
+	tags: ["posts"],
+	layout: "layouts/post-woodblock.njk",
+	permalink: "/{{ page.fileSlug }}/",
 	eleventyComputed: {
 		// Compute summary from subtitle or content if not provided
 		// Used for SEO meta description, social cards, and search results
