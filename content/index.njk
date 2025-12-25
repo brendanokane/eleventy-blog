@@ -5,14 +5,9 @@ eleventyNavigation:
   order: 1
 ---
 
-{# Get all published posts, sorted by date (newest first) #}
+{# Get all posts for testing (ignoring publish flag) #}
 {% set allPosts = collections.posts | reverse %}
-{% set publishedPosts = [] %}
-{% for post in allPosts %}
-  {% if post.data.publish %}
-    {% set publishedPosts = (publishedPosts.push(post), publishedPosts) %}
-  {% endif %}
-{% endfor %}
+{% set publishedPosts = allPosts %}
 
 <div class="magazine-layout">
 

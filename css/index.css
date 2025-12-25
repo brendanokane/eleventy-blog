@@ -15,23 +15,20 @@ Audience priorities:
 	--ink: #241425; /* very dark purple-brown */
 	--ink-2: #3a223a;
 	--vermillion: #8f1d14; /* dark vermillion underline */
-	--rule: color-mix(in srgb, var(--ink), var(--paper) 70%);
+	--rule: #241425;
 
 	/* Typography */
-	/* NOTE: font-family names depend on what your Adobe Fonts kit provides.
-	   If Aldine/Alegreya don't apply, inspect computed styles and adjust names here. */
 	--font-body:
-		"Alegreya", "Noto Serif TC", "Source Han Serif TC", "Source Han Serif",
+		"Vollkorn", "Noto Serif TC", "Source Han Serif TC", "Source Han Serif",
 		ui-serif, Georgia, serif;
 	--font-display:
-		"Adobe Aldine", "Aldine", "Alegreya Sans", "Noto Sans TC",
-		"Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui,
-		-apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
-		"Segoe UI Emoji";
+		"Noto Sans", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans",
+		ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+		"Apple Color Emoji", "Segoe UI Emoji";
 
-	--text-size: 18px;
-	--leading: 1.6;
-	--measure: 68ch;
+	--text-size: 1.2rem;
+	--leading: 1.7;
+	--measure: 70ch;
 
 	/* Layout */
 	--page-pad: clamp(16px, 3vw, 28px);
@@ -218,12 +215,14 @@ h4 {
 }
 
 h1 {
-	font-size: clamp(1.8rem, 2.4vw, 2.6rem);
+	font-size: 3.1rem;
+	line-height: 1;
 	margin-top: 0.2em;
 }
 
 h2 {
-	font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+	font-size: 1.7rem;
+	line-height: 1.3;
 }
 
 p {
