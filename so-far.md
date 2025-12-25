@@ -6,7 +6,102 @@ A running scratchpad of what's implemented, what's working, what's still rough, 
 
 ## Current Session Notes (AI Assistant)
 
+### Session: January 2025 - DESIGN REFINEMENT & TESTING SETUP ✅ COMPLETE
+
+**Date:** January 15, 2025  
+**Status:** Magazine homepage working, all posts visible, design settings applied  
+**Git:** Backed up to GitHub (branch: design/ink-linen-nav-typography, commit: ed692ed)
+
+**Major Accomplishment: Fixed Posts Visibility!**
+
+Root cause discovered and fixed:
+- Posts had `draft: true` in frontmatter
+- Draft preprocessor was filtering them out during builds  
+- `blog.11tydata.cjs` wasn't being loaded (ESM project needs `.js`)
+- Solution: Merged into `blog.11tydata.js` and commented out draft filter for testing
+
+**Result:** 34 posts now visible and populating magazine homepage!
+
+**Design Settings Applied:**
+- Body font: Vollkorn (from Alegreya)
+- Headlines: Noto Sans (from Adobe Aldine)
+- H1 size: 3.1rem (dramatically larger)
+- H1 line-height: 1.0 (tight, dramatic)
+- H2 size: 1.7rem / line-height: 1.3
+- Column width: 70ch (from 68ch)
+- Shell padding: 8rem
+- Frame padding: 3rem (from 0.75rem - much more generous!)
+- Border weight: 12px (from 10px)
+- Column gap: 4rem
+- Rule color: pure ink (from lighter blend)
+- Margin note line-height: 1.4 (from 1.3)
+
+**Woodblock Effects (Subtle baseline):**
+- Paper texture overlay (barely visible cross-hatch)
+- Improved shadows (ink-on-paper depth)
+- SVG filter ready for organic borders
+- Effects intentionally at 10-20% intensity
+
+**User Feedback & Next Steps:**
+User is pleased with current state! Requested refinements:
+
+1. **Hero image for featured post** - Top/most recent post needs prominent featured image
+2. **Smaller post images** - Four posts below featured story should have smaller images above headline/excerpt
+3. General polish and refinement
+
+**Files Modified This Session:**
+- `css/index.css` - Applied typography settings, added woodblock effects
+- `content/index.njk` - Magazine layout, removed publish filter for testing
+- `content/blog/blog.11tydata.js` - Added tags/layout, merged from .cjs
+- `eleventy.config.js` - Commented out draft preprocessor for testing
+- `_includes/layouts/post-woodblock.njk` - Applied layout settings
+- `_includes/layouts/base.njk` - Added SVG filters for woodblock effects
+- Deleted: `content/blog/blog.11tydata.cjs` (merged into .js)
+
+**Documentation Created:**
+- `VIEWING-GUIDE.md` - Complete tour of all features (330 lines)
+- `CURRENT-STATUS.md` - Comprehensive status document (354 lines)
+- `WOODBLOCK-AESTHETIC.md` - Design guide (400 lines)
+
+**For Next Session:**
+
+IMMEDIATE: Hero/featured images
+- Featured story needs larger `post_image` display
+- Hero grid (4 posts below) needs smaller image tiles
+- Posts need `post_image` field in frontmatter
+- May need to add some placeholder images for testing
+
+MEDIUM: Design polish
+- Test responsive breakpoints
+- Refine spacing/sizing based on real content
+- Consider intensifying woodblock effects (currently very subtle)
+- Integrate social card generation into build process
+
+LATER: Re-enable draft filtering
+- Uncomment the draft preprocessor in `eleventy.config.js`
+- Or remove `draft: true` from posts that should be visible
+- Current state: ALL posts visible for testing (draft filter disabled)
+
+**Technical Notes for Successor:**
+- Dev server: `npm start` → http://localhost:8080/
+- Magazine homepage now shows 34 posts
+- Posts collection working properly (was empty, now populated)
+- Design playground: http://localhost:8080/design-playground.html
+- All work backed up to GitHub
+
+**User's Parting Words:** "Ave atque vale, frater." 
+
+---
+
 ### Session: December 2024 - NEW ASSISTANT HANDOFF - Bluesky OAuth Evaluation
+</text>
+
+<old_text line=194>
+**Next Steps:**
+1. Woodblock aesthetic enhancements (SVG filters, texture overlays)
+2. Integrate social card generation into Eleventy build process
+3. Test magazine homepage with actual published posts
+4. Refine responsive breakpoints based on real content
 
 **Date:** January 2025  
 **Status:** Reviewing project state and evaluating next steps for Bluesky integration
