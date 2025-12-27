@@ -3,9 +3,9 @@
 
 export default {
 	// Core identity
-	title: "Burning House",
+	title: "Stories from a Burning House",
 	shortTitle: "Burning House",
-	tagline: "Essays, notes, and translations",
+	tagline: "Unbelievably late-breaking news from China",
 	language: "en",
 	locale: "en_US",
 
@@ -18,8 +18,8 @@ export default {
 		"Essays, notes, and translations—typography-forward writing with margin notes and woodblock-inspired design.",
 
 	author: {
-		name: "Bo Kane",
-		email: "", // optional; leave blank if you don’t want it published
+		name: "Brendan O'Kane",
+		email: "brendan@burninghou.se", // optional; leave blank if you don’t want it published
 		url: "/about/",
 	},
 
@@ -34,10 +34,10 @@ export default {
 	// OpenGraph / Twitter defaults (can be overridden per-page via frontmatter)
 	// These are defaults only; the layout should compute page-specific values.
 	og: {
-		siteName: "Burning House",
+		siteName: "Stories from a Burning House",
 		type: "website",
 		defaultImage: "/assets/og/default.jpg", // Tao Yuanming calligraphy image
-		imageAlt: "Burning House",
+		imageAlt: "Stories from a Burning House",
 	},
 
 	twitter: {
