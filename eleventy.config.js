@@ -103,8 +103,11 @@ export default async function (eleventyConfig) {
 		preAttributes: { tabindex: 0 },
 	});
 	eleventyConfig.addPlugin(pluginNavigation);
-	eleventyConfig.addPlugin(HtmlBasePlugin);
-	eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
+	// Disabled - HtmlBasePlugin prepends 'content/' to absolute URLs like /mid-autumn.../assets/...
+	// This breaks our blog-less asset URLs which need to be at the root
+	// eleventyConfig.addPlugin(HtmlBasePlugin);
+	// Disabled - interfering with post_image paths
+	// eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
 
 	eleventyConfig.addPlugin(feedPlugin, {
 		type: "atom", // or "rss", "json"
@@ -133,6 +136,9 @@ export default async function (eleventyConfig) {
 	});
 
 	// Image optimization: https://www.11ty.dev/docs/plugins/image/#eleventy-transform
+	// Image optimization: https://www.11ty.dev/docs/plugins/image/#eleventy-transform
+	// NOTE: This plugin was interfering with blog-less asset URLs (prepending 'content/')
+	// We exclude homepage hero images using extensions to avoid path transformation issues
 	eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
 		// Output formats for each image.
 		formats: ["avif", "webp", "auto"],
@@ -140,6 +146,10 @@ export default async function (eleventyConfig) {
 		// widths: ["auto"],
 
 		failOnError: false,
+
+		// Exclude images with these extensions/patterns to avoid path issues
+		extensions: "jpg,jpeg,png,gif,webp,avif",
+
 		htmlOptions: {
 			imgAttributes: {
 				// e.g. <img loading decoding> assigned on the HTML tag will override these values.
@@ -151,6 +161,9 @@ export default async function (eleventyConfig) {
 		sharpOptions: {
 			animated: true,
 		},
+
+		// Custom URL path function to preserve blog-less URLs
+		urlPath: "/img/",
 	});
 
 	// Filters

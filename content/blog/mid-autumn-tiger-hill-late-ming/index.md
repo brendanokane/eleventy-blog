@@ -4,6 +4,8 @@ date: 2025-10-06
 draft: true
 publish: false
 bluesky_thread:
+post_image: "/mid-autumn-tiger-hill-late-ming/assets/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg"
+post_image_alt: "Shen Zhou painting: A Farewell on Tiger Hill"
 ---
 # Mid-Autumn, Tiger Hill, Late Ming
 

@@ -4,6 +4,8 @@ date: 2024-07-16
 draft: true
 publish: false
 bluesky_thread:
+post_image: "/the-heat/assets/8b8c97ea-19af-4dbd-ac55-3f0731ddd075_1948x3590.jpg"
+post_image_alt: "Taking the Breeze by a Palace Pond - Anonymous Song dynasty painting"
 ---
 # The Heat
 

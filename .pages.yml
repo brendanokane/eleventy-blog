@@ -1,31 +1,114 @@
-media: public/img
+# Pages CMS configuration for this repo.
+# Media is scoped to post assets and public images.
+# output: "/" keeps stored URLs in the blog-less form: /<slug>/assets/...
+
+media:
+  - name: post_assets
+    label: Post Assets
+    input: content/blog
+    output: "/"
+    extensions: [jpg, jpeg, png, webp, gif, avif, svg]
+  - name: public_images
+    label: Public Images
+    input: public/img
+    output: /img
+    extensions: [jpg, jpeg, png, webp, gif, avif, svg]
+
 content:
   - name: posts
     label: Posts
     type: collection
     path: content/blog
     view:
-      fields: [ title, draft, date ]
+      layout: tree
+      node:
+        filename: index.md
+      fields: [title, draft, date]
     fields:
-      - { name: title, label: Title, type: string, required: true }
-      - { name: description, label: Description, type: string }
-      - { name: date, label: Date, type: date }
-      - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true }
-      - { name: body, label: Body, type: rich-text }
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: subtitle
+        label: Subtitle
+        type: string
+      - name: description
+        label: Description (legacy)
+        type: string
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: publish
+        label: Publish
+        type: boolean
+        default: false
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+      - name: summary
+        label: Summary
+        type: text
+        options:
+          maxlength: 160
+      - name: excerpt
+        label: Excerpt
+        type: text
+        options:
+          maxlength: 400
+      - name: tags
+        label: Tags
+        type: string
+        list:
+          collapsible: false
+      - name: related_posts
+        label: Related Posts
+        type: string
+        list:
+          collapsible: false
+      - name: post_image
+        label: Post Image
+        type: image
+        options:
+          media: post_assets
+      - name: post_image_alt
+        label: Post Image Alt
+        type: string
+      - name: bluesky_thread
+        label: Bluesky Thread URL
+        type: string
+      - name: buttondown_sent
+        label: Buttondown Sent
+        type: boolean
+        default: false
+      - name: body
+        label: Body
+        type: code
+        options:
+          language: markdown
   - name: about
     label: About page
     type: file
     path: content/about/index.md
     fields:
-      - { name: layout, type: string, hidden: true, default: layouts/base.njk }
+      - name: layout
+        type: string
+        hidden: true
+        default: layouts/base.njk
       - name: eleventyNavigation
         label: Navigation
         type: object
         fields:
-          - { name: key, label: Key, type: string }
-          - { name: order, label: Order, type: number }
-      - { name: body, label: Body, type: rich-text }
+          - name: key
+            label: Key
+            type: string
+          - name: order
+            label: Order
+            type: number
+      - name: body
+        label: Body
+        type: rich-text
   - name: metadata
     label: Metadata
     type: file

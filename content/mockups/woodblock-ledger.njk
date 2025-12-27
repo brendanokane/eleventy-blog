@@ -1,0 +1,334 @@
+---
+layout: layouts/home.njk
+title: "Woodblock Ledger"
+permalink: /mockups/woodblock-ledger/
+robots: "noindex, nofollow"
+eleventyExcludeFromCollections: true
+---
+{% set posts = collections.posts | reverse %}
+
+<style>
+  .ledger-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+  }
+
+  .ledger {
+    border: 2px solid var(--ink);
+    background: color-mix(in srgb, var(--paper), #ffffff 10%);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    position: relative;
+  }
+
+  .ledger::before {
+    content: "";
+    position: absolute;
+    inset: -0.75rem;
+    border: 1px solid color-mix(in srgb, var(--ink), transparent 78%);
+    opacity: 0.55;
+    filter: url(#woodblock-border);
+    pointer-events: none;
+  }
+
+  .ledger::after {
+    content: "";
+    position: absolute;
+    inset: 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--ink), transparent 80%);
+    opacity: 0.5;
+    filter: url(#woodblock-border);
+    pointer-events: none;
+  }
+
+  .ledger-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1rem;
+    position: relative;
+  }
+
+  .ledger-brand {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .logo-mark {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    filter: var(--logo-filter);
+  }
+
+  .ledger-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin: 0;
+  }
+
+  .ledger-brand-kicker {
+    font-family: var(--font-display);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--ink-2);
+    margin: 0 0 0.35rem;
+  }
+
+  .ledger-kicker {
+    font-family: var(--font-display);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--ink-2);
+  }
+
+  .ledger-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: 2rem;
+    padding-top: 2rem;
+  }
+
+  .ledger-feature {
+    display: grid;
+    gap: 1rem;
+    border-right: 1px solid color-mix(in srgb, var(--ink), transparent 75%);
+    padding-right: 1.5rem;
+    position: relative;
+  }
+
+  .ledger-feature h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    margin: 0;
+  }
+
+  .ledger-feature p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .ledger-figure {
+    border: 1px solid color-mix(in srgb, var(--ink), transparent 70%);
+    padding: 0.4rem;
+    background: color-mix(in srgb, var(--paper-2), transparent 35%);
+  }
+
+  .ledger-figure img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ledger-figure .image-fallback {
+    aspect-ratio: 3 / 4;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px dashed color-mix(in srgb, var(--ink), transparent 70%);
+  }
+
+  .ledger-list {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .ledger-entry {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink), transparent 85%);
+  }
+
+  .ledger-entry .entry-index {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: var(--vermillion);
+  }
+
+  .ledger-entry h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    margin: 0 0 0.3rem;
+  }
+
+  .ledger-entry p {
+    margin: 0 0 0.4rem;
+    color: var(--ink-2);
+    font-size: 0.95rem;
+  }
+
+  .ledger-meta {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  .ledger-inkwash::after {
+    content: "";
+    position: absolute;
+    inset: -0.35rem;
+    background:
+      radial-gradient(
+        160px 120px at 75% 18%,
+        color-mix(in srgb, var(--ink), transparent 80%),
+        transparent 70%
+      ),
+      radial-gradient(
+        120px 90px at 20% 55%,
+        color-mix(in srgb, var(--ink), transparent 85%),
+        transparent 75%
+      );
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+    filter: blur(0.5px);
+    pointer-events: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .ledger-inkwash::after {
+      opacity: 0.18;
+      mix-blend-mode: screen;
+    }
+  }
+
+  html[data-theme="light"] .ledger-inkwash::after {
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme="dark"] .ledger-inkwash::after {
+    opacity: 0.18;
+    mix-blend-mode: screen;
+  }
+
+  .ledger a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ledger a:hover h2,
+  .ledger a:hover h3 {
+    text-decoration: underline;
+    text-decoration-color: var(--vermillion);
+    text-underline-offset: 0.2em;
+  }
+
+  .ink-fade {
+    animation: ink-fade 0.9s ease both;
+  }
+
+  .ink-fade.delay-1 { animation-delay: 0.15s; }
+  .ink-fade.delay-2 { animation-delay: 0.3s; }
+
+  @keyframes ink-fade {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ink-fade {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .ledger-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ledger-feature {
+      border-right: none;
+      padding-right: 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--ink), transparent 75%);
+      padding-bottom: 1.5rem;
+    }
+  }
+</style>
+
+<div class="ledger-shell">
+  <section class="ledger">
+    <header class="ledger-header ledger-inkwash ink-fade">
+      <div class="ledger-brand">
+        <img class="logo-mark" src="/img/burning-house-logo.svg" alt="Burning House logo">
+        <div>
+          <p class="ledger-brand-kicker">Woodblock study</p>
+          <h1 class="ledger-title">Stories from a Burning House</h1>
+        </div>
+      </div>
+      <div class="ledger-kicker">Draft</div>
+    </header>
+
+    {% if posts.length %}
+      {% set lead = posts[0] %}
+      <div class="ledger-grid">
+        <article class="ledger-feature ledger-inkwash ink-fade delay-1">
+          <a href="{{ lead.url }}" class="ledger-figure">
+            {% if lead.data.post_image %}
+              <img
+                src="{{ lead.data.post_image }}"
+                alt="{{ lead.data.post_image_alt or lead.data.title }}"
+                loading="lazy"
+              >
+            {% else %}
+              <div class="image-fallback">No image</div>
+            {% endif %}
+          </a>
+          <div>
+            <a href="{{ lead.url }}">
+              <h2>{{ lead.data.title }}</h2>
+            </a>
+            {% if lead.data.summary %}
+              <p>{{ lead.data.summary }}</p>
+            {% elif lead.data.description %}
+              <p>{{ lead.data.description }}</p>
+            {% endif %}
+            <div class="ledger-meta">
+              <time datetime="{{ lead.date | htmlDateString }}">{{ lead.date | readableDate }}</time>
+            </div>
+          </div>
+        </article>
+
+        <div class="ledger-list ink-fade delay-2">
+          {% for post in posts %}
+            {% if loop.index0 > 0 and loop.index0 <= 6 %}
+              <article class="ledger-entry">
+                <div class="entry-index">{{ loop.index }}</div>
+                <div>
+                  <a href="{{ post.url }}">
+                    <h3>{{ post.data.title }}</h3>
+                  </a>
+                  {% if post.data.summary %}
+                    <p>{{ post.data.summary }}</p>
+                  {% elif post.data.description %}
+                    <p>{{ post.data.description }}</p>
+                  {% endif %}
+                  <div class="ledger-meta">
+                    <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
+                  </div>
+                </div>
+              </article>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </section>
+</div>

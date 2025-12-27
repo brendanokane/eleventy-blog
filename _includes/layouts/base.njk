@@ -144,16 +144,24 @@
 
 		<header>
 			<div class="site-header">
-				<a href="/" class="home-link">{{ metadata.title }}</a>
+				<a href="/" class="home-link">
+					<img class="site-logo" src="/img/burning-house-logo.svg" alt="" aria-hidden="true">
+					<span>{{ metadata.title }}</span>
+				</a>
 
-				<nav>
-					<h2 class="visually-hidden">Top level navigation menu</h2>
-					<ul class="nav">
-						<li class="nav-item"><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a></li>
-						<li class="nav-item"><a href="/blog/"{% if page.url == "/blog/" %} aria-current="page"{% endif %}>Archive</a></li>
-						<li class="nav-item"><a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>About</a></li>
-					</ul>
-				</nav>
+				<div class="site-actions">
+					<nav>
+						<h2 class="visually-hidden">Top level navigation menu</h2>
+						<ul class="nav">
+							<li class="nav-item"><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a></li>
+							<li class="nav-item"><a href="/blog/"{% if page.url == "/blog/" %} aria-current="page"{% endif %}>Archive</a></li>
+							<li class="nav-item"><a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>About</a></li>
+						</ul>
+					</nav>
+					<button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle color theme">
+						<span class="theme-toggle-label" data-theme-label>Theme</span>
+					</button>
+				</div>
 			</div>
 		</header>
 
@@ -172,5 +180,52 @@
 		<!-- This page `{{ page.url }}` was built on {% currentBuildDate %} -->
 		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
 		<script src="/assets/js/marginnote.js"></script>
+		<script>
+			(function () {
+				const storageKey = "theme";
+				const root = document.documentElement;
+				const toggle = document.querySelector("[data-theme-toggle]");
+				const label = toggle ? toggle.querySelector("[data-theme-label]") : null;
+				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+				function applyTheme(theme) {
+					root.dataset.theme = theme;
+					if (toggle) {
+						toggle.setAttribute("aria-pressed", theme === "dark");
+					}
+					if (label) {
+						label.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+					}
+				}
+
+				function getPreferredTheme() {
+					const stored = localStorage.getItem(storageKey);
+					if (stored === "light" || stored === "dark") {
+						return stored;
+					}
+					return systemTheme.matches ? "dark" : "light";
+				}
+
+				function setTheme(theme) {
+					localStorage.setItem(storageKey, theme);
+					applyTheme(theme);
+				}
+
+				applyTheme(getPreferredTheme());
+
+				if (toggle) {
+					toggle.addEventListener("click", () => {
+						const next = root.dataset.theme === "dark" ? "light" : "dark";
+						setTheme(next);
+					});
+				}
+
+				systemTheme.addEventListener("change", (event) => {
+					if (!localStorage.getItem(storageKey)) {
+						applyTheme(event.matches ? "dark" : "light");
+					}
+				});
+			})();
+		</script>
 	</body>
 </html>
