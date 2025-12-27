@@ -9,7 +9,7 @@ post_image_alt: "Xiang Shengmo 項聖謨 (1597-1658), 'The West Lake in Snow' �
 ---
 # Fishing for Snow, and the Heart of the Lake
 
-\[ “Fishing in the Freezing River for Snow” 寒江釣雪, dubiously attr. Fan Kuan 范寬 (c. 960 - c. 1030). National Palace Museum, Taipei.\]
+[![](/fishing-for-snow-and-the-heart-of-the-lake/assets/9e881051-b4ee-4512-bc7f-d393bc1eb8cd_1500x1385.png)](/fishing-for-snow-and-the-heart-of-the-lake/assets/9e881051-b4ee-4512-bc7f-d393bc1eb8cd_1500x1385.png) “Fishing in the Freezing River for Snow” 寒江釣雪, dubiously attr. Fan Kuan 范寬 (c. 960 - c. 1030). National Palace Museum, Taipei.
 
 I was going to illustrate the piece below with an unrelated painting, but captioning the painting meant translating the title, which meant choosing an interpretation of the poem it alludes to, which meant adding my own unsatisfying translation to a growing pile of unsatisfying translations. You know how these things go. The title comes from a poem by Liu Zongyuan 柳宗元 (773 - 819). I don’t think I’ve seen a translation I liked yet, and this is not about to be the first, but as quickly as I can:
 
