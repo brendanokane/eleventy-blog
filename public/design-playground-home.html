@@ -1,0 +1,1338 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Design Playground – Homepage</title>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100..900;1,100..900&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,100..900;1,100..900&family=Literata:ital,wght@0,200..900;1,200..900&family=Newsreader:ital,wght@0,200..800;1,200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif:ital,wght@0,200..900;1,200..900&family=Noto+Serif+TC:wght@200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,wght@0,200..900;1,200..900&family=Spectral:ital,wght@0,200..900;1,200..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: system-ui;
+				background: #1a1a1a;
+				color: #f0f0f0;
+				overflow: hidden;
+			}
+
+			.container {
+				display: grid;
+				grid-template-columns: 320px 1fr;
+				height: 100vh;
+			}
+
+			.controls {
+				background: #2a2a2a;
+				padding: 15px;
+				overflow-y: auto;
+				border-right: 1px solid #444;
+				font-size: 0.85rem;
+			}
+
+			.controls h1 {
+				font-size: 1.2rem;
+				margin-bottom: 8px;
+			}
+
+			.controls h2 {
+				font-size: 0.8rem;
+				color: #aaa;
+				text-transform: uppercase;
+				margin: 18px 0 8px;
+				border-bottom: 1px solid #444;
+				padding-bottom: 4px;
+			}
+
+			.control {
+				margin-bottom: 10px;
+			}
+
+			.control label {
+				display: block;
+				font-size: 0.75rem;
+				color: #ccc;
+				margin-bottom: 4px;
+			}
+
+			input[type="range"] {
+				width: 100%;
+				height: 4px;
+			}
+
+			input[type="number"] {
+				width: 55px;
+				padding: 3px;
+				background: #1a1a1a;
+				border: 1px solid #444;
+				border-radius: 3px;
+				color: #f0f0f0;
+				font-size: 0.75rem;
+			}
+
+			input[type="color"] {
+				width: 100%;
+				height: 28px;
+				border: none;
+				cursor: pointer;
+			}
+
+			select {
+				width: 100%;
+				padding: 5px;
+				background: #1a1a1a;
+				border: 1px solid #444;
+				border-radius: 3px;
+				color: #f0f0f0;
+				font-size: 0.75rem;
+			}
+
+			button {
+				width: 100%;
+				padding: 10px;
+				margin-top: 15px;
+				background: #8f1d14;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-weight: 600;
+				font-size: 0.8rem;
+			}
+
+			button:hover {
+				background: #a52218;
+			}
+
+			.preview {
+				overflow-y: auto;
+				padding: 40px 20px;
+				position: relative;
+				background:
+					radial-gradient(
+						1200px 600px at 20% 0%,
+						color-mix(in srgb, var(--paper-2), transparent 35%) 0%,
+						transparent 60%
+					),
+					radial-gradient(
+						900px 500px at 90% 10%,
+						color-mix(in srgb, var(--paper-2), transparent 35%) 0%,
+						transparent 55%
+					),
+					linear-gradient(
+						0deg,
+						color-mix(in srgb, var(--paper), #ffffff 3%),
+						var(--paper)
+					);
+				color: var(--ink);
+				font-family: var(--font-body);
+				font-size: var(--text-size);
+				line-height: var(--leading);
+				--paper: #f6f0e8;
+				--paper-2: #efe6db;
+				--ink: #241425;
+				--ink-2: #3a223a;
+				--vermillion: #8f1d14;
+				--rule: #241425;
+				--paper-grain: rgba(0, 0, 0, 0.008);
+				--logo-filter: none;
+				--font-body:
+					"Vollkorn", "Noto Serif TC", "Source Han Serif TC",
+					"Source Han Serif", ui-serif, Georgia, serif;
+				--font-display:
+					"Noto Sans", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans",
+					ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+					Helvetica, Arial, sans-serif;
+				--text-size: 1.2rem;
+				--leading: 1.7;
+				--broadsheet-max: 1200px;
+				--broadsheet-pad-top: 2.5rem;
+				--broadsheet-pad-x: clamp(1.5rem, 4vw, 3.5rem);
+				--broadsheet-pad-bottom: 4rem;
+				--broadsheet-frame-pad: 0.75rem;
+				--broadsheet-frame-pad-bottom: 1.5rem;
+				--broadsheet-gap: 2.75rem;
+				--broadsheet-hero-gap: 2rem;
+				--broadsheet-grid-gap: 1.6rem;
+				--broadsheet-hero-left: 1.2fr;
+				--broadsheet-hero-right: 0.8fr;
+				--broadsheet-hero-aspect: 16 / 10;
+				--broadsheet-card-aspect: 4 / 3;
+				--broadsheet-title-size: clamp(2rem, 4vw, 3.2rem);
+				--broadsheet-subtitle-size: 1rem;
+				--broadsheet-hero-title-size: clamp(1.5rem, 2.8vw, 2.3rem);
+				--broadsheet-card-title-size: 1.15rem;
+				--broadsheet-card-body-size: 0.95rem;
+			}
+
+			.preview::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background-image:
+					repeating-linear-gradient(
+						0deg,
+						transparent,
+						transparent 2px,
+						var(--paper-grain) 2px,
+						var(--paper-grain) 4px
+					),
+					repeating-linear-gradient(
+						90deg,
+						transparent,
+						transparent 2px,
+						var(--paper-grain) 2px,
+						var(--paper-grain) 4px
+					);
+				pointer-events: none;
+				z-index: 0;
+			}
+
+			.preview > * {
+				position: relative;
+				z-index: 1;
+			}
+
+			.preview-section {
+				margin-bottom: 3.5rem;
+			}
+
+			.preview-section-title {
+				font-family: var(--font-display);
+				font-size: 1.35rem;
+				color: var(--ink);
+				letter-spacing: 0.02em;
+				margin: 0 0 1rem;
+				padding-bottom: 0.5rem;
+				border-bottom: 1px solid var(--rule);
+			}
+
+			.preview .broadsheet-shell {
+				max-width: var(--broadsheet-max);
+				margin: 0 auto;
+				padding: var(--broadsheet-pad-top) var(--broadsheet-pad-x)
+					var(--broadsheet-pad-bottom);
+			}
+
+			.preview .broadsheet {
+				display: grid;
+				gap: var(--broadsheet-gap);
+				position: relative;
+				padding: var(--broadsheet-frame-pad) var(--broadsheet-frame-pad)
+					var(--broadsheet-frame-pad-bottom);
+				background: color-mix(in srgb, var(--paper), #ffffff 10%);
+			}
+
+			.preview .broadsheet::before {
+				content: "";
+				position: absolute;
+				inset: -1.25rem;
+				border: 1px solid color-mix(in srgb, var(--ink), transparent 72%);
+				opacity: 0.7;
+				filter: url(#woodblock-border);
+				pointer-events: none;
+			}
+
+			.preview .broadsheet::after {
+				content: "";
+				position: absolute;
+				inset: -0.6rem;
+				border: 1px solid color-mix(in srgb, var(--ink), transparent 82%);
+				opacity: 0.45;
+				transform: translate(1px, -1px);
+				filter: url(#woodblock-border);
+				pointer-events: none;
+			}
+
+			.preview .broadsheet-masthead {
+				display: grid;
+				grid-template-columns: 1fr auto;
+				gap: 1.5rem;
+				align-items: center;
+				border-bottom: 2px solid var(--ink);
+				padding-bottom: 1rem;
+				position: relative;
+			}
+
+			.preview .broadsheet-brand {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+			}
+
+			.preview .logo-mark {
+				width: 64px;
+				height: 64px;
+				flex-shrink: 0;
+				filter: var(--logo-filter);
+			}
+
+			.preview .broadsheet-brand-kicker {
+				font-family: var(--font-display);
+				font-size: 0.7rem;
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+				color: var(--ink-2);
+				margin: 0 0 0.35rem;
+			}
+
+			.preview .broadsheet-title {
+				font-family: var(--font-display);
+				font-size: var(--broadsheet-title-size);
+				margin: 0;
+				letter-spacing: 0.02em;
+			}
+
+			.preview .broadsheet-subtitle {
+				margin: 0.4rem 0 0;
+				max-width: 36rem;
+				color: var(--ink-2);
+				font-size: var(--broadsheet-subtitle-size);
+			}
+
+			.preview .broadsheet-stamp {
+				align-self: center;
+				border: 2px solid var(--vermillion);
+				color: var(--vermillion);
+				padding: 0.35rem 0.7rem;
+				font-family: var(--font-display);
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+				font-size: 0.7rem;
+			}
+
+			.preview .broadsheet-hero {
+				display: grid;
+				grid-template-columns:
+					minmax(0, var(--broadsheet-hero-left))
+					minmax(0, var(--broadsheet-hero-right));
+				gap: var(--broadsheet-hero-gap);
+				align-items: stretch;
+			}
+
+			.preview .broadsheet-hero-figure {
+				position: relative;
+				border: 1px solid color-mix(in srgb, var(--ink), transparent 70%);
+				padding: 0.5rem;
+				background: color-mix(in srgb, var(--paper), #ffffff 18%);
+				aspect-ratio: var(--broadsheet-hero-aspect);
+			}
+
+			.preview .broadsheet-hero-figure img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+
+			.preview .broadsheet-hero-figure .image-fallback {
+				height: 100%;
+				display: grid;
+				place-items: center;
+				border: 1px dashed color-mix(in srgb, var(--ink), transparent 70%);
+				font-family: var(--font-display);
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: var(--ink-2);
+			}
+
+			.preview .broadsheet-hero-copy {
+				display: grid;
+				gap: 0.8rem;
+				align-content: start;
+				padding: 1.2rem 1.4rem;
+				border-left: 2px solid var(--ink);
+				background: color-mix(in srgb, var(--paper-2), transparent 35%);
+				position: relative;
+			}
+
+			.preview .broadsheet-inkwash::after {
+				content: "";
+				position: absolute;
+				inset: -0.4rem;
+				background:
+					radial-gradient(
+						140px 90px at 18% 32%,
+						color-mix(in srgb, var(--ink), transparent 78%),
+						transparent 70%
+					),
+					radial-gradient(
+						220px 140px at 70% 28%,
+						color-mix(in srgb, var(--ink), transparent 82%),
+						transparent 72%
+					),
+					linear-gradient(
+						180deg,
+						color-mix(in srgb, var(--ink), transparent 90%),
+						transparent 65%
+					);
+				opacity: 0.22;
+				mix-blend-mode: multiply;
+				filter: blur(0.5px);
+				pointer-events: none;
+			}
+
+			.preview .broadsheet-kicker {
+				font-family: var(--font-display);
+				font-size: 0.7rem;
+				letter-spacing: 0.18em;
+				text-transform: uppercase;
+				color: var(--vermillion);
+			}
+
+			.preview .broadsheet-hero-copy h2 {
+				font-family: var(--font-display);
+				font-size: var(--broadsheet-hero-title-size);
+				margin: 0;
+			}
+
+			.preview .broadsheet-hero-copy p {
+				margin: 0;
+				color: var(--ink-2);
+			}
+
+			.preview .broadsheet-meta {
+				font-family: var(--font-display);
+				font-size: 0.85rem;
+				letter-spacing: 0.04em;
+			}
+
+			.preview .broadsheet-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: var(--broadsheet-grid-gap);
+			}
+
+			.preview .broadsheet-card {
+				display: grid;
+				gap: 0.7rem;
+				padding-top: 1rem;
+				border-top: 1px solid color-mix(in srgb, var(--ink), transparent 80%);
+			}
+
+			.preview .broadsheet-card-figure {
+				border: 1px solid color-mix(in srgb, var(--ink), transparent 70%);
+				padding: 0.35rem;
+				background: color-mix(in srgb, var(--paper), #ffffff 12%);
+				aspect-ratio: var(--broadsheet-card-aspect);
+			}
+
+			.preview .broadsheet-card-figure img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+
+			.preview .broadsheet-card-figure .image-fallback {
+				height: 100%;
+				display: grid;
+				place-items: center;
+				border: 1px dashed color-mix(in srgb, var(--ink), transparent 70%);
+				font-family: var(--font-display);
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: var(--ink-2);
+			}
+
+			.preview .broadsheet-card h3 {
+				font-family: var(--font-display);
+				font-size: var(--broadsheet-card-title-size);
+				margin: 0 0 0.4rem;
+			}
+
+			.preview .broadsheet-card p {
+				margin: 0;
+				color: var(--ink-2);
+				font-size: var(--broadsheet-card-body-size);
+			}
+
+			.preview .broadsheet a {
+				color: inherit;
+				text-decoration: none;
+			}
+
+			.preview .broadsheet a:hover h2,
+			.preview .broadsheet a:hover h3,
+			.preview .broadsheet a:hover h4 {
+				text-decoration: underline;
+				text-decoration-color: var(--vermillion);
+				text-underline-offset: 0.2em;
+			}
+
+			.preview .ink-rise {
+				animation: ink-rise 0.8s ease both;
+			}
+
+			.preview .ink-rise.delay-1 {
+				animation-delay: 0.2s;
+			}
+
+			.preview .ink-rise.delay-2 {
+				animation-delay: 0.4s;
+			}
+
+			.preview .ink-rise.delay-3 {
+				animation-delay: 0.6s;
+			}
+
+			@keyframes ink-rise {
+				0% {
+					opacity: 0;
+					transform: translateY(12px);
+				}
+				100% {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			@media (max-width: 980px) {
+				.preview .broadsheet-hero {
+					grid-template-columns: 1fr;
+				}
+
+				.preview .broadsheet-hero-copy {
+					border-left: none;
+					border-top: 2px solid var(--ink);
+				}
+
+				.preview .broadsheet-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			@media (max-width: 900px) {
+				.preview .broadsheet-shell {
+					padding: 2rem 1.25rem 3rem;
+				}
+
+				.preview .broadsheet-masthead {
+					grid-template-columns: 1fr;
+					gap: 1rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="controls">
+				<h1>Design Playground</h1>
+				<p style="color: #999; margin-bottom: 12px; font-size: 0.75rem">
+					Homepage broadsheet tuning
+				</p>
+
+				<h2>Colors</h2>
+				<div class="control">
+					<label>Paper</label>
+					<input type="color" id="paper" value="#f6f0e8" />
+				</div>
+				<div class="control">
+					<label>Paper 2</label>
+					<input type="color" id="paper2" value="#efe6db" />
+				</div>
+				<div class="control">
+					<label>Ink</label>
+					<input type="color" id="ink" value="#241425" />
+				</div>
+				<div class="control">
+					<label>Ink 2</label>
+					<input type="color" id="ink2" value="#3a223a" />
+				</div>
+				<div class="control">
+					<label>Rule</label>
+					<input type="color" id="rule" value="#241425" />
+				</div>
+				<div class="control">
+					<label>Vermillion</label>
+					<input type="color" id="vermillion" value="#8f1d14" />
+				</div>
+
+				<h2>Typography</h2>
+				<div class="control">
+					<label>Body Latin</label>
+					<select id="bodyLatin">
+						<option>Vollkorn</option>
+						<option>Newsreader</option>
+						<option>Source Serif 4</option>
+						<option>Literata</option>
+						<option>Crimson Pro</option>
+						<option>Gentium Plus</option>
+						<option>Spectral</option>
+						<option>Alegreya</option>
+						<option>Noto Serif</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Body CJK</label>
+					<select id="bodyCJK">
+						<option>Noto Serif TC</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Display Latin</label>
+					<select id="displayLatin">
+						<option>Noto Sans</option>
+						<option>Source Sans 3</option>
+						<option>Work Sans</option>
+						<option>Inter</option>
+						<option>Alegreya Sans</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Display CJK</label>
+					<select id="displayCJK">
+						<option>Noto Sans TC</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Body Size: <span id="bodySizeVal">1.2rem</span></label>
+					<input
+						type="range"
+						id="bodySize"
+						min="0.9"
+						max="1.6"
+						step="0.05"
+						value="1.2"
+					/>
+				</div>
+				<div class="control">
+					<label>Leading: <span id="bodyLineHeightVal">1.7</span></label>
+					<input
+						type="range"
+						id="bodyLineHeight"
+						min="1.3"
+						max="2.2"
+						step="0.05"
+						value="1.7"
+					/>
+				</div>
+
+				<h2>Homepage Layout</h2>
+				<div class="control">
+					<label>Max Width: <span id="broadsheetMaxVal">1200px</span></label>
+					<input
+						type="range"
+						id="broadsheetMax"
+						min="900"
+						max="1600"
+						step="10"
+						value="1200"
+					/>
+				</div>
+				<div class="control">
+					<label>Shell Top: <span id="broadsheetPadTopVal">2.5rem</span></label>
+					<input
+						type="range"
+						id="broadsheetPadTop"
+						min="1"
+						max="5"
+						step="0.25"
+						value="2.5"
+					/>
+				</div>
+				<div class="control">
+					<label>Shell Sides: <span id="broadsheetPadXVal">3.5rem</span></label>
+					<input
+						type="range"
+						id="broadsheetPadX"
+						min="1"
+						max="5"
+						step="0.25"
+						value="3.5"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Shell Bottom: <span id="broadsheetPadBottomVal">4rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetPadBottom"
+						min="2"
+						max="6"
+						step="0.25"
+						value="4"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Frame Pad: <span id="broadsheetFramePadVal">0.75rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetFramePad"
+						min="0.25"
+						max="2"
+						step="0.25"
+						value="0.75"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Frame Bottom:
+						<span id="broadsheetFramePadBottomVal">1.5rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetFramePadBottom"
+						min="0.5"
+						max="3"
+						step="0.25"
+						value="1.5"
+					/>
+				</div>
+				<div class="control">
+					<label>Section Gap: <span id="broadsheetGapVal">2.75rem</span></label>
+					<input
+						type="range"
+						id="broadsheetGap"
+						min="1"
+						max="4"
+						step="0.25"
+						value="2.75"
+					/>
+				</div>
+				<div class="control">
+					<label>Hero Gap: <span id="broadsheetHeroGapVal">2rem</span></label>
+					<input
+						type="range"
+						id="broadsheetHeroGap"
+						min="1"
+						max="3"
+						step="0.25"
+						value="2"
+					/>
+				</div>
+				<div class="control">
+					<label>Grid Gap: <span id="broadsheetGridGapVal">1.6rem</span></label>
+					<input
+						type="range"
+						id="broadsheetGridGap"
+						min="0.75"
+						max="2.5"
+						step="0.25"
+						value="1.6"
+					/>
+				</div>
+				<div class="control">
+					<label>Hero Left: <span id="broadsheetHeroLeftVal">1.2</span></label>
+					<input
+						type="range"
+						id="broadsheetHeroLeft"
+						min="0.8"
+						max="1.6"
+						step="0.05"
+						value="1.2"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Hero Right: <span id="broadsheetHeroRightVal">0.8</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetHeroRight"
+						min="0.6"
+						max="1.2"
+						step="0.05"
+						value="0.8"
+					/>
+				</div>
+				<div class="control">
+					<label>Hero Image Ratio</label>
+					<select id="broadsheetHeroAspect">
+						<option selected>16 / 10</option>
+						<option>16 / 9</option>
+						<option>3 / 2</option>
+						<option>4 / 3</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Card Image Ratio</label>
+					<select id="broadsheetCardAspect">
+						<option selected>4 / 3</option>
+						<option>1 / 1</option>
+						<option>3 / 2</option>
+					</select>
+				</div>
+				<div class="control">
+					<label
+						>Title Size: <span id="broadsheetTitleSizeVal">3.2rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetTitleSize"
+						min="2"
+						max="4"
+						step="0.1"
+						value="3.2"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Subtitle Size:
+						<span id="broadsheetSubtitleSizeVal">1rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetSubtitleSize"
+						min="0.8"
+						max="1.4"
+						step="0.05"
+						value="1"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Hero Title:
+						<span id="broadsheetHeroTitleSizeVal">2.2rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetHeroTitleSize"
+						min="1.4"
+						max="2.6"
+						step="0.1"
+						value="2.2"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Card Title:
+						<span id="broadsheetCardTitleSizeVal">1.15rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetCardTitleSize"
+						min="0.9"
+						max="1.6"
+						step="0.05"
+						value="1.15"
+					/>
+				</div>
+				<div class="control">
+					<label
+						>Card Body:
+						<span id="broadsheetCardBodySizeVal">0.95rem</span></label
+					>
+					<input
+						type="range"
+						id="broadsheetCardBodySize"
+						min="0.75"
+						max="1.2"
+						step="0.05"
+						value="0.95"
+					/>
+				</div>
+
+				<button onclick="exportJSON()">&#x1F4CB; Copy JSON</button>
+			</div>
+
+			<div class="preview" id="preview">
+				<svg style="position: absolute; width: 0; height: 0" aria-hidden="true">
+					<defs>
+						<filter id="woodblock-border">
+							<feTurbulence
+								type="turbulence"
+								baseFrequency="0.015"
+								numOctaves="2"
+								result="turbulence"
+								seed="1"
+							/>
+							<feDisplacementMap
+								in="SourceGraphic"
+								in2="turbulence"
+								scale="1.2"
+								xChannelSelector="R"
+								yChannelSelector="G"
+							/>
+						</filter>
+					</defs>
+				</svg>
+
+				<section class="preview-section">
+					<h2 class="preview-section-title">Homepage Broadsheet Preview</h2>
+					<div class="broadsheet-shell">
+						<div class="broadsheet">
+							<header class="broadsheet-masthead broadsheet-inkwash ink-rise">
+								<div class="broadsheet-brand">
+									<img
+										class="logo-mark"
+										src="/img/burning-house-logo.svg"
+										alt="Burning House logo"
+									/>
+									<div>
+										<p class="broadsheet-brand-kicker">
+											Stories from a Burning House
+										</p>
+										<h1 class="broadsheet-title">Broadsheet Edition</h1>
+										<p class="broadsheet-subtitle">
+											A woodblock-inspired homepage with crisp imagery and
+											consistent baselines.
+										</p>
+									</div>
+								</div>
+								<div class="broadsheet-stamp">Dispatch</div>
+							</header>
+
+							<section class="broadsheet-hero ink-rise delay-1">
+								<a href="#" class="broadsheet-hero-figure">
+									<img
+										src="/fishing-for-snow-and-the-heart-of-the-lake/assets/b8fbdff8-d794-4787-9292-55293f2a8a08_3575x2984.jpg"
+										alt="West Lake in snow"
+									/>
+								</a>
+								<div class="broadsheet-hero-copy broadsheet-inkwash">
+									<div class="broadsheet-kicker">Most recent</div>
+									<a href="#">
+										<h2>Fishing for Snow, and the Heart of the Lake</h2>
+									</a>
+									<p>
+										Snowbound translation notes, tonal scansion, and a detour
+										through the West Lake in winter.
+									</p>
+									<div class="broadsheet-meta">December 26, 2022</div>
+								</div>
+							</section>
+
+							<section class="broadsheet-grid ink-rise delay-2">
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/tao-yuanming-reads-on-a-summer-evening/assets/f993de39-ae98-4723-8285-49a33baa19b2_1220x746.png"
+											alt="Tao Yuanming reading"
+										/>
+									</a>
+									<div>
+										<a href="#"
+											><h3>Tao Yuanming Reads on a Summer Evening</h3></a
+										>
+										<p>
+											Quiet summer dusk, paper fans, and a poet who knows when
+											to stop talking.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/the-five-virtues-of-the-cat/assets/39b5e86e-7db6-42d7-953d-02d9eefd1bd4.jpg"
+											alt="Crouching cat painting"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>The Five Virtues of the Cat</h3></a>
+										<p>
+											An ink-brush feline with a biography, and the taxonomy of
+											useful, useless cats.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.jpg"
+											alt="Ghost character rubbings"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>Song Dingbo Catches a Ghost</h3></a>
+										<p>
+											A roadside encounter, a captive spirit, and a long walk
+											home.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/mid-autumn-tiger-hill-late-ming/assets/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg"
+											alt="Farewell on Tiger Hill"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>Mid-Autumn at Tiger Hill</h3></a>
+										<p>
+											Lanterns, late Ming travel, and a hill that never quite
+											keeps still.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/too-much-party/assets/e9ba3c2f-3771-489d-a031-2b5452381ab4.jpg"
+											alt="Yuan dynasty wine jar"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>Too Much Party</h3></a>
+										<p>
+											Wine jars, imperial bans, and the eternal appeal of
+											late-night noise.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/the-heat/assets/8b8c97ea-19af-4dbd-ac55-3f0731ddd075_1948x3590.jpg"
+											alt="Taking the breeze by a palace pond"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>The Heat</h3></a>
+										<p>
+											Who stays in the city and who gets to leave when the air
+											turns thick.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/a-failure-as-a-mouser-a-failure-as-a-cat/assets/c7edaaa3-4594-4082-a37d-5454a0e031de.jpg"
+											alt="Watercolor cat"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>A Failure as a Mouser</h3></a>
+										<p>
+											A fat, bewildered cat and the limits of feline
+											professionalism.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/chen-cao-an-has-advice-for-being-online-in-an-election-year/assets/4311a3ba-2376-4846-bd77-a24ad91e4fb2.jpg"
+											alt="Fisherman painting detail"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>Chen Cao-an Has Advice</h3></a>
+										<p>
+											Classical punditry on how to survive a hot year online.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/li-bai-to-du-fu-wish-you-were-here/assets/9b098f7b-92fb-4bf2-a2bc-2d6b0837e0bd_2331x1657.jpeg"
+											alt="Landscape with travelers"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>Li Bai to Du Fu: Wish You Were Here</h3></a>
+										<p>
+											Letters across distances, luminous verses, and the old
+											travel blues.
+										</p>
+									</div>
+								</article>
+								<article class="broadsheet-card">
+									<a href="#" class="broadsheet-card-figure">
+										<img
+											src="/the-fox-fairy-of-zhejiangs-west-lake/assets/9b0a18ad-c1fa-4adb-97ba-8f5f6d2b17ec_1800x1200.jpg"
+											alt="Fox fairy and moon"
+										/>
+									</a>
+									<div>
+										<a href="#"><h3>The Fox Fairy of West Lake</h3></a>
+										<p>
+											Moonlit mischief, borrowed robes, and a tale that keeps
+											reappearing.
+										</p>
+									</div>
+								</article>
+							</section>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<script>
+			const preview = document.getElementById("preview");
+
+			function updatePreview() {
+				const values = {
+					paper: document.getElementById("paper").value,
+					paper2: document.getElementById("paper2").value,
+					ink: document.getElementById("ink").value,
+					ink2: document.getElementById("ink2").value,
+					rule: document.getElementById("rule").value,
+					vermillion: document.getElementById("vermillion").value,
+					bodyLatin: document.getElementById("bodyLatin").value,
+					bodyCJK: document.getElementById("bodyCJK").value,
+					displayLatin: document.getElementById("displayLatin").value,
+					displayCJK: document.getElementById("displayCJK").value,
+					bodySize: document.getElementById("bodySize").value,
+					bodyLineHeight: document.getElementById("bodyLineHeight").value,
+					broadsheetMax: document.getElementById("broadsheetMax").value,
+					broadsheetPadTop: document.getElementById("broadsheetPadTop").value,
+					broadsheetPadX: document.getElementById("broadsheetPadX").value,
+					broadsheetPadBottom: document.getElementById("broadsheetPadBottom")
+						.value,
+					broadsheetFramePad:
+						document.getElementById("broadsheetFramePad").value,
+					broadsheetFramePadBottom: document.getElementById(
+						"broadsheetFramePadBottom",
+					).value,
+					broadsheetGap: document.getElementById("broadsheetGap").value,
+					broadsheetHeroGap: document.getElementById("broadsheetHeroGap").value,
+					broadsheetGridGap: document.getElementById("broadsheetGridGap").value,
+					broadsheetHeroLeft:
+						document.getElementById("broadsheetHeroLeft").value,
+					broadsheetHeroRight: document.getElementById("broadsheetHeroRight")
+						.value,
+					broadsheetHeroAspect: document.getElementById("broadsheetHeroAspect")
+						.value,
+					broadsheetCardAspect: document.getElementById("broadsheetCardAspect")
+						.value,
+					broadsheetTitleSize: document.getElementById("broadsheetTitleSize")
+						.value,
+					broadsheetSubtitleSize: document.getElementById(
+						"broadsheetSubtitleSize",
+					).value,
+					broadsheetHeroTitleSize: document.getElementById(
+						"broadsheetHeroTitleSize",
+					).value,
+					broadsheetCardTitleSize: document.getElementById(
+						"broadsheetCardTitleSize",
+					).value,
+					broadsheetCardBodySize: document.getElementById(
+						"broadsheetCardBodySize",
+					).value,
+				};
+
+				preview.style.setProperty("--paper", values.paper);
+				preview.style.setProperty("--paper-2", values.paper2);
+				preview.style.setProperty("--ink", values.ink);
+				preview.style.setProperty("--ink-2", values.ink2);
+				preview.style.setProperty("--rule", values.rule);
+				preview.style.setProperty("--vermillion", values.vermillion);
+				preview.style.setProperty(
+					"--font-body",
+					values.bodyLatin + "," + values.bodyCJK + ",serif",
+				);
+				preview.style.setProperty(
+					"--font-display",
+					values.displayLatin + "," + values.displayCJK + ",sans-serif",
+				);
+				preview.style.setProperty("--text-size", values.bodySize + "rem");
+				preview.style.setProperty("--leading", values.bodyLineHeight);
+				preview.style.setProperty(
+					"--broadsheet-max",
+					values.broadsheetMax + "px",
+				);
+				preview.style.setProperty(
+					"--broadsheet-pad-top",
+					values.broadsheetPadTop + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-pad-x",
+					values.broadsheetPadX + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-pad-bottom",
+					values.broadsheetPadBottom + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-frame-pad",
+					values.broadsheetFramePad + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-frame-pad-bottom",
+					values.broadsheetFramePadBottom + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-gap",
+					values.broadsheetGap + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-hero-gap",
+					values.broadsheetHeroGap + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-grid-gap",
+					values.broadsheetGridGap + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-hero-left",
+					values.broadsheetHeroLeft + "fr",
+				);
+				preview.style.setProperty(
+					"--broadsheet-hero-right",
+					values.broadsheetHeroRight + "fr",
+				);
+				preview.style.setProperty(
+					"--broadsheet-hero-aspect",
+					values.broadsheetHeroAspect,
+				);
+				preview.style.setProperty(
+					"--broadsheet-card-aspect",
+					values.broadsheetCardAspect,
+				);
+				preview.style.setProperty(
+					"--broadsheet-title-size",
+					values.broadsheetTitleSize + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-subtitle-size",
+					values.broadsheetSubtitleSize + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-hero-title-size",
+					values.broadsheetHeroTitleSize + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-card-title-size",
+					values.broadsheetCardTitleSize + "rem",
+				);
+				preview.style.setProperty(
+					"--broadsheet-card-body-size",
+					values.broadsheetCardBodySize + "rem",
+				);
+
+				document.getElementById("bodySizeVal").textContent =
+					values.bodySize + "rem";
+				document.getElementById("bodyLineHeightVal").textContent =
+					values.bodyLineHeight;
+				document.getElementById("broadsheetMaxVal").textContent =
+					values.broadsheetMax + "px";
+				document.getElementById("broadsheetPadTopVal").textContent =
+					values.broadsheetPadTop + "rem";
+				document.getElementById("broadsheetPadXVal").textContent =
+					values.broadsheetPadX + "rem";
+				document.getElementById("broadsheetPadBottomVal").textContent =
+					values.broadsheetPadBottom + "rem";
+				document.getElementById("broadsheetFramePadVal").textContent =
+					values.broadsheetFramePad + "rem";
+				document.getElementById("broadsheetFramePadBottomVal").textContent =
+					values.broadsheetFramePadBottom + "rem";
+				document.getElementById("broadsheetGapVal").textContent =
+					values.broadsheetGap + "rem";
+				document.getElementById("broadsheetHeroGapVal").textContent =
+					values.broadsheetHeroGap + "rem";
+				document.getElementById("broadsheetGridGapVal").textContent =
+					values.broadsheetGridGap + "rem";
+				document.getElementById("broadsheetHeroLeftVal").textContent =
+					values.broadsheetHeroLeft;
+				document.getElementById("broadsheetHeroRightVal").textContent =
+					values.broadsheetHeroRight;
+				document.getElementById("broadsheetTitleSizeVal").textContent =
+					values.broadsheetTitleSize + "rem";
+				document.getElementById("broadsheetSubtitleSizeVal").textContent =
+					values.broadsheetSubtitleSize + "rem";
+				document.getElementById("broadsheetHeroTitleSizeVal").textContent =
+					values.broadsheetHeroTitleSize + "rem";
+				document.getElementById("broadsheetCardTitleSizeVal").textContent =
+					values.broadsheetCardTitleSize + "rem";
+				document.getElementById("broadsheetCardBodySizeVal").textContent =
+					values.broadsheetCardBodySize + "rem";
+			}
+
+			function exportJSON() {
+				const settings = {
+					colors: {
+						paper: document.getElementById("paper").value,
+						paper2: document.getElementById("paper2").value,
+						ink: document.getElementById("ink").value,
+						ink2: document.getElementById("ink2").value,
+						rule: document.getElementById("rule").value,
+						vermillion: document.getElementById("vermillion").value,
+					},
+					typography: {
+						body: {
+							fontLatin: document.getElementById("bodyLatin").value,
+							fontCJK: document.getElementById("bodyCJK").value,
+							size: parseFloat(document.getElementById("bodySize").value),
+							lineHeight: parseFloat(
+								document.getElementById("bodyLineHeight").value,
+							),
+						},
+						headlines: {
+							fontLatin: document.getElementById("displayLatin").value,
+							fontCJK: document.getElementById("displayCJK").value,
+						},
+					},
+					homepage: {
+						broadsheet: {
+							maxWidth: parseInt(
+								document.getElementById("broadsheetMax").value,
+							),
+							shellPadTop: parseFloat(
+								document.getElementById("broadsheetPadTop").value,
+							),
+							shellPadX: parseFloat(
+								document.getElementById("broadsheetPadX").value,
+							),
+							shellPadBottom: parseFloat(
+								document.getElementById("broadsheetPadBottom").value,
+							),
+							framePad: parseFloat(
+								document.getElementById("broadsheetFramePad").value,
+							),
+							framePadBottom: parseFloat(
+								document.getElementById("broadsheetFramePadBottom").value,
+							),
+							sectionGap: parseFloat(
+								document.getElementById("broadsheetGap").value,
+							),
+							heroGap: parseFloat(
+								document.getElementById("broadsheetHeroGap").value,
+							),
+							gridGap: parseFloat(
+								document.getElementById("broadsheetGridGap").value,
+							),
+							heroLeft: parseFloat(
+								document.getElementById("broadsheetHeroLeft").value,
+							),
+							heroRight: parseFloat(
+								document.getElementById("broadsheetHeroRight").value,
+							),
+							heroAspect: document.getElementById("broadsheetHeroAspect").value,
+							cardAspect: document.getElementById("broadsheetCardAspect").value,
+							titleSize: parseFloat(
+								document.getElementById("broadsheetTitleSize").value,
+							),
+							subtitleSize: parseFloat(
+								document.getElementById("broadsheetSubtitleSize").value,
+							),
+							heroTitleSize: parseFloat(
+								document.getElementById("broadsheetHeroTitleSize").value,
+							),
+							cardTitleSize: parseFloat(
+								document.getElementById("broadsheetCardTitleSize").value,
+							),
+							cardBodySize: parseFloat(
+								document.getElementById("broadsheetCardBodySize").value,
+							),
+						},
+					},
+				};
+
+				navigator.clipboard
+					.writeText(JSON.stringify(settings, null, 2))
+					.then(() => {
+						alert("JSON copied to clipboard!");
+					});
+			}
+
+			document.querySelectorAll("input, select").forEach((element) => {
+				element.oninput = updatePreview;
+			});
+
+			updatePreview();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,1372 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Design Playground – Single Post</title>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100..900;1,100..900&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,100..900;1,100..900&family=Literata:ital,wght@0,200..900;1,200..900&family=Newsreader:ital,wght@0,200..800;1,200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif:ital,wght@0,200..900;1,200..900&family=Noto+Serif+TC:wght@200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,wght@0,200..900;1,200..900&family=Spectral:ital,wght@0,200..900;1,200..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: system-ui;
+				background: #1a1a1a;
+				color: #f0f0f0;
+				overflow: hidden;
+			}
+
+			.container {
+				display: grid;
+				grid-template-columns: 320px 1fr;
+				height: 100vh;
+			}
+
+			.controls {
+				background: #2a2a2a;
+				padding: 15px;
+				overflow-y: auto;
+				border-right: 1px solid #444;
+				font-size: 0.85rem;
+			}
+
+			.controls h1 {
+				font-size: 1.2rem;
+				margin-bottom: 8px;
+			}
+
+			.controls h2 {
+				font-size: 0.8rem;
+				color: #aaa;
+				text-transform: uppercase;
+				margin: 18px 0 8px;
+				border-bottom: 1px solid #444;
+				padding-bottom: 4px;
+			}
+
+			.control {
+				margin-bottom: 10px;
+			}
+
+			.control label {
+				display: block;
+				font-size: 0.75rem;
+				color: #ccc;
+				margin-bottom: 4px;
+			}
+
+			input[type="range"] {
+				width: 100%;
+				height: 4px;
+			}
+
+			input[type="number"] {
+				width: 55px;
+				padding: 3px;
+				background: #1a1a1a;
+				border: 1px solid #444;
+				border-radius: 3px;
+				color: #f0f0f0;
+				font-size: 0.75rem;
+			}
+
+			input[type="color"] {
+				width: 100%;
+				height: 28px;
+				border: none;
+				cursor: pointer;
+			}
+
+			select {
+				width: 100%;
+				padding: 5px;
+				background: #1a1a1a;
+				border: 1px solid #444;
+				border-radius: 3px;
+				color: #f0f0f0;
+				font-size: 0.75rem;
+			}
+
+			button {
+				width: 100%;
+				padding: 10px;
+				margin-top: 15px;
+				background: #8f1d14;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-weight: 600;
+				font-size: 0.8rem;
+			}
+
+			button:hover {
+				background: #a52218;
+			}
+
+			.preview {
+				overflow-y: auto;
+				padding: 40px 20px;
+				background: var(--paper);
+				color: var(--ink);
+				--paper: #f6f0e8;
+				--ink: #241425;
+				--muted-ink: #3a223a;
+				--rule: #241425;
+				--marker-color: #8f1d14;
+				--font-body:
+					"Vollkorn", "Noto Serif TC", "Source Han Serif TC",
+					"Source Han Serif", ui-serif, Georgia, serif;
+				--font-display:
+					"Noto Sans", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans",
+					ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+					Helvetica, Arial, sans-serif;
+				--font-mn:
+					"Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", "Noto Sans TC",
+					"Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui,
+					-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				--body-size: 1.2rem;
+				--body-leading: 1.7;
+				--h1-size: clamp(2rem, 3.5vw, 2.8rem);
+				--h1-line-height: 1.2;
+				--h2-size: clamp(1.4rem, 2.2vw, 1.8rem);
+				--h2-line-height: 1.3;
+				--mn-size: 0.85rem;
+				--mn-line-height: 1.4;
+				--main-measure: 70ch;
+				--mn-width: 270px;
+				--mn-gutter: 4rem;
+				--frame-pad-x: 2.2rem;
+				--shell-padding: 3.5rem;
+				--border-weight: 2px;
+			}
+
+			.preview-section {
+				margin-bottom: 3.5rem;
+			}
+
+			.preview-section-title {
+				font-family: var(--font-display);
+				font-size: 1.35rem;
+				color: var(--ink);
+				letter-spacing: 0.02em;
+				margin: 0 0 1rem;
+				padding-bottom: 0.5rem;
+				border-bottom: 1px solid var(--rule);
+			}
+
+			.preview .wb-shell {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 2.5rem var(--shell-padding) 4rem;
+			}
+
+			.preview .wb-frame {
+				border: var(--border-weight) solid var(--ink);
+				padding: 2.2rem var(--frame-pad-x);
+				background: color-mix(in srgb, var(--paper), #ffffff 10%);
+				position: relative;
+			}
+
+			.preview .wb-frame::before,
+			.preview .wb-frame::after {
+				content: "";
+				position: absolute;
+				pointer-events: none;
+				border: 1px solid color-mix(in srgb, var(--ink), transparent 80%);
+				filter: url(#woodblock-border);
+				z-index: 0;
+			}
+
+			.preview .wb-frame::before {
+				inset: -0.7rem;
+				opacity: 0.55;
+			}
+
+			.preview .wb-frame::after {
+				inset: 0.5rem;
+				opacity: 0.4;
+			}
+
+			.preview .wb-grid {
+				display: grid;
+				grid-template-columns: minmax(0, var(--main-measure)) var(--mn-width);
+				gap: var(--mn-gutter);
+				align-items: start;
+				position: relative;
+				z-index: 1;
+			}
+
+			.preview .wb-grid--single {
+				grid-template-columns: minmax(0, var(--main-measure));
+				justify-content: center;
+			}
+
+			.preview .wb-prose {
+				font-family: var(--font-body);
+				font-size: var(--body-size);
+				line-height: var(--body-leading);
+				text-wrap: pretty;
+			}
+
+			.preview .wb-prose p {
+				margin: 0 0 1.1em;
+			}
+
+			.preview .wb-prose h1 {
+				font-family: var(--font-display);
+				font-size: var(--h1-size);
+				line-height: var(--h1-line-height);
+				margin: 0 0 0.6em;
+				letter-spacing: 0.01em;
+				font-weight: 800;
+			}
+
+			.preview .wb-prose h2 {
+				font-family: var(--font-display);
+				font-size: var(--h2-size);
+				line-height: var(--h2-line-height);
+				margin: 1.2em 0 0.5em;
+				font-weight: 700;
+			}
+
+			.preview .wb-prose blockquote {
+				margin: 1.2em 0;
+				padding-left: 1.1em;
+			}
+
+			.preview .wb-prose em:lang(zh),
+			.preview .wb-prose em:lang(zh-Hans),
+			.preview .wb-prose em:lang(zh-Hant),
+			.preview .wb-prose i:lang(zh),
+			.preview .wb-prose i:lang(zh-Hans),
+			.preview .wb-prose i:lang(zh-Hant) {
+				font-style: normal;
+			}
+
+			.preview .wb-prose pre {
+				font-family: var(--font-body);
+				font-size: 0.92em;
+				line-height: 1.35;
+				background: transparent;
+				padding: 0;
+				margin: 1.1em 0;
+				white-space: pre;
+				overflow-x: auto;
+			}
+
+			.preview .wb-prose img {
+				max-width: 100%;
+				height: auto;
+				display: block;
+				margin: 1.5em 0;
+			}
+
+			.preview .mn-marker {
+				font-size: 0.78em;
+				vertical-align: baseline;
+				position: relative;
+				cursor: pointer;
+				user-select: none;
+				color: var(--marker-color);
+				text-decoration: none;
+				border: none;
+			}
+
+			.preview .mn-note {
+				position: relative;
+				width: var(--mn-width);
+				font-family: var(--font-mn);
+				font-size: var(--mn-size);
+				line-height: var(--mn-line-height);
+				color: var(--muted-ink);
+				margin: 0;
+				grid-column: 2;
+				align-self: start;
+			}
+
+			.preview .mn-note::before {
+				content: "※";
+				position: absolute;
+				left: -1rem;
+				top: 0;
+				color: var(--marker-color);
+				font-size: 0.7em;
+			}
+
+			.preview .mn-note p {
+				margin: 0 0 0.6em;
+			}
+
+			.preview .mn-note p:last-child {
+				margin-bottom: 0;
+			}
+
+			.preview .mn-note em:lang(zh),
+			.preview .mn-note em:lang(zh-Hans),
+			.preview .mn-note em:lang(zh-Hant),
+			.preview .mn-note i:lang(zh),
+			.preview .mn-note i:lang(zh-Hans),
+			.preview .mn-note i:lang(zh-Hant) {
+				font-style: normal;
+			}
+
+			.preview.playground-no-notes .mn-note,
+			.preview.playground-no-notes .mn-marker {
+				display: none;
+			}
+
+			.preview.playground-no-notes .wb-grid {
+				grid-template-columns: minmax(0, var(--main-measure));
+				justify-content: center;
+			}
+
+			@media (max-width: 950px) {
+				.preview .wb-shell {
+					padding: 1.5rem 1rem 2rem;
+					max-width: 100%;
+				}
+
+				.preview .wb-frame {
+					border-width: 1px;
+					padding: 1.2rem 1rem;
+				}
+
+				.preview .wb-grid {
+					display: block;
+					position: static;
+				}
+
+				.preview .mn-note {
+					position: static !important;
+					top: auto !important;
+					width: 100% !important;
+					margin: 0.8em 0 !important;
+					padding: 0.6em !important;
+					background: rgba(0, 0, 0, 0.03);
+					border-left: 3px solid var(--marker-color);
+					grid-column: auto !important;
+					display: none;
+				}
+
+				.preview .mn-note::before {
+					display: none;
+				}
+
+				.preview .mn-note[hidden] {
+					display: none !important;
+				}
+
+				.preview .mn-note:not([hidden]) {
+					display: block !important;
+				}
+
+				.preview .mn-marker {
+					cursor: pointer;
+					text-decoration: underline;
+					text-decoration-style: dotted;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="controls">
+				<h1>Design Playground</h1>
+				<p style="color: #999; margin-bottom: 12px; font-size: 0.75rem">
+					Single-post template tuning
+				</p>
+
+				<h2>Colors</h2>
+				<div class="control">
+					<label>Paper</label>
+					<input type="color" id="paper" value="#f6f0e8" />
+				</div>
+				<div class="control">
+					<label>Ink</label>
+					<input type="color" id="ink" value="#241425" />
+				</div>
+				<div class="control">
+					<label>Muted</label>
+					<input type="color" id="mutedInk" value="#3a223a" />
+				</div>
+				<div class="control">
+					<label>Rule</label>
+					<input type="color" id="rule" value="#241425" />
+				</div>
+				<div class="control">
+					<label>Marker (&#x203B;)</label>
+					<input type="color" id="markerColor" value="#8f1d14" />
+				</div>
+
+				<h2>Body Typography</h2>
+				<div class="control">
+					<label>Latin Font</label>
+					<select id="bodyLatin">
+						<option>Vollkorn</option>
+						<option>Newsreader</option>
+						<option>Source Serif 4</option>
+						<option>Literata</option>
+						<option>Crimson Pro</option>
+						<option>Gentium Plus</option>
+						<option>Spectral</option>
+						<option>Alegreya</option>
+						<option>Noto Serif</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>CJK Font</label>
+					<select id="bodyCJK">
+						<option>Noto Serif TC</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Size: <span id="bodySizeVal">1.2rem</span></label>
+					<input
+						type="range"
+						id="bodySize"
+						min="0.8"
+						max="2"
+						step="0.05"
+						value="1.2"
+					/>
+				</div>
+				<div class="control">
+					<label>Leading: <span id="bodyLineHeightVal">1.7</span></label>
+					<input
+						type="range"
+						id="bodyLineHeight"
+						min="1.2"
+						max="2.5"
+						step="0.05"
+						value="1.7"
+					/>
+				</div>
+
+				<h2>Headline Typography</h2>
+				<div class="control">
+					<label>Latin Font</label>
+					<select id="displayLatin">
+						<option>Noto Sans</option>
+						<option>Source Sans 3</option>
+						<option>Work Sans</option>
+						<option>Inter</option>
+						<option>Alegreya Sans</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>CJK Font</label>
+					<select id="displayCJK">
+						<option>Noto Sans TC</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>H1 Size: <span id="h1SizeVal">2.8rem</span></label>
+					<input
+						type="range"
+						id="h1Size"
+						min="2"
+						max="3.5"
+						step="0.1"
+						value="2.8"
+					/>
+				</div>
+				<div class="control">
+					<label>H1 Leading: <span id="h1LineHeightVal">1.2</span></label>
+					<input
+						type="range"
+						id="h1LineHeight"
+						min="1"
+						max="1.6"
+						step="0.05"
+						value="1.2"
+					/>
+				</div>
+				<div class="control">
+					<label>H2 Size: <span id="h2SizeVal">1.8rem</span></label>
+					<input
+						type="range"
+						id="h2Size"
+						min="1.2"
+						max="2.4"
+						step="0.05"
+						value="1.8"
+					/>
+				</div>
+				<div class="control">
+					<label>H2 Leading: <span id="h2LineHeightVal">1.3</span></label>
+					<input
+						type="range"
+						id="h2LineHeight"
+						min="1"
+						max="1.6"
+						step="0.05"
+						value="1.3"
+					/>
+				</div>
+
+				<h2>Margin Note Typography</h2>
+				<div class="control">
+					<label>Font</label>
+					<select id="mnFont">
+						<option>Gill Sans</option>
+						<option>Alegreya Sans</option>
+						<option>Noto Sans</option>
+						<option>Source Sans 3</option>
+						<option>Work Sans</option>
+						<option>Inter</option>
+					</select>
+				</div>
+				<div class="control">
+					<label>Size: <span id="mnSizeVal">0.85rem</span></label>
+					<input
+						type="range"
+						id="mnSize"
+						min="0.6"
+						max="1.2"
+						step="0.05"
+						value="0.85"
+					/>
+				</div>
+				<div class="control">
+					<label>Leading: <span id="mnLineHeightVal">1.4</span></label>
+					<input
+						type="range"
+						id="mnLineHeight"
+						min="1.1"
+						max="2"
+						step="0.05"
+						value="1.4"
+					/>
+				</div>
+
+				<h2>Layout</h2>
+				<div class="control">
+					<label>Main: <span id="mainWidthVal">70ch</span></label>
+					<input type="range" id="mainWidth" min="45" max="90" value="70" />
+				</div>
+				<div class="control">
+					<label>Margin: <span id="mnWidthVal">270px</span></label>
+					<input
+						type="range"
+						id="mnWidth"
+						min="150"
+						max="420"
+						step="10"
+						value="270"
+					/>
+				</div>
+				<div class="control">
+					<label>Gutter: <span id="columnGapVal">4rem</span></label>
+					<input
+						type="range"
+						id="columnGap"
+						min="1"
+						max="8"
+						step="0.25"
+						value="4"
+					/>
+				</div>
+				<div class="control">
+					<label>Frame: <span id="framePadVal">2.2rem</span></label>
+					<input
+						type="range"
+						id="framePad"
+						min="1"
+						max="4"
+						step="0.2"
+						value="2.2"
+					/>
+				</div>
+				<div class="control">
+					<label>Shell: <span id="shellPadVal">3.5rem</span></label>
+					<input
+						type="range"
+						id="shellPad"
+						min="1"
+						max="6"
+						step="0.25"
+						value="3.5"
+					/>
+				</div>
+				<div class="control">
+					<label>Border: <span id="borderWeightVal">2px</span></label>
+					<input type="range" id="borderWeight" min="1" max="8" value="2" />
+				</div>
+
+				<h2>Post Options</h2>
+				<div class="control">
+					<label
+						><input type="checkbox" id="showMarginNotes" checked /> Show margin
+						notes</label
+					>
+				</div>
+
+				<button onclick="exportJSON()">&#x1F4CB; Copy JSON</button>
+			</div>
+
+			<div class="preview" id="preview">
+				<svg style="position: absolute; width: 0; height: 0" aria-hidden="true">
+					<defs>
+						<filter id="woodblock-border">
+							<feTurbulence
+								type="turbulence"
+								baseFrequency="0.015"
+								numOctaves="2"
+								result="turbulence"
+								seed="1"
+							/>
+							<feDisplacementMap
+								in="SourceGraphic"
+								in2="turbulence"
+								scale="1.2"
+								xChannelSelector="R"
+								yChannelSelector="G"
+							/>
+						</filter>
+					</defs>
+				</svg>
+
+				<section class="preview-section">
+					<h2 class="preview-section-title">Post Layout Preview</h2>
+					<div class="wb-shell">
+						<div class="wb-frame">
+							<div class="wb-grid">
+								<article class="wb-prose">
+									<h1>The Naming of Cats, and an Offering</h1>
+
+									<img
+										src="/the-naming-of-cats-and-an-offering/assets/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg"
+										alt="Woodblock print of a startlingly bright-eyed cat, surrounded by the text of the contract in a spiral."
+									/>
+
+									<ul class="post-metadata">
+										<li>
+											<time datetime="2023-07-18">July 18, 2023</time>
+										</li>
+										<li>
+											<a href="#" class="post-tag">translations</a>
+										</li>
+									</ul>
+
+									<p>
+										<em
+											>A "cat contract" 納貓兒契式 listing the cat's
+											obligations: patrolling tirelessly, catching mice, leaving
+											the numnums alone. From 銜蟬小錄
+											<i>Xianchan xiaolu</i>.</em
+										>
+									</p>
+
+									<p>
+										If you can read Classical Chinese, you can have a moderately
+										good time looking in pre-20th century reference texts to see
+										what they have for "cat."
+									</p>
+
+									<p>
+										The late 16th-century <i>Bencao gangmu</i> 本草綱目 (<i
+											>Materia Medica</i
+										>) says "貓 CAT can be read as either <i>miao</i> or
+										<i>mao</i>. They can say their own name!" The 17th-century
+										<i>Zhengzitong</i> 正字通 (<i
+											>Comprehensive Guide to Correct Graphs</i
+										>) explains that cats are "of the baleful category"
+										(陰類也). The entry in the 8th-century
+										<i>Wujing wenzi</i> 五經文字 (<i
+											>Simplex and Compound Graphs from the</i
+										>
+										Five Classics), presumably written by either a cat or a
+										Buddhist, calls them "ferocious beasts" (猛獸), while the
+										11th-century <i>Piya</i>'s 埤雅 (<i>Expansion to the</i>
+										Erya) entry for the character 貓 continues the <i>Erya</i>'s
+										proud tradition of unhelpful lexicography<sup
+											class="mn-marker"
+											data-mn-id="mn-1"
+											aria-expanded="false"
+											>※</sup
+										>
+										with the following:
+									</p>
+
+									<blockquote lang="zh-Hant">
+										鼠害苗，而貓能捕鼠，去苗之害，故貓字從苗
+									</blockquote>
+
+									<blockquote>
+										Mice harm SPROUTS 苗 <i>miáo</i>, and CATS 貓 <i>māo</i> can
+										catch mice, eliminating the harm to the sprouts. That's why
+										the character for CAT has SPROUT in it.
+									</blockquote>
+
+									<p>
+										For anybody wondering how they said <i>pspsps</i> in the
+										Qing dynasty, Wang Chutong's 王初桐 1798
+										<i>Mao sheng</i> 貓乘 (<i>A Cavalcade of Cats</i>), the
+										earliest collection of cat-related quotations and factoids I
+										could find, has a section listing all the ways of calling a
+										cat known to authoritative sources. <i>Mi</i>, variously
+										written, is the clear consensus favorite, though the Yuan
+										writer Bai Ting 白珽 suggests 汁汁, pronounced something
+										like <i>ji-ji</i> at the time. (Wang comments that this
+										"sounds like mice squeaking.")
+									</p>
+
+									<p>
+										Sun Sunyi's 孫蓀意 adorably titled
+										<i>Xianchan xiaolu</i> 銜蟬小錄 (preface dated 1799, when
+										she was just 16)<sup
+											class="mn-marker"
+											data-mn-id="mn-2"
+											aria-expanded="false"
+											>※</sup
+										>
+										has eight fascicles' worth of feline-related quotations
+										grouped under headings like "Origins," "Nomenclature," and
+										"Tales of Karmic Retribution," as well as a pretty
+										impressive selection of what the preceding thousand years
+										had to offer in the way of cat-related poetry. If you're in
+										the market for curious historical events, incidental verses,
+										or bonkers little geomantic notes,
+										<i>Xianchan xiaolu</i> has got you covered. ("The cat's
+										origins lie not in China but India," it explains, quoting a
+										late-Ming test-prep book. "As the cat was not engendered by
+										the <i>qi</i> of China, the tip of its nose is almost
+										invariably cold, the sole exception being the day of the
+										summer solstice.")
+									</p>
+
+									<p>
+										Unfortunately it doesn't have what <i>I'm</i> looking for,
+										which is a list of cat names.
+									</p>
+
+									<hr />
+
+									<p>
+										A while ago, Jennifer Feeley
+										<a
+											href="https://twitter.com/JenniferLFeeley/status/1557577006073741312"
+											>tweeted</a
+										>
+										about trying to find an English name for a cat named 麻珠
+										"Mázhū" in a Xi Xi story she was translating. Pet names are
+										among the few exceptions<sup
+											class="mn-marker"
+											data-mn-id="mn-3"
+											aria-expanded="false"
+											>※</sup
+										>
+										to the hard and fast rule that anyone who translates a
+										personal name will not see Valhalla, but they present
+										problems of their own.
+									</p>
+
+									<p>
+										I've always loved Robin Flower's translation of "Pangur
+										Bán," a poem in Old Irish written in the margin of a
+										manuscript by a bored 9th century monk:
+									</p>
+
+									<blockquote>
+										<pre>
+I and Pangur Bán, my cat,
+'Tis a like task we are at:
+Hunting mice is his delight,
+Hunting words I sit all night.
+
+Better far than praise of men
+'Tis to sit with book and pen;
+Pangur bears me no ill-will,
+He too plies his simple skill.
+
+'Tis a merry task to see
+At our tasks how glad are we,
+When at home we sit and find
+Entertainment to our mind.
+
+Oftentimes a mouse will stray
+In the hero Pangur's way;
+Oftentimes my keen thought set
+Takes a meaning in its net.
+
+'Gainst the wall he sets his eye
+Full and fierce and sharp and sly;
+'Gainst the wall of knowledge I
+All my little wisdom try.
+
+When a mouse darts from its den,
+O, how glad is Pangur then!
+O, what gladness do I prove
+When I solve the doubts I love!
+
+So in peace our task we ply,
+Pangur Bán, my cat, and I;
+In our arts we find our bliss,
+I have mine and he has his.
+
+Practice every day has made
+Pangur perfect in his trade.
+I get wisdom day and night
+Turning darkness into light.</pre
+										>
+									</blockquote>
+
+									<p>
+										For the author and his first readers, but not for us, the
+										name "Pangur" would obviously have belonged to a cat, a
+										problem Flower solved by adding "my cat" to the first line
+										of his translation. He leaves <i>Bán</i> ("white")
+										untranslated. Does it matter if a reader of Flower's English
+										comes away knowing less than someone who reads the original?
+										Does it matter <i>enough</i> to require a different
+										translation — say, to call the cat "White Felix," as another
+										version does?<sup
+											class="mn-marker"
+											data-mn-id="mn-4"
+											aria-expanded="false"
+											>※</sup
+										>
+										I always loved the image of a lone monk in a drafty cell,
+										smiling and shaking the cramps out of his quill hand as he
+										watched his white cat glaring at the walls. Would I have
+										loved it less if I didn't know what color the cat was?
+									</p>
+
+									<p>
+										A few years ago I read that the name "Pangur" might be
+										related to the Welsh <i>pannwr,</i> meaning "fuller (n.)" —
+										a turner of wool into felt, a treader-underfoot of soft
+										things, a biscuit-maker and player of invisible pianos. My
+										imaginary Pangur Bán yawned, hopped onto the monk's bed, and
+										set about kneading the blankets contentedly, purring up a
+										storm. Suddenly I had a whole new thing to love.
+									</p>
+
+									<p>
+										And, even better, a few new problems for any would-be
+										translator: Was "Pangur" actually connected to
+										<i>pannwr</i>? Would the monk who wrote the poem have known
+										that? Would he have felt it?
+									</p>
+
+									<p>
+										Would I have loved a poem that began "Me and Biscuits, my
+										white cat?"
+									</p>
+
+									<hr />
+
+									<img
+										src="/the-naming-of-cats-and-an-offering/assets/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png"
+										alt="A 17th century painting of a fluffy cat perched atop a stone and demonstrating, contra Chomsky, that it is entirely possible to sleep furiously."
+									/>
+
+									<p>
+										<em
+											>Detail:
+											<a
+												href="https://www.dpm.org.cn/collection/paint/229606.html"
+												>"Cat on Stone" (貓石圖) by Bada Shanren 八大山人</a
+											>. Summer, 1696.</em
+										>
+									</p>
+
+									<p>
+										The <i>Xiang mao jing</i> 相貓經 (<i
+											>Guide to Cat Physiognomy</i
+										>), quoted extensively in Huang Han's 1852
+										<i>Mao yuan</i> 貓苑 (<i>A Garden of Cats</i>), lists ways
+										of describing the physical appearance of cats. A cat with a
+										pure-colored coat of any color was "Good All Year Round"
+										(四時好). "Dark Clouds Over Snow" (烏雲蓋雪) was a black cat
+										with white fur on its belly and paws — but if only the paws
+										were white, it was "Walking Through Snow in Search of Plums"
+										(踏雪尋梅). A white cat with ginger spots was an
+										"Embroidered Tiger" (繡虎); a ginger cat with a white tummy
+										was a "Golden Quilt on a Silver Bed" (金被銀床); a calico
+										cat, somewhat confusingly, was a "Tortie" 玳瑁猫. But these
+										were terms used by connoisseurs to describe
+										<i>categories</i> of cats, not actual cat names.
+									</p>
+
+									<p>
+										The Song-dynasty poet and ailurophile Lu You 陸游 names
+										three cats in his poems — "Pink-nose" (粉鼻), "Snowball"
+										(雪兒), and "Tigger" (小於菟, from <i>wūtú</i>, a literary
+										word for "tiger" borrowed from the extinct Chu language).
+										Chapter 59 of the late-Ming masterpiece
+										<i>Jin Ping Mei</i> 金瓶梅 features an unforgettable
+										appearance from a long-haired white cat with a patch of
+										black fur called "Coals in the Snow" (雪裡送炭), a name that
+										could also be fairly translated as something like "A Friend
+										in Need." But a quick browse through the literature doesn't
+										turn up much in the way of named cats, and I'm looking for
+										something a little less transparent than "Pink-nose" or
+										"Snowball."
+									</p>
+
+									<hr />
+
+									<p>
+										What I'm looking for, <i>Wubai</i> 五白, is
+										<i>stupid</i> easy: "Five White," two characters you learn
+										in the first week of Chinese 101. This was the name of the
+										Song poet Mei Yaochen's 梅堯臣 cat, whom I picture having
+										dark fur with white paws and a white patch on its forehead
+										or tail. I've got no evidence for this; it's just a
+										guess.<sup
+											class="mn-marker"
+											data-mn-id="mn-5"
+											aria-expanded="false"
+											>※</sup
+										>
+									</p>
+
+									<p>
+										As with "Mazhu" and "Pangur Bán," the name poses a problem
+										for the translator, and none of the solutions I can think of
+										are all that great. "Five White" is awfully clunky. "Wubai"
+										is meaningless and (considering that Mei lived much too
+										early to speak Modern Standard Mandarin) not even accurate.
+										There are common pet names that do in English what I think
+										五白 is doing in Chinese, but they would feel as
+										distractingly out of place in the poem I'm about to
+										translate as "Biscuits" would in the context of 9th century
+										Irish monasticism.
+									</p>
+
+									<p>
+										The best solution I can think of is the one I've gone with:
+										prefacing the poem with a long digression about names and
+										descriptions in the hope that by now you will be picturing a
+										cat, maybe one you knew once. Think Boots; think Socks. Read
+										"Five White" or "Wubai" and imagine, long ago, someone's
+										Mittens.
+									</p>
+
+									<hr />
+
+									<h2>梅堯臣 - 祭貓</h2>
+
+									<blockquote lang="zh-Hant">
+										<pre>
+自有五白貓，鼠不侵我書
+今朝五白死，祭與飯與魚
+送之於中河，呪爾非爾疏
+昔爾嚙一鼠，銜鳴遶庭除
+欲使眾鼠驚，意將清我廬
+一從登舟來，舟中同屋居
+糗糧雖其薄，免食漏竊餘
+此實爾有勤，有勤勝雞豬
+世人重驅駕，謂不如馬驢
+已矣莫復論，為爾聊郗歔。</pre
+										>
+									</blockquote>
+
+									<h2>Mei Yaochen - An Offering</h2>
+
+									<blockquote>
+										<pre>
+My cat Five White. After I got you,
+The mice stopped nibbling at my books.
+This morning, Five White, you died.
+I made offerings of rice and fish,
+Left them with you in the middle of the river,
+Chanted prayers — to send you off, not to send you away.
+
+I remember how you caught a mouse
+And ran around the yard with it, crowing,
+To put a fright into the other mice
+And clear them out of my little home.
+
+From the day we came aboard this boat,
+We shared a room and meager board.
+Dry rations, and little enough of them —
+It would have been rat turds and scraps
+If it wasn't for you. You did your job
+and worked harder than any chicken or pig.
+
+People care only for beasts of burden,
+Praise only the donkey and the horse —
+Well, let them. I've no heart to argue.
+I'll be weeping for you a while yet.</pre
+										>
+									</blockquote>
+
+									<img
+										src="/the-naming-of-cats-and-an-offering/assets/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg"
+										alt="A grey and white tabby curled up in a corner of his bed, first drowsing, then blearily interested, then consenting to chin-chucks, then narrowing his eyes in enjoyment and tilting his head to make sure I knew where to skritch. He was a beautiful boy and a great little dude."
+									/>
+
+									<p>
+										<em>For Nemo, who was Somebody to me.</em>
+									</p>
+
+									<aside class="mn-note" id="mn-1" hidden>
+										I'm not being fair to the 3rd c. BCE dudes who wrote the
+										<i>Erya,</i> which is not really a dictionary so much as a
+										collection of factoids about characters. Sometimes those
+										factoids include definitions; sometimes, as here, they're
+										punny little mnemonics about characters' pronunciation or
+										structure.<br /><br />
+										For a sense of how useful this generally is to the working
+										sinologist, imagine looking up "money" and finding "mo'
+										money mo' honey" — except you also have to guess at the
+										pronunciations of "mo'," "money," and "honey," because
+										characters.
+									</aside>
+
+									<aside class="mn-note" id="mn-2" hidden>
+										Literally, "<i>Notes on Cicada-Nommers.</i>" "Cicada-nommer"
+										(銜蟬 <i>xianchan</i>) was a conventional word for cats at
+										least as far back as the Song — I first encountered it in an
+										incidental verse by Huang Tingjian 黃庭堅 (1045-1105) called
+										"Cat Wanted" (乞貓):<br /><br />
+										<blockquote lang="zh-Hant">
+											<pre>
+秋來鼠輩欺貓死，
+窺甕翻盤攪夜眠
+聞道狸奴將數子，
+買魚穿柳聘銜蟬
+
+Since last fall, the mice have taken advantage of my cat's death —
+poking their heads into jars, upending plates, and ruining my sleep.
+I heard your cat had a litter of kittens,
+So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
+											>
+										</blockquote>
+										<br />
+										The verb I'm translating as "engage" here, 聘 <i>pin</i>,
+										mostly shows up in the sense of 招聘 <i>zhaopin</i>/ "to
+										recruit" in modern Mandarin, but it was also the verb used
+										for arranging the marriage of a primary wife. This is
+										probably just a coincidental quirk of usage — but the
+										earliest surviving guide to cat ownership, Yu Zongben's
+										俞宗本 late 14th-c. <i>Namao jing</i> 納貓經, describes
+										settling a new cat in one's home in much the same way one
+										would a new wife.
+									</aside>
+
+									<aside class="mn-note" id="mn-3" hidden>
+										Off the top of my head, the exceptions are pet names,
+										nicknames, pen names, screen names, and anything else
+										intended primarily to be meaningful — the key words being
+										"intended" and "primarily." You never translate a government
+										name: Yes, Chinese names are written with characters; yes,
+										those characters are chosen for meaning as well as sound —
+										but nobody walks down the street thinking "oh man, just wait
+										til Nationbuilding Chen finds out Earthquake Zhang slashed
+										his tires." Translating personal names tends to be done more
+										often to female characters than to male ones, and the effect
+										ranges from "gross Orientalism" to, at best, "tacky
+										chinoiserie."<br /><br />
+										An example of Doing It Right is David Hawkes' handling of
+										peripheral character names in <i>The Story of the Stone</i>,
+										his translation of 紅樓夢 <i>Honglou meng</i>: the Jia
+										family names their household servants like pets, and Hawkes
+										translates accordingly. He also goes Latinate for the
+										religious names of monks and nuns, and French for the
+										professional names of performers. It's an ingenious,
+										incredibly well-executed way of restoring some of the
+										information passively available to a reader of Chinese.
+										Unfortunately, it's probably not applicable in most
+										contemporary contexts.
+									</aside>
+
+									<aside class="mn-note" id="mn-4" hidden>
+										There are other versions of "Pangur Bán" in English, but you
+										can safely skip all of them, even Seamus Heaney's. The
+										version by Paul Muldoon in
+										<i>The Penguin Book of Irish Poetry</i> is as smarmily
+										punchable as every other attempt at a poem that
+										sub-McGonagall talent-vacuum has ever committed.
+									</aside>
+
+									<aside class="mn-note" id="mn-5" hidden>
+										Paul Rouzer renders 五白貓 as "calico cat" in his
+										<a
+											href="https://www.degruyter.com/document/doi/10.1515/9781501501913/html?lang=en"
+											>translation of a poem by the Tang-dynasty Buddhist poet
+											Shide</a
+										>
+										(拾得 17), but it's not clear to me where he's getting that
+										from. (I'm sure he has his reasons — I just don't know what
+										they are.) In any event, the second line of the Mei Yaochen
+										poem makes it clear that 五白 is a name here, not a
+										description.
+									</aside>
+								</article>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<script>
+			const preview = document.getElementById("preview");
+
+			function isMobile() {
+				return window.innerWidth <= 950;
+			}
+
+			function wireToggles() {
+				document.querySelectorAll(".mn-marker").forEach((marker) => {
+					marker.addEventListener("click", (event) => {
+						if (!isMobile()) return;
+
+						event.preventDefault();
+						const id = marker.getAttribute("data-mn-id");
+						if (!id) return;
+						const note = document.getElementById(id);
+						if (!note) return;
+
+						note.hidden = !note.hidden;
+						marker.setAttribute("aria-expanded", String(!note.hidden));
+					});
+				});
+			}
+
+			function alignDesktopMarginNotes() {
+				if (preview.classList.contains("playground-no-notes")) {
+					return;
+				}
+
+				if (isMobile()) {
+					document.querySelectorAll(".mn-note").forEach((note) => {
+						note.style.position = "";
+						note.style.top = "";
+						note.hidden = true;
+					});
+					return;
+				}
+
+				const grid = document.querySelector(".wb-grid");
+				if (!grid) return;
+
+				document.querySelectorAll(".mn-note").forEach((note) => {
+					if (note.parentElement !== grid) {
+						grid.appendChild(note);
+					}
+				});
+
+				document.querySelectorAll(".mn-note").forEach((note) => {
+					note.style.position = "relative";
+					note.style.top = "0px";
+					note.hidden = false;
+				});
+
+				grid.offsetHeight;
+
+				document.querySelectorAll(".mn-marker").forEach((marker) => {
+					const id = marker.getAttribute("data-mn-id");
+					if (!id) return;
+
+					const note = document.getElementById(id);
+					if (!note) return;
+
+					const markerRect = marker.getBoundingClientRect();
+					const noteRect = note.getBoundingClientRect();
+					const verticalOffset = markerRect.top - noteRect.top;
+
+					note.style.position = "relative";
+					note.style.top = verticalOffset + "px";
+				});
+			}
+
+			function scheduleAlign() {
+				window.requestAnimationFrame(alignDesktopMarginNotes);
+			}
+
+			function updatePreview() {
+				const values = {
+					paper: document.getElementById("paper").value,
+					ink: document.getElementById("ink").value,
+					mutedInk: document.getElementById("mutedInk").value,
+					rule: document.getElementById("rule").value,
+					markerColor: document.getElementById("markerColor").value,
+					bodyLatin: document.getElementById("bodyLatin").value,
+					bodyCJK: document.getElementById("bodyCJK").value,
+					displayLatin: document.getElementById("displayLatin").value,
+					displayCJK: document.getElementById("displayCJK").value,
+					mnFont: document.getElementById("mnFont").value,
+					bodySize: document.getElementById("bodySize").value,
+					bodyLineHeight: document.getElementById("bodyLineHeight").value,
+					h1Size: document.getElementById("h1Size").value,
+					h1LineHeight: document.getElementById("h1LineHeight").value,
+					h2Size: document.getElementById("h2Size").value,
+					h2LineHeight: document.getElementById("h2LineHeight").value,
+					mnSize: document.getElementById("mnSize").value,
+					mnLineHeight: document.getElementById("mnLineHeight").value,
+					mainWidth: document.getElementById("mainWidth").value,
+					mnWidth: document.getElementById("mnWidth").value,
+					columnGap: document.getElementById("columnGap").value,
+					framePad: document.getElementById("framePad").value,
+					shellPad: document.getElementById("shellPad").value,
+					borderWeight: document.getElementById("borderWeight").value,
+					showMarginNotes: document.getElementById("showMarginNotes").checked,
+				};
+
+				preview.style.setProperty("--paper", values.paper);
+				preview.style.setProperty("--ink", values.ink);
+				preview.style.setProperty("--muted-ink", values.mutedInk);
+				preview.style.setProperty("--rule", values.rule);
+				preview.style.setProperty("--marker-color", values.markerColor);
+				preview.style.setProperty(
+					"--font-body",
+					values.bodyLatin + "," + values.bodyCJK + ",serif",
+				);
+				preview.style.setProperty(
+					"--font-display",
+					values.displayLatin + "," + values.displayCJK + ",sans-serif",
+				);
+				preview.style.setProperty(
+					"--font-mn",
+					values.mnFont + "," + values.bodyCJK + ",sans-serif",
+				);
+				preview.style.setProperty("--body-size", values.bodySize + "rem");
+				preview.style.setProperty("--body-leading", values.bodyLineHeight);
+				preview.style.setProperty("--h1-size", values.h1Size + "rem");
+				preview.style.setProperty("--h1-line-height", values.h1LineHeight);
+				preview.style.setProperty("--h2-size", values.h2Size + "rem");
+				preview.style.setProperty("--h2-line-height", values.h2LineHeight);
+				preview.style.setProperty("--mn-width", values.mnWidth + "px");
+				preview.style.setProperty("--mn-gutter", values.columnGap + "rem");
+				preview.style.setProperty("--mn-size", values.mnSize + "rem");
+				preview.style.setProperty("--mn-line-height", values.mnLineHeight);
+				preview.style.setProperty("--main-measure", values.mainWidth + "ch");
+				preview.style.setProperty("--frame-pad-x", values.framePad + "rem");
+				preview.style.setProperty("--shell-padding", values.shellPad + "rem");
+				preview.style.setProperty(
+					"--border-weight",
+					values.borderWeight + "px",
+				);
+				preview.classList.toggle(
+					"playground-no-notes",
+					!values.showMarginNotes,
+				);
+
+				document.getElementById("bodySizeVal").textContent =
+					values.bodySize + "rem";
+				document.getElementById("bodyLineHeightVal").textContent =
+					values.bodyLineHeight;
+				document.getElementById("h1SizeVal").textContent =
+					values.h1Size + "rem";
+				document.getElementById("h1LineHeightVal").textContent =
+					values.h1LineHeight;
+				document.getElementById("h2SizeVal").textContent =
+					values.h2Size + "rem";
+				document.getElementById("h2LineHeightVal").textContent =
+					values.h2LineHeight;
+				document.getElementById("mnSizeVal").textContent =
+					values.mnSize + "rem";
+				document.getElementById("mnLineHeightVal").textContent =
+					values.mnLineHeight;
+				document.getElementById("mainWidthVal").textContent =
+					values.mainWidth + "ch";
+				document.getElementById("mnWidthVal").textContent =
+					values.mnWidth + "px";
+				document.getElementById("columnGapVal").textContent =
+					values.columnGap + "rem";
+				document.getElementById("framePadVal").textContent =
+					values.framePad + "rem";
+				document.getElementById("shellPadVal").textContent =
+					values.shellPad + "rem";
+				document.getElementById("borderWeightVal").textContent =
+					values.borderWeight + "px";
+
+				scheduleAlign();
+			}
+
+			let resizeTimeout;
+			window.addEventListener("resize", () => {
+				clearTimeout(resizeTimeout);
+				resizeTimeout = setTimeout(scheduleAlign, 100);
+			});
+
+			function exportJSON() {
+				const settings = {
+					colors: {
+						paper: document.getElementById("paper").value,
+						ink: document.getElementById("ink").value,
+						mutedInk: document.getElementById("mutedInk").value,
+						rule: document.getElementById("rule").value,
+						markerColor: document.getElementById("markerColor").value,
+					},
+					typography: {
+						body: {
+							fontLatin: document.getElementById("bodyLatin").value,
+							fontCJK: document.getElementById("bodyCJK").value,
+							size: parseFloat(document.getElementById("bodySize").value),
+							lineHeight: parseFloat(
+								document.getElementById("bodyLineHeight").value,
+							),
+						},
+						headlines: {
+							fontLatin: document.getElementById("displayLatin").value,
+							fontCJK: document.getElementById("displayCJK").value,
+							h1Size: parseFloat(document.getElementById("h1Size").value),
+							h1LineHeight: parseFloat(
+								document.getElementById("h1LineHeight").value,
+							),
+							h2Size: parseFloat(document.getElementById("h2Size").value),
+							h2LineHeight: parseFloat(
+								document.getElementById("h2LineHeight").value,
+							),
+						},
+						marginNotes: {
+							font: document.getElementById("mnFont").value,
+							size: parseFloat(document.getElementById("mnSize").value),
+							lineHeight: parseFloat(
+								document.getElementById("mnLineHeight").value,
+							),
+						},
+					},
+					layout: {
+						mainColumnWidth: parseInt(
+							document.getElementById("mainWidth").value,
+						),
+						marginNoteWidth: parseInt(document.getElementById("mnWidth").value),
+						columnGap: parseFloat(document.getElementById("columnGap").value),
+						framePadding: parseFloat(document.getElementById("framePad").value),
+						shellPadding: parseFloat(document.getElementById("shellPad").value),
+						borderWeight: parseInt(
+							document.getElementById("borderWeight").value,
+						),
+					},
+					postOptions: {
+						showMarginNotes: document.getElementById("showMarginNotes").checked,
+					},
+				};
+
+				navigator.clipboard
+					.writeText(JSON.stringify(settings, null, 2))
+					.then(() => {
+						alert("JSON copied to clipboard!");
+					});
+			}
+
+			document.querySelectorAll("input, select").forEach((element) => {
+				element.oninput = updatePreview;
+			});
+
+			wireToggles();
+
+			window.addEventListener("load", scheduleAlign);
+
+			if (document.fonts && document.fonts.ready) {
+				document.fonts.ready.then(() => {
+					setTimeout(scheduleAlign, 150);
+				});
+			}
+
+			updatePreview();
+		</script>
+	</body>
+</html>

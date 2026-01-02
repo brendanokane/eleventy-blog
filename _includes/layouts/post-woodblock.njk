@@ -91,8 +91,10 @@ layout: layouts/base.njk
   }
 
   /* Full width for posts without margin notes */
-  .wb-grid:not(:has(.mn-note)) {
+  .wb-grid:not(:has(.mn-note)),
+  .wb-grid--single {
     grid-template-columns: minmax(0, var(--main-measure));
+    justify-content: center;
   }
 
   .wb-prose {
@@ -252,10 +254,20 @@ layout: layouts/base.njk
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 
+{% set hasMarginNotes = content and ("mn-note" in content or "mn-wrapper" in content or "mn-marker" in content) %}
 <div class="wb-shell">
   <div class="wb-frame">
-    <div class="wb-grid">
+    <div class="wb-grid{% if not hasMarginNotes %} wb-grid--single{% endif %}">
       <article class="wb-prose" data-pagefind-body>
+        {% if post_image_thumb or post_image %}
+          <span class="pagefind-meta" data-pagefind-meta="image">{{ post_image_thumb or post_image }}</span>
+        {% endif %}
+        {% if post_image_alt or postImageAlt %}
+          <span class="pagefind-meta" data-pagefind-meta="image_alt">{{ post_image_alt or postImageAlt }}</span>
+        {% endif %}
+        {% if summary %}
+          <span class="pagefind-meta" data-pagefind-meta="summary">{{ summary }}</span>
+        {% endif %}
         <h1 data-pagefind-meta="title">{{ title }}</h1>
 
         <ul class="post-metadata" data-pagefind-ignore>
@@ -268,7 +280,7 @@ layout: layouts/base.njk
           {%- endif %}
         </ul>
 
-        {{ content | safe }}
+        {{ content | stripLeadingH1 | safe }}
       </article>
     </div>
   </div>

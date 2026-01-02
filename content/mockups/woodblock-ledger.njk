@@ -297,6 +297,8 @@ eleventyExcludeFromCollections: true
             </a>
             {% if lead.data.summary %}
               <p>{{ lead.data.summary }}</p>
+            {% elif lead.data.og_description or lead.data.ogDescription %}
+              <p>{{ lead.data.og_description or lead.data.ogDescription }}</p>
             {% elif lead.data.description %}
               <p>{{ lead.data.description }}</p>
             {% endif %}
@@ -317,6 +319,8 @@ eleventyExcludeFromCollections: true
                   </a>
                   {% if post.data.summary %}
                     <p>{{ post.data.summary }}</p>
+                  {% elif post.data.og_description or post.data.ogDescription %}
+                    <p>{{ post.data.og_description or post.data.ogDescription }}</p>
                   {% elif post.data.description %}
                     <p>{{ post.data.description }}</p>
                   {% endif %}

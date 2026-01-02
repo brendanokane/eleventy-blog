@@ -84,6 +84,18 @@ export default function (eleventyConfig) {
 		return Object.keys(target);
 	});
 
+	eleventyConfig.addFilter("safeJson", (value) => {
+		const json = JSON.stringify(value === undefined ? null : value);
+		return json.replace(/</g, "\\u003c");
+	});
+
+	eleventyConfig.addFilter("stripLeadingH1", (html) => {
+		if (!html || typeof html !== "string") return html;
+		const trimmed = html.trimStart();
+		if (!trimmed.startsWith("<h1")) return html;
+		return trimmed.replace(/^<h1[^>]*>[\s\S]*?<\/h1>\s*/i, "");
+	});
+
 	eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
 		return (tags || []).filter(
 			(tag) => ["all", "nav", "post", "posts"].indexOf(tag) === -1,

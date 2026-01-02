@@ -20,3 +20,11 @@ When enabled, it was prepending "content/" somehow.
 **Solution:** Re-enabled the plugin with proper configuration. The plugin is actually useful for optimization, just needed to not mess with our blog-less URLs.
 
 **Lesson learned:** When debugging path issues in Eleventy, check ALL the transform plugins, not just the obvious URL ones!
+
+## 2025-12-27: Broadsheet CSS Wrangling
+
+Ok, yes, the CSS is a little feral right now. Deep breaths.
+
+## 2025-12-28: Playground Controls
+
+So many sliders; still standing.

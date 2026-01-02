@@ -1,6 +1,57 @@
 // Computed data for all blog posts
 // These values are computed at build time and can be overridden by frontmatter
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import Image from "@11ty/eleventy-img";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
+const THUMB_WIDTH = 160;
+const THUMB_OUTPUT_DIR = path.join(PROJECT_ROOT, "_site", "img", "thumbs");
+const THUMB_URL_PATH = "/img/thumbs/";
+
+function isFullUrl(value) {
+	try {
+		new URL(value);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+function resolveLocalPostImage(src) {
+	const cleaned = src.split("?")[0].replace(/^\/+/, "");
+	const parts = cleaned.split("/assets/");
+	if (parts.length < 2) {
+		return path.join(PROJECT_ROOT, "content", cleaned);
+	}
+	const slug = parts.shift();
+	const assetPath = parts.join("/assets/");
+	return path.join(PROJECT_ROOT, "content", "blog", slug, "assets", assetPath);
+}
+
+async function buildThumb(src) {
+	if (!src || typeof src !== "string") return "";
+	if (isFullUrl(src)) return src;
+
+	const inputPath = resolveLocalPostImage(src);
+
+	try {
+		const metadata = await Image(inputPath, {
+			widths: [THUMB_WIDTH],
+			formats: ["jpeg"],
+			outputDir: THUMB_OUTPUT_DIR,
+			urlPath: THUMB_URL_PATH,
+		});
+
+		return metadata.jpeg?.[0]?.url || src;
+	} catch (error) {
+		console.warn(`Warning: thumbnail build failed for ${src}:`, error.message);
+		return src;
+	}
+}
+
 export default {
 	tags: ["posts"],
 	layout: "layouts/post-woodblock.njk",
@@ -10,19 +61,10 @@ export default {
 		// Used for SEO meta description, social cards, and search results
 		summary: (data) => {
 			if (data.summary) return data.summary;
+			if (data.og_description) return data.og_description;
 			if (data.subtitle) return data.subtitle;
-
-			// Extract first 160 chars from content (ideal for SEO)
-			// Strip HTML/markdown and truncate
-			const content = data.page?.rawInput || data.content || "";
-			const text = content
-				.replace(/<[^>]*>/g, "") // Remove HTML tags
-				.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Remove markdown links
-				.replace(/[#*_`]/g, "") // Remove markdown formatting
-				.trim()
-				.substring(0, 160);
-
-			return text ? text + "..." : data.title;
+			if (data.description) return data.description;
+			return data.title || "";
 		},
 
 		// Compute excerpt for archive listings and internal search
@@ -118,6 +160,13 @@ export default {
 				return data.title;
 			}
 			return "";
+		},
+
+		// Compute a small thumbnail for header search suggestions
+		post_image_thumb: async (data) => {
+			if (data.post_image_thumb) return data.post_image_thumb;
+			if (!data.post_image) return "";
+			return buildThumb(data.post_image);
 		},
 
 		// Compute Bluesky handle (defaults to site default)

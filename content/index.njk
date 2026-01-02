@@ -5,130 +5,89 @@ eleventyNavigation:
   order: 1
 ---
 
-{# Get all posts for testing (ignoring publish flag) #}
-{% set allPosts = collections.posts | reverse %}
-{% set publishedPosts = allPosts %}
+{% set posts = collections.posts | reverse %}
 
-<div class="magazine-layout">
-
-  {% if publishedPosts.length > 0 %}
-    {# Featured Story - Most Recent Post #}
-    {% set featured = publishedPosts[0] %}
-    <article class="featured-story {% if not featured.data.post_image %}featured-story-no-image{% endif %}">
-      <a href="{{ featured.url }}">
-        {% if featured.data.post_image %}
-          <img
-            src="{{ featured.data.post_image }}"
-            alt="{{ featured.data.post_image_alt or featured.data.title }}"
-            class="featured-story-image"
-            loading="eager"
-          >
-        {% endif %}
-
-        <h2 class="featured-story-title">{{ featured.data.title }}</h2>
-
-        {% if featured.data.subtitle %}
-          <p class="featured-story-subtitle">{{ featured.data.subtitle }}</p>
-        {% endif %}
-
-        {% if featured.data.summary %}
-          <p class="featured-story-excerpt">{{ featured.data.summary }}</p>
-        {% elif featured.data.description %}
-          <p class="featured-story-excerpt">{{ featured.data.description }}</p>
-        {% endif %}
-
-        <div class="featured-story-meta">
-          <time datetime="{{ featured.date | htmlDateString }}">
-            {{ featured.date | readableDate("MMMM d, yyyy") }}
-          </time>
-          {% if featured.data.tags %}
-            <span class="featured-story-tags">
-              {% for tag in featured.data.tags %}
-                {% if tag != "posts" and tag != "post" %}
-                  · {{ tag }}
-                {% endif %}
-              {% endfor %}
-            </span>
+<div class="broadsheet-shell">
+  <div class="broadsheet">
+    <header class="broadsheet-masthead broadsheet-inkwash ink-rise">
+      <div class="broadsheet-brand">
+        <img class="logo-mark" src="/img/burning-house-logo.svg" alt="Burning House logo">
+        <div>
+          {% if metadata.tagline %}
+            <p class="broadsheet-brand-kicker">{{ metadata.tagline }}</p>
+          {% endif %}
+          <h1 class="broadsheet-title">{{ metadata.title }}</h1>
+          {% if metadata.description %}
+            <p class="broadsheet-subtitle">{{ metadata.description }}</p>
           {% endif %}
         </div>
-      </a>
-    </article>
-  {% endif %}
+      </div>
+      <div class="broadsheet-stamp">Dispatch</div>
+    </header>
 
-  {% if publishedPosts.length > 1 %}
-    {# Hero Stories - Next 3-4 Posts #}
-    {% set heroCount = 3 %}
-    {% if publishedPosts.length > 10 %}
-      {% set heroCount = 4 %}
+    {% if posts.length %}
+      {% set featured = posts[0] %}
+      {% set featuredTeaser = featured.data.summary or featured.data.og_description or featured.data.ogDescription or featured.data.description %}
+      <section class="broadsheet-hero ink-rise delay-1">
+        <a href="{{ featured.url }}" class="broadsheet-hero-figure">
+          {% if featured.data.post_image %}
+            <img
+              src="{{ featured.data.post_image }}"
+              alt="{{ featured.data.post_image_alt or featured.data.title }}"
+              loading="eager"
+            >
+          {% else %}
+            <div class="image-fallback">No image</div>
+          {% endif %}
+        </a>
+        <div class="broadsheet-hero-copy broadsheet-inkwash">
+          <div class="broadsheet-kicker">Most recent</div>
+          <a href="{{ featured.url }}">
+            <h2>{{ featured.data.title }}</h2>
+          </a>
+          {% if featuredTeaser %}
+            <p>{{ featuredTeaser }}</p>
+          {% endif %}
+          <div class="broadsheet-meta">
+            <time datetime="{{ featured.date | htmlDateString }}">{{ featured.date | readableDate }}</time>
+          </div>
+        </div>
+      </section>
+
+      <section class="broadsheet-grid ink-rise delay-2">
+        {% for post in posts %}
+          {% if loop.index0 > 0 and loop.index0 <= 9 %}
+            {% set teaser = post.data.summary or post.data.og_description or post.data.ogDescription or post.data.description %}
+            <article class="broadsheet-card">
+              <a href="{{ post.url }}" class="broadsheet-card-figure">
+                {% if post.data.post_image %}
+                  <img
+                    src="{{ post.data.post_image }}"
+                    alt="{{ post.data.post_image_alt or post.data.title }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="image-fallback">No image</div>
+                {% endif %}
+              </a>
+              <div>
+                <a href="{{ post.url }}">
+                  <h3>{{ post.data.title }}</h3>
+                </a>
+                {% if teaser %}
+                  <p>{{ teaser }}</p>
+                {% endif %}
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </section>
+    {% else %}
+      <div class="broadsheet-empty">
+        <h2>Welcome to Burning House</h2>
+        <p>Essays and translations on classical Chinese literature.</p>
+        <p>Posts will appear here once published.</p>
+      </div>
     {% endif %}
-
-    <section class="hero-stories">
-      {% for post in publishedPosts %}
-        {% if loop.index0 > 0 and loop.index0 <= heroCount %}
-          <article class="hero-story {% if not post.data.post_image %}hero-story-no-image{% endif %}">
-            <a href="{{ post.url }}">
-              {% if post.data.post_image %}
-                <img
-                  src="{{ post.data.post_image }}"
-                  alt="{{ post.data.post_image_alt or post.data.title }}"
-                  class="hero-story-image"
-                  loading="lazy"
-                >
-              {% endif %}
-
-              <h3 class="hero-story-title">{{ post.data.title }}</h3>
-
-              {% if post.data.summary %}
-                <p class="hero-story-excerpt">{{ post.data.summary }}</p>
-              {% elif post.data.description %}
-                <p class="hero-story-excerpt">{{ post.data.description }}</p>
-              {% endif %}
-
-              <div class="hero-story-meta">
-                <time datetime="{{ post.date | htmlDateString }}">
-                  {{ post.date | readableDate("MMMM d, yyyy") }}
-                </time>
-              </div>
-            </a>
-          </article>
-        {% endif %}
-      {% endfor %}
-    </section>
-  {% endif %}
-
-  {% if publishedPosts.length > (heroCount + 1) %}
-    {# Smaller Stories Grid - Remaining Posts #}
-    <section class="story-grid">
-      {% for post in publishedPosts %}
-        {% if loop.index0 > heroCount %}
-          <article class="story-card">
-            <a href="{{ post.url }}">
-              <h4 class="story-card-title">{{ post.data.title }}</h4>
-
-              {% if post.data.summary %}
-                <p class="story-card-excerpt">{{ post.data.summary | truncate(120) }}</p>
-              {% elif post.data.description %}
-                <p class="story-card-excerpt">{{ post.data.description | truncate(120) }}</p>
-              {% endif %}
-
-              <div class="story-card-meta">
-                <time datetime="{{ post.date | htmlDateString }}">
-                  {{ post.date | readableDate("MMM d, yyyy") }}
-                </time>
-              </div>
-            </a>
-          </article>
-        {% endif %}
-      {% endfor %}
-    </section>
-  {% endif %}
-
-  {% if publishedPosts.length == 0 %}
-    <div style="text-align: center; padding: 4em 2em;">
-      <h2>Welcome to Burning House</h2>
-      <p style="color: var(--ink-2); font-size: 1.1em;">Essays and translations on classical Chinese literature.</p>
-      <p style="color: var(--ink-2);">Posts will appear here once published.</p>
-    </div>
-  {% endif %}
-
+  </div>
 </div>

@@ -1,5 +1,7 @@
+{% set pageUrl = page.url or "/" %}
+{% set isEmailPage = pageUrl | slice(0, 8) == "/emails/" %}
 <!doctype html>
-<html lang="{{ metadata.language }}">
+<html lang="{{ metadata.language }}"{% if isEmailPage %} data-pagefind-ignore="all"{% endif %}>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +24,6 @@
 				{% set siteUrl = siteUrl | slice(0, -1) %}
 			{% endif %}
 		{% endif %}
-		{% set pageUrl = page.url or "/" %}
 		{% if siteUrl %}
 			{% set absPageUrl = siteUrl + pageUrl %}
 		{% else %}
@@ -118,7 +119,7 @@
 		{# Fonts via Adobe Fonts kit (Typekit) #}
 		<link rel="stylesheet" href="https://use.typekit.net/jtc7wrn.css">
 	</head>
-	<body>
+	<body{% if isEmailPage %} data-pagefind-ignore="all"{% endif %}>
 		<!-- Woodblock SVG Filters -->
 		<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
 			<defs>
@@ -158,6 +159,28 @@
 							<li class="nav-item"><a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>About</a></li>
 						</ul>
 					</nav>
+					<form class="site-search" action="/search/" method="get" role="search" data-search-form>
+						<label class="visually-hidden" for="site-search-input">Search posts</label>
+						<input
+							type="search"
+							id="site-search-input"
+							name="q"
+							class="site-search-input"
+							autocomplete="off"
+							placeholder="Search posts..."
+							aria-controls="site-search-panel"
+							aria-expanded="false"
+							data-search-input
+						>
+						<button class="site-search-button" type="submit">Search</button>
+						<div class="site-search-panel" id="site-search-panel" data-search-panel hidden>
+							<div class="site-search-panel-header">
+								<span class="site-search-heading" data-search-heading>Recent posts</span>
+								<span class="site-search-count" data-search-count></span>
+							</div>
+							<div class="site-search-results" data-search-results role="list"></div>
+						</div>
+					</form>
 					<button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle color theme">
 						<span class="theme-toggle-label" data-theme-label>Theme</span>
 					</button>
@@ -177,9 +200,25 @@
 			</p>
 		</footer>
 
+		{% set recentPosts = collections.posts | reverse %}
+		<script type="application/json" id="search-suggestions-data">
+		[
+		{% for post in recentPosts %}
+			{% set title = post.data.title or "Untitled" %}
+			{% set summary = post.data.summary or post.data.subtitle or post.data.description or "" %}
+			{
+				"title": {{ title | safeJson }},
+				"url": {{ post.url | safeJson }},
+				"summary": {{ summary | safeJson }},
+				"image": {{ (post.data.post_image_thumb or post.data.post_image or "") | safeJson }},
+				"imageAlt": {{ (post.data.post_image_alt or title) | safeJson }}
+			}{% if not loop.last %},{% endif %}
+		{% endfor %}
+		]
+		</script>
+
 		<!-- This page `{{ page.url }}` was built on {% currentBuildDate %} -->
 		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
-		<script src="/assets/js/marginnote.js"></script>
 		<script>
 			(function () {
 				const storageKey = "theme";
@@ -223,6 +262,223 @@
 				systemTheme.addEventListener("change", (event) => {
 					if (!localStorage.getItem(storageKey)) {
 						applyTheme(event.matches ? "dark" : "light");
+					}
+				});
+			})();
+		</script>
+		<script>
+			(function () {
+				const form = document.querySelector("[data-search-form]");
+				const dataScript = document.getElementById("search-suggestions-data");
+				if (!form || !dataScript) return;
+
+				const input = form.querySelector("[data-search-input]");
+				const panel = form.querySelector("[data-search-panel]");
+				const results = form.querySelector("[data-search-results]");
+				const heading = form.querySelector("[data-search-heading]");
+				const count = form.querySelector("[data-search-count]");
+
+				if (!input || !panel || !results || !heading || !count) return;
+
+				let suggestions = [];
+				try {
+					suggestions = JSON.parse(dataScript.textContent) || [];
+				} catch {
+					suggestions = [];
+				}
+
+				const suggestionMap = new Map(
+					suggestions.map((item) => [item.url, item]),
+				);
+
+				const maxResults = 6;
+				let pagefindPromise;
+				let pagefindConfigured = false;
+				let activeSearch = 0;
+
+				async function getPagefind() {
+					if (!pagefindPromise) {
+						pagefindPromise = import("/pagefind/pagefind.js");
+					}
+
+					const pagefind = await pagefindPromise;
+					if (!pagefindConfigured) {
+						await pagefind.options({ excerptLength: 15 });
+						pagefindConfigured = true;
+					}
+					return pagefind;
+				}
+
+				function truncate(text, maxLength) {
+					const clean = (text || "").toString().trim();
+					if (clean.length <= maxLength) return clean;
+					return `${clean.slice(0, maxLength - 1)}…`;
+				}
+
+				function buildEmpty(message) {
+					results.innerHTML = "";
+					const empty = document.createElement("div");
+					empty.className = "site-search-empty";
+					empty.textContent = message;
+					results.appendChild(empty);
+				}
+
+				function renderLoading() {
+					results.innerHTML = "";
+					const loading = document.createElement("div");
+					loading.className = "site-search-loading";
+					loading.textContent = "Searching…";
+					results.appendChild(loading);
+				}
+
+				function renderItems(items, query, useHtmlSummary = false) {
+					results.innerHTML = "";
+					heading.textContent = query ? "Search results" : "Recent posts";
+					count.textContent = items.length ? `${items.length}` : "";
+
+					if (!items.length) {
+						buildEmpty(
+							query
+								? "No results yet. Press Enter to search everything."
+								: "Type to search. Recent posts will appear here.",
+						);
+						return;
+					}
+
+					items.forEach((item) => {
+						const link = document.createElement("a");
+						link.className = "site-search-item";
+						link.href = item.url;
+
+						const thumb = document.createElement("div");
+						thumb.className = "site-search-thumb";
+
+						if (item.image) {
+							const img = document.createElement("img");
+							img.src = item.image;
+							img.alt = item.imageAlt || item.title || "";
+							img.loading = "lazy";
+							thumb.appendChild(img);
+						} else {
+							const fallback = document.createElement("div");
+							fallback.className = "site-search-thumb-fallback";
+							fallback.textContent = "No image";
+							thumb.appendChild(fallback);
+						}
+
+						const meta = document.createElement("div");
+						meta.className = "site-search-meta";
+
+						const title = document.createElement("div");
+						title.className = "site-search-title";
+						title.textContent = item.title || "Untitled";
+
+						const summary = document.createElement("div");
+						summary.className = "site-search-summary";
+
+						if (item.summary) {
+							if (useHtmlSummary) {
+								summary.innerHTML = item.summary;
+							} else {
+								summary.textContent = truncate(item.summary, 120);
+							}
+						}
+
+						meta.appendChild(title);
+						if (summary.textContent || summary.innerHTML) {
+							meta.appendChild(summary);
+						}
+
+						link.appendChild(thumb);
+						link.appendChild(meta);
+						results.appendChild(link);
+					});
+				}
+
+				function renderRecent() {
+					renderItems(suggestions.slice(0, maxResults), "");
+				}
+
+				async function renderSearch(query) {
+					const searchId = ++activeSearch;
+					renderLoading();
+
+					try {
+						const pagefind = await getPagefind();
+						const searchResults = await pagefind.search(query);
+						const sliced = searchResults.results.slice(0, maxResults);
+						const data = await Promise.all(
+							sliced.map((result) => result.data()),
+						);
+
+						if (searchId !== activeSearch) return;
+
+						const items = data.map((result) => {
+							const fallback = suggestionMap.get(result.url) || {};
+							return {
+								title: result.meta?.title || fallback.title || "Untitled",
+								url: result.url,
+								summary: result.excerpt || fallback.summary || "",
+								image: result.meta?.image || fallback.image || "",
+								imageAlt:
+									result.meta?.image_alt ||
+									fallback.imageAlt ||
+									result.meta?.title ||
+									fallback.title ||
+									"",
+							};
+						});
+
+						renderItems(items, query, true);
+					} catch (error) {
+						console.error("Search error:", error);
+						buildEmpty("Search is currently unavailable.");
+					}
+				}
+
+				function openPanel() {
+					panel.hidden = false;
+					input.setAttribute("aria-expanded", "true");
+				}
+
+				function closePanel() {
+					panel.hidden = true;
+					input.setAttribute("aria-expanded", "false");
+				}
+
+				let debounce;
+				function update() {
+					const query = input.value.trim();
+					if (!query) {
+						renderRecent();
+						return;
+					}
+					renderSearch(query);
+				}
+
+				input.addEventListener("focus", () => {
+					update();
+					openPanel();
+				});
+
+				input.addEventListener("input", () => {
+					window.clearTimeout(debounce);
+					debounce = window.setTimeout(() => {
+						update();
+						openPanel();
+					}, 120);
+				});
+
+				input.addEventListener("keydown", (event) => {
+					if (event.key === "Escape") {
+						closePanel();
+						input.blur();
+					}
+				});
+
+				document.addEventListener("click", (event) => {
+					if (!form.contains(event.target)) {
+						closePanel();
 					}
 				});
 			})();

@@ -6,6 +6,31 @@ A running scratchpad of what's implemented, what's working, what's still rough, 
 
 ## Current Session Notes (AI Assistant)
 
+### Session: December 2025 - BROADSHEET HOMEPAGE + HEADER SEARCH
+
+**Date:** December 27, 2025  
+**Status:** Applied broadsheet layout to homepage; tidy pass complete
+
+**Key updates:**
+- Homepage now uses broadsheet layout (hero + 3x3 grid of posts).
+- Broadsheet styles moved into `css/index.css`; mockup now shares the same classes.
+- Header includes a styled search form alongside nav + theme toggle.
+- Header now shows live suggestions powered by Pagefind, with thumbnails.
+- Email variants are excluded from Pagefind indexing.
+- Added build-time `post_image_thumb` generation for search previews.
+- Search indexes now run in `build`, `build-nocolor`, and `build-ghpages` (keeps Pagefind in sync with web + email builds).
+- Removed unused `marginnote.js` asset reference and file.
+- Cleaned stray `<text>` markers from this log.
+- Added a new venting entry (light and non-blocking).
+- Split the design playground into `public/design-playground-post.html` and `public/design-playground-home.html`, each aligned with the current template markup + JS.
+- `public/design-playground.html` is now a simple launcher page.
+- Image crop/OG/imgset pipeline is intentionally deferred until templates are finalized.
+
+**Next steps (if desired):**
+1. Refine broadsheet typography, borders, and spacing.
+2. Decide on hero/grid image ratios and crop tooling.
+3. Confirm whether `/emails/` pages should be excluded from Pagefind results.
+
 ### Session: January 2025 - DESIGN REFINEMENT & TESTING SETUP ✅ COMPLETE
 
 **Date:** January 15, 2025  
@@ -94,9 +119,6 @@ LATER: Re-enable draft filtering
 ---
 
 ### Session: December 2024 - NEW ASSISTANT HANDOFF - Bluesky OAuth Evaluation
-</text>
-
-<old_text line=194>
 **Next Steps:**
 1. Woodblock aesthetic enhancements (SVG filters, texture overlays)
 2. Integrate social card generation into Eleventy build process
@@ -623,7 +645,6 @@ Current system is production-ready and shippable as-is.
 ---
 
 ### Session: December 2024 CONTINUATION - ⚠️ MARGIN NOTES BROKEN, NEEDS FIX
-</text>
 
 
 **URGENT STATUS:** Margin notes are not rendering at all. The notes exist in the DOM but are not visible. Typography settings have been successfully applied to `post-woodblock.njk`, but the alignment system needs to be rebuilt.
@@ -1349,7 +1370,7 @@ Consider deploying to a staging environment to verify:
 - Asset URLs resolve correctly
 - Feed validates and displays properly in readers
 
----</text>
+---
 
 
 ## Known constraints / decisions
