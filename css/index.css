@@ -719,28 +719,36 @@ blockquote[lang="zh-Hant"] {
 	display: grid;
 	gap: 2.75rem;
 	position: relative;
-	padding: 0.75rem 0.75rem 1.5rem;
-	background: color-mix(in srgb, var(--paper), #ffffff 10%);
+	padding: 2rem 2rem 2.5rem;
+	background:
+		linear-gradient(
+			0deg,
+			color-mix(in srgb, var(--paper-2), transparent 55%),
+			transparent 8%
+		),
+		color-mix(in srgb, var(--paper), #ffffff 10%);
 }
 
+/* Leishu-inspired multiple border frames */
 .broadsheet::before {
 	content: "";
 	position: absolute;
-	inset: -1.25rem;
-	border: 1px solid color-mix(in srgb, var(--ink), transparent 72%);
-	opacity: 0.7;
-	filter: url(#woodblock-border);
+	inset: -1.5rem;
+	border: 3px solid var(--ink);
+	opacity: 0.85;
 	pointer-events: none;
+	box-shadow:
+		inset 0 0 0 1px color-mix(in srgb, var(--ink), transparent 60%),
+		inset 0 0 0 6px var(--paper),
+		inset 0 0 0 8px var(--ink);
 }
 
 .broadsheet::after {
 	content: "";
 	position: absolute;
-	inset: -0.6rem;
-	border: 1px solid color-mix(in srgb, var(--ink), transparent 82%);
-	opacity: 0.45;
-	transform: translate(1px, -1px);
-	filter: url(#woodblock-border);
+	inset: -2.5rem;
+	border: 2px solid color-mix(in srgb, var(--ink), transparent 45%);
+	opacity: 0.7;
 	pointer-events: none;
 }
 
@@ -749,55 +757,83 @@ blockquote[lang="zh-Hant"] {
 	grid-template-columns: 1fr auto;
 	gap: 1.5rem;
 	align-items: center;
-	border-bottom: 2px solid var(--ink);
-	padding-bottom: 1rem;
+	border-bottom: 4px double var(--ink);
+	padding-bottom: 1.5rem;
+	margin-bottom: 0.5rem;
 	position: relative;
+}
+
+.broadsheet-masthead::after {
+	content: "";
+	position: absolute;
+	bottom: -6px;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: var(--ink);
+	opacity: 0.4;
 }
 
 .broadsheet-brand {
 	display: flex;
-	gap: 1rem;
+	gap: 1.5rem;
 	align-items: center;
 }
 
 .logo-mark {
-	width: 64px;
-	height: 64px;
+	width: 80px;
+	height: 80px;
 	flex-shrink: 0;
 	filter: var(--logo-filter);
+	padding: 0.5rem;
+	border: 2px solid var(--ink);
+	background: color-mix(in srgb, var(--paper), #ffffff 15%);
+	box-shadow:
+		inset 0 0 0 1px color-mix(in srgb, var(--ink), transparent 70%),
+		inset 0 0 0 4px var(--paper);
 }
 
 .broadsheet-brand-kicker {
 	font-family: var(--font-display);
-	font-size: 0.7rem;
-	letter-spacing: 0.2em;
+	font-size: 0.65rem;
+	letter-spacing: 0.25em;
 	text-transform: uppercase;
 	color: var(--ink-2);
-	margin: 0 0 0.35rem;
+	margin: 0 0 0.4rem;
+	font-weight: 600;
 }
 
 .broadsheet-title {
 	font-family: var(--font-display);
 	font-size: clamp(2rem, 4vw, 3.2rem);
 	margin: 0;
-	letter-spacing: 0.02em;
+	letter-spacing: -0.01em;
+	font-weight: 900;
+	line-height: 1.1;
 }
 
 .broadsheet-subtitle {
-	margin: 0.4rem 0 0;
+	margin: 0.5rem 0 0;
 	max-width: 36rem;
 	color: var(--ink-2);
+	font-size: 0.95rem;
+	line-height: 1.5;
 }
 
 .broadsheet-stamp {
 	align-self: center;
-	border: 2px solid var(--vermillion);
+	border: 3px solid var(--vermillion);
 	color: var(--vermillion);
-	padding: 0.35rem 0.7rem;
+	padding: 0.5rem 0.9rem;
 	font-family: var(--font-display);
 	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.7rem;
+	letter-spacing: 0.15em;
+	font-size: 0.65rem;
+	font-weight: 700;
+	transform: rotate(-2deg);
+	box-shadow:
+		inset 0 0 0 1px color-mix(in srgb, var(--vermillion), transparent 70%),
+		inset 0 0 0 4px var(--paper);
 }
 
 .broadsheet-hero {
@@ -809,10 +845,14 @@ blockquote[lang="zh-Hant"] {
 
 .broadsheet-hero-figure {
 	position: relative;
-	border: 1px solid color-mix(in srgb, var(--ink), transparent 70%);
-	padding: 0.5rem;
+	border: 2px solid var(--ink);
+	padding: 0.75rem;
 	background: color-mix(in srgb, var(--paper), #ffffff 18%);
 	aspect-ratio: 16 / 10;
+	box-shadow:
+		inset 0 0 0 1px color-mix(in srgb, var(--ink), transparent 60%),
+		inset 0 0 0 5px var(--paper),
+		inset 0 0 0 6px color-mix(in srgb, var(--ink), transparent 40%);
 }
 
 .broadsheet-hero-figure img {
@@ -820,6 +860,7 @@ blockquote[lang="zh-Hant"] {
 	height: 100%;
 	object-fit: cover;
 	display: block;
+	border: 1px solid color-mix(in srgb, var(--ink), transparent 50%);
 }
 
 .broadsheet-hero-figure .image-fallback {
@@ -837,10 +878,11 @@ blockquote[lang="zh-Hant"] {
 	display: grid;
 	gap: 0.8rem;
 	align-content: start;
-	padding: 1.2rem 1.4rem;
-	border-left: 2px solid var(--ink);
+	padding: 1.5rem 1.7rem;
+	border-left: 4px solid var(--ink);
 	background: color-mix(in srgb, var(--paper-2), transparent 35%);
 	position: relative;
+	box-shadow: inset 4px 0 0 color-mix(in srgb, var(--paper), transparent 20%);
 }
 
 .broadsheet-inkwash::after {
@@ -919,16 +961,21 @@ html[data-theme="dark"] .broadsheet-inkwash::after {
 
 .broadsheet-card {
 	display: grid;
-	gap: 0.7rem;
-	padding-top: 1rem;
-	border-top: 1px solid color-mix(in srgb, var(--ink), transparent 80%);
+	gap: 0.8rem;
+	padding: 1.2rem;
+	border: 2px solid color-mix(in srgb, var(--ink), transparent 70%);
+	background: color-mix(in srgb, var(--paper), #ffffff 8%);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink), transparent 85%);
 }
 
 .broadsheet-card-figure {
-	border: 1px solid color-mix(in srgb, var(--ink), transparent 70%);
-	padding: 0.35rem;
+	border: 2px solid color-mix(in srgb, var(--ink), transparent 60%);
+	padding: 0.5rem;
 	background: color-mix(in srgb, var(--paper), #ffffff 12%);
 	aspect-ratio: 4 / 3;
+	box-shadow:
+		inset 0 0 0 1px color-mix(in srgb, var(--ink), transparent 75%),
+		inset 0 0 0 4px var(--paper);
 }
 
 .broadsheet-card-figure img {
@@ -936,6 +983,7 @@ html[data-theme="dark"] .broadsheet-inkwash::after {
 	height: 100%;
 	object-fit: cover;
 	display: block;
+	border: 1px solid color-mix(in srgb, var(--ink), transparent 70%);
 }
 
 .broadsheet-card-figure .image-fallback {
