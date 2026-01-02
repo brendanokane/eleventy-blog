@@ -687,6 +687,61 @@ blockquote[lang="zh-Hant"] {
 	letter-spacing: 0.05em;
 }
 
+/* Margin Notes */
+.mn-marker {
+	font-size: 0.78em;
+	vertical-align: baseline;
+	position: relative;
+	cursor: pointer;
+	user-select: none;
+	color: var(--vermillion);
+	text-decoration: none;
+	border: none;
+}
+
+.mn-note {
+	font-family: var(--font-mn);
+	font-size: 0.85rem;
+	line-height: 1.4;
+	color: var(--ink-2);
+	margin: 0.8em 0;
+	padding: 0.8em 1em;
+	background: color-mix(in srgb, var(--ink), transparent 97%);
+	border-left: 3px solid var(--vermillion);
+	display: none;
+}
+
+.mn-note::before {
+	content: "※ ";
+	color: var(--vermillion);
+	font-weight: bold;
+}
+
+.mn-note[hidden] {
+	display: none !important;
+}
+
+.mn-note:not([hidden]) {
+	display: block !important;
+}
+
+.mn-note p {
+	margin: 0 0 0.6em;
+}
+
+.mn-note p:last-child {
+	margin-bottom: 0;
+}
+
+.mn-note em:lang(zh),
+.mn-note em:lang(zh-Hans),
+.mn-note em:lang(zh-Hant),
+.mn-note i:lang(zh),
+.mn-note i:lang(zh-Hans),
+.mn-note i:lang(zh-Hant) {
+	font-style: normal;
+}
+
 /* Pull quotes */
 .pullquote {
 	font-family: var(--font-display);
