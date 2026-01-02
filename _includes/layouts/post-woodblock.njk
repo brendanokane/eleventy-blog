@@ -316,7 +316,7 @@ layout: layouts/base.njk
         document.querySelectorAll('.mn-note').forEach(note => {
           note.style.position = '';
           note.style.top = '';
-          note.hidden = true;  // Start hidden on mobile
+          // Keep existing hidden state on mobile (user controls via clicks)
         });
         return;
       }
@@ -367,6 +367,11 @@ layout: layouts/base.njk
     function onResize() {
       scheduleAlign();
     }
+
+    // Set initial hidden state based on viewport
+    document.querySelectorAll('.mn-note').forEach(note => {
+      note.hidden = isMobile();  // Hidden on mobile, visible on desktop
+    });
 
     wireToggles();
 
