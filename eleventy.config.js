@@ -229,9 +229,14 @@ export default async function (eleventyConfig) {
 		// Render markdown content to HTML
 		const renderedContent = md.render(content.trim());
 
-		// Clean up: markdown-it wraps in <p>, which we want to keep for multi-paragraph notes
-		// but we need to handle single paragraphs cleanly
+		// Strip wrapping <p> tags for single-paragraph notes since we're inside an inline <span>
+		// Block elements inside inline elements is invalid HTML and breaks layout
 		let noteHtml = renderedContent.trim();
+		// Check if it's a single paragraph (starts with <p> and ends with </p> with no other <p> tags)
+		const singleParagraphMatch = noteHtml.match(/^<p>([\s\S]*)<\/p>$/);
+		if (singleParagraphMatch && !singleParagraphMatch[1].includes("<p>")) {
+			noteHtml = singleParagraphMatch[1];
+		}
 
 		if (anchor) {
 			// Anchor version: the anchor text is highlighted, no ※ marker

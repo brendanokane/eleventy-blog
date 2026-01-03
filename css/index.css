@@ -761,8 +761,13 @@ blockquote[lang="zh-Hant"] {
 	margin: 1.5em 0;
 }
 
+.post-body pre,
+.post-body code {
+	font-family: var(--font-body);
+	font-size: inherit;
+}
+
 .post-body pre {
-	font-size: 0.9em;
 	line-height: 1.5;
 	padding: 1em;
 	overflow-x: auto;
