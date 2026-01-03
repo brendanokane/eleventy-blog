@@ -813,13 +813,6 @@ blockquote[lang="zh-Hant"] {
 /* The wrapper stays inline in the text flow */
 .mn-ref {
 	position: relative;
-	/* Prevent line break before the marker - keeps it attached to preceding word */
-	white-space: nowrap;
-}
-
-/* Allow normal wrapping for the note content */
-.mn-ref .mn-note {
-	white-space: normal;
 }
 
 /* Marker style (※) */
