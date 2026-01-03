@@ -102,6 +102,70 @@
 			/* Preview area - production CSS applies here */
 			.playground-preview {
 				overflow-y: auto;
+				/* Override system dark mode - use the CSS variables we set via JS */
+				color-scheme: light;
+				/* Ensure preview behaves like a full viewport for centering calculations */
+				min-width: 0;
+			}
+
+			/* Mirror the production main padding */
+			.playground-preview main {
+				padding: var(--page-pad, clamp(16px, 3vw, 28px));
+			}
+
+			/* Mirror production main > * centering */
+			.playground-preview main > * {
+				max-width: var(--measure, 70ch);
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			/* Desktop: widen post for margin notes and add left offset */
+			@media (min-width: 901px) {
+				.playground-preview main > .post {
+					max-width: calc(
+						var(--post-measure, 65ch) + var(--mn-width, 280px) +
+							var(--mn-gap, 2.5rem)
+					);
+					padding-left: calc(
+						(var(--mn-width, 280px) + var(--mn-gap, 2.5rem)) / 2
+					);
+				}
+			}
+
+			/* Force the preview to use our CSS variable values, not the dark mode ones */
+			.playground-preview,
+			.playground-preview * {
+				/* These ensure child elements inherit from our set variables */
+				color: var(--ink);
+				background-color: var(--paper);
+			}
+
+			/* Reset background for elements that shouldn't have it */
+			.playground-preview main,
+			.playground-preview article,
+			.playground-preview .post-body,
+			.playground-preview .post-header,
+			.playground-preview p,
+			.playground-preview blockquote,
+			.playground-preview h1,
+			.playground-preview h2,
+			.playground-preview .mn-note {
+				background-color: transparent;
+			}
+
+			/* Ensure secondary text uses --ink-2 */
+			.playground-preview .mn-note,
+			.playground-preview .post-metadata,
+			.playground-preview .post-tag,
+			.playground-preview figcaption,
+			.playground-preview .caption {
+				color: var(--ink-2);
+			}
+
+			/* Links use vermillion */
+			.playground-preview a {
+				color: var(--vermillion);
 			}
 
 			/* Hide margin notes toggle */
