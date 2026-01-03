@@ -1,8 +1,8 @@
 # Burning House Blog — Handoff
 
-**Last Updated:** January 2, 2026  
-**Branch:** `design/ink-linen-nav-typography`  
-**Status:** Ready for merge to main
+**Last Updated:** January 3, 2026  
+**Branch:** `main`  
+**Status:** Active development
 
 ---
 
@@ -17,16 +17,55 @@ npm run build       # Production build
 
 ## Current State
 
-### What Just Happened (Jan 2, 2026)
+### What Just Happened (Jan 3, 2026)
 
-Committed and pushed typography/font changes:
-- **Switched from Adobe Fonts (Typekit) to Google Fonts**
-  - Body: Vollkorn (serif)
-  - Headings: Source Sans 3 (sans-serif)
-  - Margin notes: Lato/Gill Sans (sans-serif)
-- Removed unused woodblock layouts (`post-woodblock.njk`, `woodblock-preview.njk`)
-- Consolidated margin notes JavaScript into `base.njk`
-- Improved post layout with proper `.post` component structure
+**Margin notes shortcode fixed:**
+- The `{% mn %}` shortcode now properly strips `<p>` wrappers from single-paragraph notes
+- Having `<p>` inside `<span>` was invalid HTML — browsers "fixed" it by breaking layout
+- Both marker style (`{% mn %}...{% endmn %}` → ※) and anchor style (`{% mn "anchor text" %}...{% endmn %}`) work
+- Li Bai post converted from generated HTML back to shortcode format
+
+**Typography:**
+- Pre/code elements now use body font (Vollkorn) instead of monospace
+- Blockquotes: no left border, no italics, 2em indent
+
+**Design playground** (`public/design-playground-post.html`):
+- Now loads actual production CSS via `/css/production.css` passthrough
+- Has working sliders for CSS variables
+- Full post content preserved
+
+### What's Broken: Text Column Centering
+
+The text column should be horizontally centered under the nav, with margin notes extending to the right. Currently it's LEFT-aligned.
+
+**The CSS structure:**
+```css
+main { padding: var(--page-pad); }
+main > * { max-width: var(--measure); margin-left: auto; margin-right: auto; }
+
+/* Desktop override for posts */
+@media (min-width: 901px) {
+  main > .post { max-width: var(--post-measure); }
+}
+```
+
+**What's been tried:**
+1. Adding `padding-left` to offset the text column — didn't work
+2. Widening container to fit text + notes, then padding — didn't work  
+3. Keeping `.post` at text width, letting notes overflow — notes work, centering doesn't
+
+**Next steps:**
+1. Open DevTools and inspect computed styles on `main`, `.post`, `.post-header`, `.post-body`
+2. Look for rogue margins/paddings in the cascade
+3. Consider centering `.post-body` and `.post-header` directly instead of the `.post` container
+4. Check if `main > *` rule conflicts with `main > .post` specificity
+
+### Previous Work (Jan 2, 2026)
+
+- Switched from Adobe Fonts to Google Fonts (Vollkorn, Source Sans 3, Lato)
+- Removed woodblock layouts, consolidated to single `post.njk`
+- Margin notes JavaScript in `base.njk`
+- Design branch merged to main
 
 ### Branch Comparison
 
@@ -104,7 +143,7 @@ Dark mode automatically inverts.
 ```css
 --measure: 70ch;        /* Main column width */
 --post-measure: 65ch;   /* Post body width */
---mn-width: 220px;      /* Margin notes width */
+--mn-width: 280px;      /* Margin notes width */
 --mn-gap: 2.5rem;       /* Gap between text and notes */
 ```
 
@@ -112,24 +151,19 @@ Dark mode automatically inverts.
 
 ## Upcoming Work
 
-### Immediate: Design Playground for Posts
+### Immediate: Fix Text Column Centering
 
-User requested an updated design playground for single posts with sliders for:
-- Font attributes (size, weight, line-height)
-- Character spacing (letter-spacing)
-- Left margin width
-- Gutter width (between text and margin notes)
-- Margin notes column width
+See "What's Broken" section above. The text column needs to be horizontally centered.
 
-Use "The Naming of Cats" content as filler.
+### Soon: Chinese Character Baseline
 
-Reference: `public/design-playground-post.html` exists but may need updating.
+Chinese characters currently display slightly below the baseline of surrounding roman text. This is a font metrics issue — probably needs `vertical-align` adjustment or careful line-height tuning. Low priority but would polish the typography for posts with mixed Chinese/English.
 
 ### Medium-term
 
 1. **Hero images** - Featured post needs prominent image
-2. **Merge to main** - Branch is ready
-3. **Publishing workflow** - Most posts still have `draft: true`
+2. **Publishing workflow** - Most posts still have `draft: true`
+3. **Migrate Substack markup** - Convert `<aside class="mn-note">` to `{% mn %}` shortcode
 
 ---
 
@@ -191,4 +225,4 @@ bd sync                      # Sync with git
 
 ---
 
-*Updated by Claude, January 2, 2026*
+*Updated by Claude, January 3, 2026*

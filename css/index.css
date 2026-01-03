@@ -924,11 +924,9 @@ aside.mn-note {
 
 /* ----- Desktop: Notes in margin column ----- */
 @media (min-width: 901px) {
-	/* Widen the main area to make room for margin */
+	/* Keep the post centered at text column width */
 	main > .post {
-		max-width: calc(var(--post-measure) + var(--mn-width) + var(--mn-gap));
-		/* Offset left so the text column appears centered, with notes to the right */
-		padding-left: calc((var(--mn-width) + var(--mn-gap)) / 2);
+		max-width: var(--post-measure);
 	}
 
 	/* Post body is the positioning context for margin notes */

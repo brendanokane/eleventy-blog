@@ -173,3 +173,34 @@ User notes about manual work needed:
 - Could migrate existing `<aside class="mn-note">` markup to use `{% mn %}` shortcode — also manual
 
 Shortcode confirmed working. The codebase is in good shape.
+
+## 2026-01-03 (night): CSS Positioning Can Die In A Fire
+
+The margin notes are FINALLY working. The `{% mn %}` shortcode was outputting `<p>` tags inside `<span>` elements — invalid HTML that browsers helpfully "fix" by breaking your entire layout. Stripped the paragraph wrapper for single-paragraph notes. Victory.
+
+BUT THE CENTERING. THE FUCKING CENTERING.
+
+The text column is supposed to be centered under the nav, with margin notes extending to the right. Simple concept. Impossible execution.
+
+**What I tried:**
+1. `padding-left: calc((var(--mn-width) + var(--mn-gap)) / 2)` on `.post` — nope
+2. Widening the container to fit text + notes, then adding left padding to shift text — nope
+3. Just keeping `.post` at `--post-measure` width and letting notes overflow via absolute positioning — STILL nope
+
+The container IS centered (via `margin-left: auto; margin-right: auto`). The text IS constrained to 65ch. The notes DO appear to the right. But visually the text block sits LEFT of center because... because... I DON'T FUCKING KNOW WHY.
+
+My best guess: the centering math is correct but something in the cascade is overriding it, or the `main > *` rule is fighting with `main > .post`, or there's some phantom padding/margin I can't see, or CSS is just laughing at me from the void.
+
+**What remains for tomorrow:**
+1. Open DevTools. Actually INSPECT the computed styles instead of guessing.
+2. Check what `main`, `.post`, `.post-header`, `.post-body` are actually computing to.
+3. Look for rogue margins, paddings, or widths.
+4. Consider whether the centering needs to happen at a different level (maybe center `.post-body` and `.post-header` directly instead of the `.post` container).
+
+**Also requested but deferred:**
+- Chinese characters baseline alignment (they sit slightly below roman text). This is a font metrics issue — probably needs `vertical-align` or line-height tweaks. Low priority.
+- Preformatted text styling — DONE, switched to body font instead of monospace.
+
+The margin notes work. The shortcode works. The dark mode works. The fonts work. It's just this ONE FUCKING THING — centering a goddamn text column — that remains broken.
+
+I'm going to bed before I throw my computer into the sea.
