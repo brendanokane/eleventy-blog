@@ -1,54 +1,67 @@
 ---
 layout: layouts/base.njk
 ---
+{#
+  Email/RSS layout - converts margin notes to endnotes
+
+  This layout is for:
+  - Buttondown email newsletters
+  - RSS/Atom feed content
+  - Any context where margin notes won't work
+
+  Margin notes become numbered endnotes with bidirectional links.
+#}
+
 <style>
-  :root {
-    --email-font-body: ui-serif, Georgia, serif;
-    --email-font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --email-ink: #111;
-    --email-muted: rgba(0,0,0,0.66);
-  }
-
-  body { color: var(--email-ink); }
-
   .email-shell {
     max-width: 42rem;
     margin: 0 auto;
     padding: 1.5rem 1rem 3rem;
-    font-family: var(--email-font-body);
-    line-height: 1.6;
-    font-size: 1rem;
+    font-family: var(--font-body);
+    line-height: 1.7;
+    font-size: 1.1rem;
+  }
+
+  .email-header {
+    margin-bottom: 2rem;
+  }
+
+  .email-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin: 0 0 0.5rem;
   }
 
   .email-meta {
-    font-family: var(--email-font-sans);
-    font-size: 0.95rem;
-    color: var(--email-muted);
-    margin: 0 0 1.25rem;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    margin: 0;
   }
 
-  .email-shell h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
-
-  .endnotes {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(0,0,0,0.15);
+  .email-meta a {
+    color: var(--ink-2);
   }
 
-  .endnotes h2 {
-    font-family: var(--email-font-sans);
-    font-size: 1rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    margin: 0 0 0.75rem;
-    color: var(--email-muted);
+  .email-body p {
+    margin: 0 0 1.2em;
   }
 
-  .endnotes ol { margin: 0; padding-left: 1.25rem; }
-  .endnotes li { margin: 0 0 0.6rem; }
+  .email-body blockquote {
+    margin: 1.5em 0;
+    padding-left: 1.2em;
+    border-left: 3px solid var(--vermillion);
+  }
 
+  .email-body img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Footnote markers */
   sup.fn {
-    font-family: var(--email-font-sans);
+    font-family: var(--font-display);
     font-size: 0.75em;
     vertical-align: super;
     line-height: 0;
@@ -56,23 +69,58 @@ layout: layouts/base.njk
 
   sup.fn a {
     text-decoration: none;
-    color: var(--email-ink);
-    padding: 0 0.1em;
+    color: var(--vermillion);
+    padding: 0 0.15em;
   }
 
   sup.fn a:hover {
     text-decoration: underline;
   }
 
-  .endnotes li {
-    position: relative;
+  /* Endnotes section */
+  .endnotes {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--rule);
   }
 
-  .endnotes .backlink {
-    font-family: var(--email-font-sans);
+  .endnotes-title {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    color: var(--ink-2);
+  }
+
+  .endnotes ol {
+    margin: 0;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
+
+  .endnotes li {
+    margin: 0 0 0.8rem;
+    line-height: 1.5;
+  }
+
+  .endnotes li:target {
+    background: color-mix(in srgb, var(--vermillion), transparent 90%);
+    margin-left: -0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .backlink {
+    font-family: var(--font-display);
     font-size: 0.85em;
     text-decoration: none;
+    color: var(--vermillion);
     margin-left: 0.3em;
+  }
+
+  .backlink:hover {
+    text-decoration: underline;
   }
 </style>
 
@@ -80,20 +128,24 @@ layout: layouts/base.njk
 {% set emailContent = transformed.content %}
 {% set endnotes = transformed.endnotes %}
 
-<div class="email-shell">
-  <h1>{{ title }}</h1>
+<article class="email-shell" data-pagefind-body>
+  <header class="email-header">
+    <h1 class="email-title">{{ title }}</h1>
+    <p class="email-meta">
+      <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+      {%- if webUrl %}
+      · <a href="{{ webUrl }}">View on the web</a>
+      {%- endif %}
+    </p>
+  </header>
 
-  <p class="email-meta">
-    <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
-    ·
-    <a href="{{ webUrl }}">View on the web</a>
-  </p>
-
-  {{ emailContent | safe }}
+  <div class="email-body">
+    {{ emailContent | stripLeadingH1 | safe }}
+  </div>
 
   {%- if endnotes and endnotes.length %}
   <section class="endnotes">
-    <h2>Notes</h2>
+    <h2 class="endnotes-title">Notes</h2>
     <ol>
       {%- for note in endnotes %}
       <li id="fn-{{ loop.index }}">
@@ -104,4 +156,4 @@ layout: layouts/base.njk
     </ol>
   </section>
   {%- endif %}
-</div>
+</article>

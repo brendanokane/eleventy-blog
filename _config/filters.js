@@ -117,9 +117,10 @@ export default function (eleventyConfig) {
 	// Email-friendly transform for margin notes.
 	//
 	// Converts margin note HTML into numbered endnotes suitable for email and RSS feed output.
-	// Handles two patterns:
-	// 1. Shortcode output: <span class="mn-wrapper">...</span>
-	// 2. Substack import HTML: <sup class="mn-marker" data-mn-id="mn-X"> + <aside class="mn-note" id="mn-X">
+	// Handles multiple patterns:
+	// 1. New shortcode: <span class="mn-ref">...<span class="mn-note">...</span></span>
+	// 2. Legacy Substack: <sup class="mn-marker" data-mn-id="mn-X"> + <aside class="mn-note" id="mn-X">
+	// 3. Old shortcode: <span class="mn-wrapper">...</span>
 	//
 	// Output: { content: transformed HTML, endnotes: [array of note content] }
 	eleventyConfig.addFilter("emailifyMarginNotes", (html) => {
@@ -131,11 +132,31 @@ export default function (eleventyConfig) {
 		let noteCounter = 0;
 		let transformed = html;
 
-		// Pattern 1: Handle Substack import HTML with <aside> tags
-		// First, extract all aside notes and build a map
+		// Pattern 1: New shortcode format with <span class="mn-ref">
+		// Two variants: with marker (※) or with anchor text
+		const mnRefPattern =
+			/<span class="mn-ref"[^>]*>(?:<sup class="mn-marker"[^>]*>※<\/sup>|<span class="mn-anchor"[^>]*>([^<]*)<\/span>)<span class="mn-note"[^>]*>([\s\S]*?)<\/span><\/span>/g;
+
+		transformed = transformed.replace(
+			mnRefPattern,
+			(match, anchorText, noteContent) => {
+				noteCounter++;
+				endnotes.push(noteContent.trim());
+
+				if (anchorText) {
+					// Anchor version: keep the anchor text, add footnote marker after
+					return `${anchorText}<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">[${noteCounter}]</a></sup>`;
+				} else {
+					// Marker version: just the footnote number
+					return `<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">[${noteCounter}]</a></sup>`;
+				}
+			},
+		);
+
+		// Pattern 2: Legacy Substack import HTML with <aside> tags
 		const asideNotes = new Map();
 		const asidePattern =
-			/<aside class="mn-note" id="([^"]+)"[^>]*>(.*?)<\/aside>/gs;
+			/<aside class="mn-note" id="([^"]+)"[^>]*>([\s\S]*?)<\/aside>/g;
 		let asideMatch;
 
 		while ((asideMatch = asidePattern.exec(html)) !== null) {
@@ -143,7 +164,7 @@ export default function (eleventyConfig) {
 			asideNotes.set(noteId, noteContent.trim());
 		}
 
-		// Replace aside tags (remove them from content)
+		// Remove aside tags from content
 		transformed = transformed.replace(asidePattern, "");
 
 		// Replace markers with numbered references
@@ -151,9 +172,8 @@ export default function (eleventyConfig) {
 			noteCounter++;
 			endnotes.push(noteContent);
 
-			// Match the marker: <sup class="mn-marker" data-mn-id="mn-X"...>※</sup>
 			const markerPattern = new RegExp(
-				`<sup class="mn-marker"[^>]*data-mn-id="${noteId}"[^>]*>.*?<\/sup>`,
+				`<sup class="mn-marker"[^>]*(?:data-mn-id="${noteId}"|aria-controls="${noteId}")[^>]*>.*?<\/sup>`,
 				"g",
 			);
 			transformed = transformed.replace(
@@ -162,15 +182,18 @@ export default function (eleventyConfig) {
 			);
 		});
 
-		// Pattern 2: Handle shortcode output with <span class="mn-wrapper">
+		// Pattern 3: Old shortcode output with <span class="mn-wrapper">
 		const wrapperPattern =
-			/<span class="mn-wrapper"><span class="mn-anchor">.*?<\/span><span class="mn-content">(.*?)<\/span><\/span>/gs;
+			/<span class="mn-wrapper"><span class="mn-anchor">([^<]*)<\/span><span class="mn-content">([\s\S]*?)<\/span><\/span>/g;
 
-		transformed = transformed.replace(wrapperPattern, (match, noteContent) => {
-			noteCounter++;
-			endnotes.push(noteContent.trim());
-			return `<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">[${noteCounter}]</a></sup>`;
-		});
+		transformed = transformed.replace(
+			wrapperPattern,
+			(match, anchorText, noteContent) => {
+				noteCounter++;
+				endnotes.push(noteContent.trim());
+				return `${anchorText}<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">[${noteCounter}]</a></sup>`;
+			},
+		);
 
 		return {
 			content: transformed,

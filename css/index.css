@@ -17,18 +17,23 @@ Audience priorities:
 	--vermillion: #8f1d14; /* dark vermillion underline */
 	--rule: #241425;
 
-	/* Typography */
+	/* Typography
+	   Body: Vollkorn (serif) - warm, readable, good for long-form
+	   Headings: Source Sans 3 (sans-serif) - clean, professional
+	   Margin notes: Gill Sans (sans-serif) - humanist, compact
+	   Chinese fallbacks included for mixed-language content
+	*/
 	--font-body:
 		"Vollkorn", "Noto Serif TC", "Source Han Serif TC", "Source Han Serif",
 		ui-serif, Georgia, serif;
 	--font-display:
-		"Noto Sans", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans",
-		ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-		"Apple Color Emoji", "Segoe UI Emoji";
+		"Source Sans 3", "Source Sans Pro", "Noto Sans TC", "Source Han Sans TC",
+		ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+		Arial, sans-serif;
 	--font-mn:
-		"Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", "Noto Sans TC",
-		"Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui,
-		-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		"Gill Sans", "Gill Sans MT", "Gill Sans Nova", "Lato", "Noto Sans TC",
+		"Source Han Sans TC", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+		Roboto, Helvetica, Arial, sans-serif;
 
 	--text-size: 1.2rem;
 	--leading: 1.7;
@@ -687,42 +692,183 @@ blockquote[lang="zh-Hant"] {
 	letter-spacing: 0.05em;
 }
 
-/* Margin Notes */
-.mn-marker {
-	font-size: 0.78em;
-	vertical-align: baseline;
+/* ==========================================================================
+   Post Layout
+   ========================================================================== */
+
+.post {
+	--post-measure: 65ch;
+	--mn-width: 220px;
+	--mn-gap: 2.5rem;
+}
+
+.post-header {
+	max-width: var(--post-measure);
+	margin-bottom: 2rem;
+}
+
+.post-title {
+	font-family: var(--font-display);
+	font-size: clamp(1.8rem, 4vw, 2.6rem);
+	line-height: 1.15;
+	margin: 0 0 0.5rem;
+	font-weight: 700;
+}
+
+.post-metadata {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+	font-family: var(--font-display);
+	font-size: 0.85rem;
+	color: var(--ink-2);
+}
+
+.post-tag {
+	text-decoration: none;
+	color: var(--ink-2);
+}
+
+.post-tag:hover {
+	color: var(--vermillion);
+}
+
+.post-body {
+	font-size: 1.15rem;
+	line-height: 1.75;
+	max-width: var(--post-measure);
+}
+
+.post-body p {
+	margin: 0 0 1.2em;
+}
+
+.post-body blockquote {
+	margin: 1.5em 0;
+	padding-left: 1.2em;
+	border-left: 3px solid var(--vermillion);
+	color: var(--ink);
+}
+
+.post-body img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 1.5em 0;
+}
+
+.post-body pre {
+	font-size: 0.9em;
+	line-height: 1.5;
+	padding: 1em;
+	overflow-x: auto;
+	margin: 1.5em 0;
+	border-radius: 4px;
+}
+
+/* Post navigation */
+.post-nav {
+	margin-top: 3rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--rule);
+	max-width: var(--post-measure);
+}
+
+.links-nextprev {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.links-nextprev-prev {
+	text-align: left;
+}
+
+.links-nextprev-next {
+	text-align: right;
+	margin-left: auto;
+}
+
+/* ==========================================================================
+   Margin Notes
+   ==========================================================================
+
+   Structure (from shortcode):
+   <span class="mn-ref" data-mn-id="mn-X">
+     <sup class="mn-marker">※</sup>  OR  <span class="mn-anchor">text</span>
+     <span class="mn-note" id="mn-X">Note content</span>
+   </span>
+
+   Desktop: Notes appear in right margin, aligned with their markers via JS
+   Mobile: Notes are hidden, toggle on marker/anchor click
+   ========================================================================== */
+
+/* The wrapper stays inline in the text flow */
+.mn-ref {
 	position: relative;
+}
+
+/* Marker style (※) */
+.mn-marker {
+	font-size: 0.75em;
+	vertical-align: super;
+	line-height: 0;
 	cursor: pointer;
-	user-select: none;
 	color: var(--vermillion);
 	text-decoration: none;
 	border: none;
+	background: none;
+	padding: 0 0.1em;
 }
 
+.mn-marker:hover,
+.mn-marker:focus {
+	color: var(--ink);
+}
+
+.mn-marker:focus {
+	outline: 2px solid var(--vermillion);
+	outline-offset: 2px;
+}
+
+/* Anchor style (highlighted phrase) */
+.mn-anchor {
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-decoration-color: var(--vermillion);
+	text-underline-offset: 0.15em;
+}
+
+.mn-anchor:hover,
+.mn-anchor:focus {
+	text-decoration-style: solid;
+	background: color-mix(in srgb, var(--vermillion), transparent 90%);
+}
+
+.mn-anchor:focus {
+	outline: 2px solid var(--vermillion);
+	outline-offset: 2px;
+}
+
+/* The note itself (works with both <span> and <aside>) */
 .mn-note {
 	font-family: var(--font-mn);
-	font-size: 0.85rem;
-	line-height: 1.4;
+	font-size: 0.82rem;
+	line-height: 1.5;
 	color: var(--ink-2);
-	margin: 0.8em 0;
-	padding: 0.8em 1em;
-	background: color-mix(in srgb, var(--ink), transparent 97%);
-	border-left: 3px solid var(--vermillion);
-	display: none;
 }
 
-.mn-note::before {
-	content: "※ ";
-	color: var(--vermillion);
-	font-weight: bold;
-}
-
-.mn-note[hidden] {
-	display: none !important;
-}
-
-.mn-note:not([hidden]) {
-	display: block !important;
+/* Reset aside default styles */
+aside.mn-note {
+	display: block;
+	margin: 0;
 }
 
 .mn-note p {
@@ -733,6 +879,7 @@ blockquote[lang="zh-Hant"] {
 	margin-bottom: 0;
 }
 
+/* Never italicize Chinese in margin notes */
 .mn-note em:lang(zh),
 .mn-note em:lang(zh-Hans),
 .mn-note em:lang(zh-Hant),
@@ -740,6 +887,69 @@ blockquote[lang="zh-Hant"] {
 .mn-note i:lang(zh-Hans),
 .mn-note i:lang(zh-Hant) {
 	font-style: normal;
+}
+
+/* ----- Mobile: Notes hidden, toggle on click ----- */
+@media (max-width: 900px) {
+	.mn-note {
+		display: none;
+		margin: 0.8em 0;
+		padding: 0.8em 1em;
+		background: color-mix(in srgb, var(--paper-2), transparent 50%);
+		border-left: 3px solid var(--vermillion);
+	}
+
+	/* Show note when toggled visible (new format) */
+	.mn-note.is-visible {
+		display: block;
+	}
+
+	/* Legacy format uses hidden attribute - when removed, show the note */
+	.mn-note:not([hidden]) {
+		display: block;
+	}
+
+	/* When note is visible, marker indicates expanded state */
+	.mn-marker[aria-expanded="true"],
+	.mn-anchor[aria-expanded="true"] {
+		color: var(--ink);
+	}
+}
+
+/* ----- Desktop: Notes in margin column ----- */
+@media (min-width: 901px) {
+	/* Widen the main area to make room for margin */
+	main > .post {
+		max-width: calc(var(--post-measure) + var(--mn-width) + var(--mn-gap));
+	}
+
+	/* Post body is the positioning context for margin notes */
+	.post-body {
+		position: relative;
+		max-width: var(--post-measure);
+	}
+
+	/* Notes are positioned absolutely in the margin */
+	.mn-note {
+		position: absolute;
+		left: calc(100% + var(--mn-gap));
+		width: var(--mn-width);
+		/* top is set by JavaScript to align with marker */
+	}
+
+	/* No hover needed on desktop - notes are always visible */
+	.mn-marker {
+		cursor: default;
+	}
+
+	.mn-anchor {
+		cursor: default;
+		text-decoration-style: dotted;
+	}
+
+	.mn-anchor:hover {
+		background: none;
+	}
 }
 
 /* Pull quotes */

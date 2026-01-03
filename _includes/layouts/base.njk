@@ -123,8 +123,10 @@
 		{#- Add the heading-anchors web component to the JavaScript bundle #}
 		<script type="module">{% include "node_modules/@zachleat/heading-anchors/heading-anchors.js" %}</script>
 
-		{# Fonts via Adobe Fonts kit (Typekit) #}
-		<link rel="stylesheet" href="https://use.typekit.net/jtc7wrn.css">
+		{# Web Fonts: Vollkorn (body), Source Sans 3 (headings), Lato (Gill Sans fallback for notes) #}
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
 	</head>
 	<body{% if isEmailPage %} data-pagefind-ignore="all"{% endif %}>
 		<!-- Woodblock SVG Filters -->
@@ -208,7 +210,7 @@
 		</footer>
 
 		{% set recentPosts = collections.posts | reverse %}
-		<script type="application/json" id="search-suggestions-data">
+		<script type="application/json" id="search-suggestions-data" eleventy:ignore>
 		[
 		{% for post in recentPosts %}
 			{% set title = post.data.title or "Untitled" %}
@@ -227,27 +229,149 @@
 		<!-- This page `{{ page.url }}` was built on {% currentBuildDate %} -->
 		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
 		<script>
-			// Margin note toggle behavior
+			// =======================================================================
+			// Margin Notes
+			// =======================================================================
+			// Handles both new format (<span class="mn-ref">) and legacy Substack format
+			// Desktop (>900px): Notes positioned absolutely in margin, aligned with markers via JS
+			// Mobile (<=900px): Notes hidden by CSS, toggle visibility on click
 			(function () {
-				document.querySelectorAll('.mn-marker').forEach((marker) => {
-					marker.addEventListener('click', (e) => {
-						e.preventDefault();
-						const id = marker.getAttribute('data-mn-id') || marker.getAttribute('aria-controls');
-						if (!id) return;
+				const MOBILE_BREAKPOINT = 900;
+				let resizeTimeout;
 
-						const note = document.getElementById(id);
+				function isMobile() {
+					return window.innerWidth <= MOBILE_BREAKPOINT;
+				}
+
+				// Debounce helper
+				function debounce(fn, delay) {
+					return function(...args) {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => fn.apply(this, args), delay);
+					};
+				}
+
+				// Find the note element for a given trigger
+				function findNoteForTrigger(trigger) {
+					// New format: note is inside .mn-ref wrapper
+					const ref = trigger.closest('.mn-ref');
+					if (ref) {
+						return ref.querySelector('.mn-note');
+					}
+
+					// Legacy format: note is a sibling with matching ID
+					const noteId = trigger.getAttribute('data-mn-id') || trigger.getAttribute('aria-controls');
+					if (noteId) {
+						return document.getElementById(noteId);
+					}
+
+					return null;
+				}
+
+				// Align notes vertically with their markers (desktop only)
+				function alignMarginNotes() {
+					if (isMobile()) return;
+
+					const postBody = document.querySelector('.post-body');
+					if (!postBody) return;
+
+					// Get post body's position for offset calculations
+					const bodyRect = postBody.getBoundingClientRect();
+					const bodyScrollTop = bodyRect.top + window.scrollY;
+
+					// Handle new format
+					document.querySelectorAll('.mn-ref').forEach(ref => {
+						const trigger = ref.querySelector('.mn-marker, .mn-anchor');
+						const note = ref.querySelector('.mn-note');
+						if (!trigger || !note) return;
+
+						// Move note to be a direct child of post-body for proper positioning
+						if (note.parentElement !== postBody) {
+							postBody.appendChild(note);
+						}
+
+						const triggerRect = trigger.getBoundingClientRect();
+						const triggerTop = triggerRect.top + window.scrollY;
+						const offsetFromBodyTop = triggerTop - bodyScrollTop;
+						note.style.top = offsetFromBodyTop + 'px';
+					});
+
+					// Handle legacy format (markers not inside .mn-ref)
+					document.querySelectorAll('.mn-marker:not(.mn-ref .mn-marker)').forEach(trigger => {
+						const note = findNoteForTrigger(trigger);
 						if (!note) return;
 
-						const isHidden = note.hasAttribute('hidden');
-						if (isHidden) {
-							note.removeAttribute('hidden');
-							marker.setAttribute('aria-expanded', 'true');
-						} else {
-							note.setAttribute('hidden', '');
-							marker.setAttribute('aria-expanded', 'false');
+						// Move note to be a direct child of post-body for proper positioning
+						if (note.parentElement !== postBody) {
+							postBody.appendChild(note);
 						}
+
+						const triggerRect = trigger.getBoundingClientRect();
+						const triggerTop = triggerRect.top + window.scrollY;
+						const offsetFromBodyTop = triggerTop - bodyScrollTop;
+						note.style.top = offsetFromBodyTop + 'px';
+
+						// Remove hidden attribute on desktop for legacy notes
+						note.removeAttribute('hidden');
 					});
-				});
+				}
+
+				// Toggle note visibility (mobile)
+				function handleTriggerClick(e) {
+					if (!isMobile()) return;
+
+					const trigger = e.currentTarget;
+					const note = findNoteForTrigger(trigger);
+					if (!note) return;
+
+					e.preventDefault();
+
+					// For new format, use class toggle
+					// For legacy format (aside with hidden attr), toggle hidden
+					const hasHiddenAttr = note.hasAttribute('hidden');
+					const isVisible = note.classList.contains('is-visible') || !hasHiddenAttr;
+
+					if (isVisible && !hasHiddenAttr) {
+						note.classList.remove('is-visible');
+						note.setAttribute('hidden', '');
+						trigger.setAttribute('aria-expanded', 'false');
+					} else {
+						note.classList.add('is-visible');
+						note.removeAttribute('hidden');
+						trigger.setAttribute('aria-expanded', 'true');
+					}
+				}
+
+				// Handle keyboard activation
+				function handleTriggerKeydown(e) {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						handleTriggerClick(e);
+					}
+				}
+
+				// Wire up event listeners
+				function init() {
+					document.querySelectorAll('.mn-marker, .mn-anchor').forEach(trigger => {
+						trigger.addEventListener('click', handleTriggerClick);
+						trigger.addEventListener('keydown', handleTriggerKeydown);
+					});
+
+					// Initial alignment after fonts load
+					if (document.fonts && document.fonts.ready) {
+						document.fonts.ready.then(() => {
+							alignMarginNotes();
+						});
+					} else {
+						// Fallback for browsers without font loading API
+						window.addEventListener('load', alignMarginNotes);
+					}
+
+					// Re-align on resize (debounced)
+					window.addEventListener('resize', debounce(alignMarginNotes, 150));
+				}
+
+				init();
 			})();
 		</script>
 		<script>

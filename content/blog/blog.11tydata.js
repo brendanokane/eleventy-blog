@@ -54,7 +54,7 @@ async function buildThumb(src) {
 
 export default {
 	tags: ["posts"],
-	layout: "layouts/post-woodblock.njk",
+	layout: "layouts/post.njk",
 	permalink: "/{{ page.fileSlug }}/",
 	eleventyComputed: {
 		// Compute summary from subtitle or content if not provided

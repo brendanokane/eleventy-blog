@@ -1,28 +1,49 @@
 ---
 layout: layouts/base.njk
 ---
-{# Only include the syntax highlighter CSS on blog posts, included with the CSS per-page bundle #}
+{# Syntax highlighting for code blocks #}
 <style>{% include "node_modules/prismjs/themes/prism-okaidia.css" %}</style>
 <style>{% include "css/prism-diff.css" %}</style>
-<h1>{{ title }}</h1>
 
-<ul class="post-metadata">
-	<li><time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
-	{%- for tag in tags | filterTagList %}
-	{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
-	<li><a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{%- if not loop.last %}, {% endif %}</li>
-	{%- endfor %}
-</ul>
+<article class="post" data-pagefind-body>
+	{# Pagefind metadata for search #}
+	{% if post_image_thumb or post_image %}
+		<span class="pagefind-meta" data-pagefind-meta="image">{{ post_image_thumb or post_image }}</span>
+	{% endif %}
+	{% if post_image_alt or postImageAlt %}
+		<span class="pagefind-meta" data-pagefind-meta="image_alt">{{ post_image_alt or postImageAlt }}</span>
+	{% endif %}
+	{% if summary %}
+		<span class="pagefind-meta" data-pagefind-meta="summary">{{ summary }}</span>
+	{% endif %}
 
-{{ content | safe }}
+	<header class="post-header">
+		<h1 class="post-title" data-pagefind-meta="title">{{ title }}</h1>
+		<ul class="post-metadata" data-pagefind-ignore>
+			<li><time datetime="{{ page.date | htmlDateString }}" data-pagefind-meta="date">{{ page.date | readableDate }}</time></li>
+			{%- if tags %}
+			{%- for tag in tags | filterTagList %}
+			{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
+			<li><a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{%- if not loop.last %}, {% endif %}</li>
+			{%- endfor %}
+			{%- endif %}
+		</ul>
+	</header>
+
+	<div class="post-body">
+		{{ content | stripLeadingH1 | safe }}
+	</div>
+</article>
 
 {%- if collections.posts %}
 {%- set previousPost = collections.posts | getPreviousCollectionItem %}
 {%- set nextPost = collections.posts | getNextCollectionItem %}
 {%- if nextPost or previousPost %}
-<ul class="links-nextprev">
-	{%- if previousPost %}<li class="links-nextprev-prev">← Previous<br> <a href="{{ previousPost.url }}">{{ previousPost.data.title }}</a></li>{% endif %}
-	{%- if nextPost %}<li class="links-nextprev-next">Next →<br><a href="{{ nextPost.url }}">{{ nextPost.data.title }}</a></li>{% endif %}
-</ul>
+<nav class="post-nav" aria-label="Post navigation">
+	<ul class="links-nextprev">
+		{%- if previousPost %}<li class="links-nextprev-prev"><a href="{{ previousPost.url }}">← {{ previousPost.data.title }}</a></li>{% endif %}
+		{%- if nextPost %}<li class="links-nextprev-next"><a href="{{ nextPost.url }}">{{ nextPost.data.title }} →</a></li>{% endif %}
+	</ul>
+</nav>
 {%- endif %}
 {%- endif %}

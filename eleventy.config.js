@@ -187,39 +187,58 @@ export default async function (eleventyConfig) {
 
 	// ... (Your existing code up to the custom shortcode block)
 
-	// Create a new instance of the Markdown parser outside the config function
-	const md = new MarkdownIt();
-
 	// ----------------------------------------------------------------------
-	// --- START CUSTOM SHORTCODES (Final, Synchronous External Solution) ---
+	// --- MARGIN NOTE SHORTCODE ---
 	// ----------------------------------------------------------------------
+	//
+	// Usage:
+	//   {% mn %}Note content here.{% endmn %}
+	//   {% mn "anchor text" %}Note about that phrase.{% endmn %}
+	//
+	// Output (no anchor):
+	//   <span class="mn-ref">
+	//     <sup class="mn-marker">※</sup>
+	//     <span class="mn-note">Note content</span>
+	//   </span>
+	//
+	// Output (with anchor):
+	//   <span class="mn-ref">
+	//     <span class="mn-anchor">anchor text</span>
+	//     <span class="mn-note">Note about that phrase.</span>
+	//   </span>
+	//
+	// The note is a sibling inside a wrapper so CSS can position it.
+	// Mobile: note is hidden, toggles on click
+	// Desktop: note appears in margin column, aligned via JS
 
-	// Margin Note: {% mn "Anchor Text" %} Note Content {% endmn %}
-	// NOTE: This function is SYNCHRONOUS, as we use an external parser.
+	let mnCounter = 0; // Reset per build for unique IDs
+
+	eleventyConfig.on("eleventy.before", () => {
+		mnCounter = 0;
+	});
+
 	eleventyConfig.addPairedShortcode("mn", function (content, anchor) {
-		// 1. Render the content (which is Markdown) to HTML synchronously
-		const renderedContent = md.render(content);
+		mnCounter++;
+		const noteId = `mn-${mnCounter}`;
 
-		// 2. STRIP THE OUTER <p> TAGS: Markdown-it adds these, which break the inline flow.
-		let cleanedContent = renderedContent.trim();
-		if (cleanedContent.startsWith("<p>")) {
-			// Remove leading <p> and trailing </p>\n
-			cleanedContent = cleanedContent
-				.slice(3, cleanedContent.length - 5)
-				.trim();
+		// Render markdown content to HTML
+		const renderedContent = md.render(content.trim());
+
+		// Clean up: markdown-it wraps in <p>, which we want to keep for multi-paragraph notes
+		// but we need to handle single paragraphs cleanly
+		let noteHtml = renderedContent.trim();
+
+		if (anchor) {
+			// Anchor version: the anchor text is highlighted, no ※ marker
+			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><span class="mn-note" id="${noteId}" role="note">${noteHtml}</span></span>`;
+		} else {
+			// Marker version: ※ superscript marker
+			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">※</sup><span class="mn-note" id="${noteId}" role="note">${noteHtml}</span></span>`;
 		}
-
-		// 3. Return the HTML on one line for perfect flow
-		return `<span class="mn-wrapper"><span class="mn-anchor">${anchor}</span><span class="mn-content">${cleanedContent}</span></span>`;
-	});
-
-	// Simple Footnote: {% fn %} Note Content {% endfn %}
-	eleventyConfig.addPairedShortcode("fn", function (content) {
-		return `<sup class="fn-marker" title="${content}">[ref]</sup>`;
 	});
 
 	// ----------------------------------------------------------------------
-	// --- END CUSTOM SHORTCODES ---
+	// --- END SHORTCODES ---
 	// ----------------------------------------------------------------------
 
 	// ... (Rest of your existing code)
