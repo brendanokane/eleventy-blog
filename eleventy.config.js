@@ -34,6 +34,11 @@ export default async function (eleventyConfig) {
 		.addPassthroughCopy({
 			"./public/": "/",
 		})
+		// Serve the real production CSS for the design playground
+		// (The default /css/index.css is a different file from the old Eleventy starter)
+		.addPassthroughCopy({
+			"./css/index.css": "/css/production.css",
+		})
 		// Note: Post assets are copied via eleventy.after event below to achieve blog-less URLs
 		.addPassthroughCopy("./content/feed/pretty-atom-feed.xsl");
 

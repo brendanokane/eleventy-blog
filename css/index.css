@@ -683,8 +683,7 @@ figcaption,
 blockquote[lang="zh"],
 blockquote[lang="zh-Hant"] {
 	font-style: normal; /* Never italicize Chinese */
-	border-left: 4px solid var(--vermillion);
-	padding-left: 1.5em;
+	padding-left: 2em;
 	margin-left: 0;
 	margin-right: 0;
 	font-size: 1.05em;
@@ -698,7 +697,7 @@ blockquote[lang="zh-Hant"] {
 
 .post {
 	--post-measure: 65ch;
-	--mn-width: 220px;
+	--mn-width: 280px;
 	--mn-gap: 2.5rem;
 }
 
@@ -748,9 +747,11 @@ blockquote[lang="zh-Hant"] {
 
 .post-body blockquote {
 	margin: 1.5em 0;
-	padding-left: 1.2em;
-	border-left: 3px solid var(--vermillion);
+	padding-left: 2em;
+	border-left: none;
 	color: var(--ink);
+	font-style: normal;
+	line-height: 1.55;
 }
 
 .post-body img {
@@ -921,6 +922,8 @@ aside.mn-note {
 	/* Widen the main area to make room for margin */
 	main > .post {
 		max-width: calc(var(--post-measure) + var(--mn-width) + var(--mn-gap));
+		/* Offset left so the text column appears centered, with notes to the right */
+		padding-left: calc((var(--mn-width) + var(--mn-gap)) / 2);
 	}
 
 	/* Post body is the positioning context for margin notes */

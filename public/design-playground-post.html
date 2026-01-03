@@ -10,85 +10,69 @@
 			href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
 			rel="stylesheet"
 		/>
+		<!-- Load the actual production CSS (served via passthrough copy in eleventy.config.js) -->
+		<link rel="stylesheet" href="/css/production.css" />
 		<style>
 			/* ==========================================================================
-			   Design Playground Controls
+			   Design Playground Controls - scoped to not affect preview
 			   ========================================================================== */
-			* {
-				box-sizing: border-box;
-				margin: 0;
-				padding: 0;
-			}
-
-			body {
-				font-family: system-ui;
-				background: #1a1a1a;
-				color: #f0f0f0;
-				overflow: hidden;
-			}
-
-			.container {
+			.playground-container {
 				display: grid;
 				grid-template-columns: 320px 1fr;
 				height: 100vh;
+				overflow: hidden;
 			}
 
-			.controls {
+			.playground-controls {
 				background: #2a2a2a;
 				padding: 15px;
 				overflow-y: auto;
 				border-right: 1px solid #444;
 				font-size: 0.85rem;
+				font-family: system-ui, sans-serif;
+				color: #f0f0f0;
 			}
 
-			.controls h1 {
+			.playground-controls h1 {
 				font-size: 1.2rem;
 				margin-bottom: 8px;
+				font-family: system-ui, sans-serif;
 			}
 
-			.controls h2 {
+			.playground-controls h2 {
 				font-size: 0.8rem;
 				color: #aaa;
 				text-transform: uppercase;
 				margin: 18px 0 8px;
 				border-bottom: 1px solid #444;
 				padding-bottom: 4px;
+				font-family: system-ui, sans-serif;
 			}
 
-			.control {
+			.playground-controls .control {
 				margin-bottom: 10px;
 			}
 
-			.control label {
+			.playground-controls .control label {
 				display: block;
 				font-size: 0.75rem;
 				color: #ccc;
 				margin-bottom: 4px;
 			}
 
-			input[type="range"] {
+			.playground-controls input[type="range"] {
 				width: 100%;
 				height: 4px;
 			}
 
-			input[type="number"] {
-				width: 55px;
-				padding: 3px;
-				background: #1a1a1a;
-				border: 1px solid #444;
-				border-radius: 3px;
-				color: #f0f0f0;
-				font-size: 0.75rem;
-			}
-
-			input[type="color"] {
+			.playground-controls input[type="color"] {
 				width: 100%;
 				height: 28px;
 				border: none;
 				cursor: pointer;
 			}
 
-			select {
+			.playground-controls select {
 				width: 100%;
 				padding: 5px;
 				background: #1a1a1a;
@@ -98,7 +82,7 @@
 				font-size: 0.75rem;
 			}
 
-			button {
+			.playground-controls button {
 				width: 100%;
 				padding: 10px;
 				margin-top: 15px;
@@ -111,660 +95,662 @@
 				font-size: 0.8rem;
 			}
 
-			button:hover {
+			.playground-controls button:hover {
 				background: #a52218;
 			}
 
-			/* ==========================================================================
-			   Preview Area - Matches production index.css structure exactly
-			   ========================================================================== */
-			.preview {
+			/* Preview area - production CSS applies here */
+			.playground-preview {
 				overflow-y: auto;
 			}
 
-			/* --- Production CSS from index.css starts here --- */
-
-			.preview-inner {
-				/* :root variables from index.css */
-				--paper: #f6f0e8;
-				--paper-2: #efe6db;
-				--ink: #241425;
-				--ink-2: #3a223a;
-				--vermillion: #8f1d14;
-				--rule: #241425;
-
-				--font-body:
-					"Vollkorn", "Noto Serif TC", "Source Han Serif TC",
-					"Source Han Serif", ui-serif, Georgia, serif;
-				--font-display:
-					"Source Sans 3", "Source Sans Pro", "Noto Sans TC",
-					"Source Han Sans TC", ui-sans-serif, system-ui, -apple-system,
-					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-				--font-mn:
-					"Gill Sans", "Gill Sans MT", "Gill Sans Nova", "Lato", "Noto Sans TC",
-					"Source Han Sans TC", ui-sans-serif, system-ui, -apple-system,
-					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-				--text-size: 1.2rem;
-				--leading: 1.7;
-				--measure: 70ch;
-
-				/* Base styles from index.css html/body */
-				background: var(--paper);
-				color: var(--ink);
-				font-family: var(--font-body);
-				font-size: var(--text-size);
-				line-height: var(--leading);
-				font-weight: 500;
-				min-height: 100%;
-				padding: 2rem clamp(16px, 3vw, 28px);
-			}
-
-			/* main element styles from index.css */
-			.preview-inner main {
-				max-width: var(--measure);
-				margin: 0 auto;
-				padding: 2rem 0 4rem;
-			}
-
-			/* .post component from index.css lines 699-703 */
-			.preview-inner .post {
-				--post-measure: 65ch;
-				--mn-width: 220px;
-				--mn-gap: 2.5rem;
-			}
-
-			/* .post-header from index.css lines 705-708 */
-			.preview-inner .post-header {
-				max-width: var(--post-measure);
-				margin-bottom: 2rem;
-			}
-
-			/* .post-title from index.css lines 710-716 */
-			.preview-inner .post-title {
-				font-family: var(--font-display);
-				font-size: clamp(1.8rem, 4vw, 2.6rem);
-				line-height: 1.15;
-				margin: 0 0 0.5rem;
-				font-weight: 700;
-			}
-
-			/* .post-metadata from index.css lines 718-728 */
-			.preview-inner .post-metadata {
-				list-style: none;
-				padding: 0;
-				margin: 0;
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5rem 1rem;
-				font-family: var(--font-display);
-				font-size: 0.85rem;
-				color: var(--ink-2);
-			}
-
-			/* .post-tag from index.css lines 730-737 */
-			.preview-inner .post-tag {
-				text-decoration: none;
-				color: var(--ink-2);
-			}
-
-			.preview-inner .post-tag:hover {
-				color: var(--vermillion);
-			}
-
-			/* .post-body from index.css lines 739-743 */
-			.preview-inner .post-body {
-				font-size: 1.15rem;
-				line-height: 1.75;
-				max-width: var(--post-measure);
-			}
-
-			/* .post-body p from index.css lines 745-747 */
-			.preview-inner .post-body p {
-				margin: 0 0 1.2em;
-			}
-
-			/* .post-body blockquote from index.css lines 749-754 */
-			.preview-inner .post-body blockquote {
-				margin: 1.5em 0;
-				padding-left: 1.2em;
-				border-left: 3px solid var(--vermillion);
-				color: var(--ink);
-			}
-
-			/* .post-body img from index.css lines 756-761 */
-			.preview-inner .post-body img {
-				max-width: 100%;
-				height: auto;
-				display: block;
-				margin: 1.5em 0;
-			}
-
-			/* .post-body pre from index.css lines 763-770 */
-			.preview-inner .post-body pre {
-				font-size: 0.9em;
-				line-height: 1.5;
-				padding: 1em;
-				overflow-x: auto;
-				margin: 1.5em 0;
-				border-radius: 4px;
-			}
-
-			/* hr styling */
-			.preview-inner .post-body hr {
-				border: none;
-				border-top: 1px solid var(--rule);
-				margin: 2em 0;
-			}
-
-			/* ==========================================================================
-			   Margin Notes - from index.css lines 790-930
-			   ========================================================================== */
-
-			/* .mn-ref wrapper stays inline */
-			.preview-inner .mn-ref {
-				position: relative;
-			}
-
-			/* .mn-marker from index.css lines 804-814 */
-			.preview-inner .mn-marker {
-				font-size: 0.75em;
-				vertical-align: super;
-				line-height: 0;
-				cursor: pointer;
-				color: var(--vermillion);
-				text-decoration: none;
-				border: none;
-				background: none;
-				padding: 0 0.1em;
-			}
-
-			.preview-inner .mn-marker:hover,
-			.preview-inner .mn-marker:focus {
-				color: var(--ink);
-			}
-
-			/* .mn-note from index.css lines 838-843 */
-			.preview-inner .mn-note {
-				font-family: var(--font-mn);
-				font-size: 0.82rem;
-				line-height: 1.5;
-				color: var(--ink-2);
-			}
-
-			/* Reset aside default styles */
-			.preview-inner aside.mn-note {
-				display: block;
-				margin: 0;
-			}
-
-			.preview-inner .mn-note p {
-				margin: 0 0 0.6em;
-			}
-
-			.preview-inner .mn-note p:last-child {
-				margin-bottom: 0;
-			}
-
-			/* Mobile: Notes hidden, toggle on click - from index.css lines 866-886 */
-			@media (max-width: 900px) {
-				.preview-inner .mn-note {
-					display: none;
-					margin: 0.8em 0;
-					padding: 0.8em 1em;
-					background: color-mix(in srgb, var(--paper-2), transparent 50%);
-					border-left: 3px solid var(--vermillion);
-				}
-
-				.preview-inner .mn-note.is-visible {
-					display: block;
-				}
-
-				.preview-inner .mn-note:not([hidden]) {
-					display: block;
-				}
-
-				.preview-inner .mn-marker[aria-expanded="true"] {
-					color: var(--ink);
-				}
-			}
-
-			/* Desktop: Notes in margin column - from index.css lines 888-930 */
-			@media (min-width: 901px) {
-				/* Widen the main area to make room for margin */
-				.preview-inner main > .post {
-					max-width: calc(
-						var(--post-measure) + var(--mn-width) + var(--mn-gap)
-					);
-				}
-
-				/* Post body is the positioning context for margin notes */
-				.preview-inner .post-body {
-					position: relative;
-					max-width: var(--post-measure);
-				}
-
-				/* Notes are positioned absolutely in the margin */
-				.preview-inner .mn-note {
-					position: absolute;
-					left: calc(100% + var(--mn-gap));
-					width: var(--mn-width);
-					/* top is set by JavaScript to align with marker */
-				}
-
-				/* No hover needed on desktop - notes are always visible */
-				.preview-inner .mn-marker {
-					cursor: default;
-				}
-			}
-
 			/* Hide margin notes toggle */
-			.preview-inner.playground-no-notes .mn-note,
-			.preview-inner.playground-no-notes .mn-marker {
-				display: none;
+			.playground-preview.playground-no-notes .mn-note,
+			.playground-preview.playground-no-notes .mn-marker {
+				display: none !important;
 			}
 		</style>
 	</head>
-	<body>
-		<div class="container">
-			<div class="controls">
-				<h1>Design Playground</h1>
-				<p style="color: #999; margin-bottom: 12px; font-size: 0.75rem">
-					Single-post template tuning.<br />
-					Values match production index.css exactly.
-				</p>
+	<body class="playground-container">
+		<div class="playground-controls">
+			<h1>Design Playground</h1>
+			<p style="color: #999; margin-bottom: 12px; font-size: 0.75rem">
+				Single-post template tuning.<br />
+				Uses actual production CSS.
+			</p>
 
-				<h2>Colors</h2>
-				<div class="control">
-					<label>--paper</label>
-					<input type="color" id="paper" value="#f6f0e8" />
-				</div>
-				<div class="control">
-					<label>--paper-2</label>
-					<input type="color" id="paper2" value="#efe6db" />
-				</div>
-				<div class="control">
-					<label>--ink</label>
-					<input type="color" id="ink" value="#241425" />
-				</div>
-				<div class="control">
-					<label>--ink-2</label>
-					<input type="color" id="ink2" value="#3a223a" />
-				</div>
-				<div class="control">
-					<label>--vermillion</label>
-					<input type="color" id="vermillion" value="#8f1d14" />
-				</div>
-				<div class="control">
-					<label>--rule</label>
-					<input type="color" id="rule" value="#241425" />
-				</div>
-
-				<h2>Base Typography (html/body)</h2>
-				<div class="control">
-					<label>--text-size: <span id="textSizeVal">1.2rem</span></label>
-					<input
-						type="range"
-						id="textSize"
-						min="0.9"
-						max="1.5"
-						step="0.05"
-						value="1.2"
-					/>
-				</div>
-				<div class="control">
-					<label>--leading: <span id="leadingVal">1.7</span></label>
-					<input
-						type="range"
-						id="leading"
-						min="1.3"
-						max="2.2"
-						step="0.05"
-						value="1.7"
-					/>
-				</div>
-				<div class="control">
-					<label>body font-weight: <span id="bodyWeightVal">500</span></label>
-					<input
-						type="range"
-						id="bodyWeight"
-						min="400"
-						max="700"
-						step="100"
-						value="500"
-					/>
-				</div>
-
-				<h2>Post Body (.post-body)</h2>
-				<div class="control">
-					<label>font-size: <span id="postBodySizeVal">1.15rem</span></label>
-					<input
-						type="range"
-						id="postBodySize"
-						min="0.9"
-						max="1.5"
-						step="0.05"
-						value="1.15"
-					/>
-				</div>
-				<div class="control">
-					<label>line-height: <span id="postBodyLeadingVal">1.75</span></label>
-					<input
-						type="range"
-						id="postBodyLeading"
-						min="1.4"
-						max="2.2"
-						step="0.05"
-						value="1.75"
-					/>
-				</div>
-
-				<h2>Post Title (.post-title)</h2>
-				<div class="control">
-					<label>font-size max: <span id="titleSizeVal">2.6rem</span></label>
-					<input
-						type="range"
-						id="titleSize"
-						min="1.8"
-						max="3.5"
-						step="0.1"
-						value="2.6"
-					/>
-				</div>
-				<div class="control">
-					<label>line-height: <span id="titleLeadingVal">1.15</span></label>
-					<input
-						type="range"
-						id="titleLeading"
-						min="1.0"
-						max="1.5"
-						step="0.05"
-						value="1.15"
-					/>
-				</div>
-				<div class="control">
-					<label>font-weight: <span id="titleWeightVal">700</span></label>
-					<input
-						type="range"
-						id="titleWeight"
-						min="400"
-						max="900"
-						step="100"
-						value="700"
-					/>
-				</div>
-
-				<h2>Margin Notes (.mn-note)</h2>
-				<div class="control">
-					<label>font-size: <span id="mnSizeVal">0.82rem</span></label>
-					<input
-						type="range"
-						id="mnSize"
-						min="0.7"
-						max="1.0"
-						step="0.02"
-						value="0.82"
-					/>
-				</div>
-				<div class="control">
-					<label>line-height: <span id="mnLeadingVal">1.5</span></label>
-					<input
-						type="range"
-						id="mnLeading"
-						min="1.2"
-						max="1.8"
-						step="0.05"
-						value="1.5"
-					/>
-				</div>
-
-				<h2>Layout (.post variables)</h2>
-				<div class="control">
-					<label>--post-measure: <span id="postMeasureVal">65ch</span></label>
-					<input
-						type="range"
-						id="postMeasure"
-						min="45"
-						max="80"
-						step="1"
-						value="65"
-					/>
-				</div>
-				<div class="control">
-					<label>--mn-width: <span id="mnWidthVal">220px</span></label>
-					<input
-						type="range"
-						id="mnWidth"
-						min="150"
-						max="320"
-						step="10"
-						value="220"
-					/>
-				</div>
-				<div class="control">
-					<label>--mn-gap: <span id="mnGapVal">2.5rem</span></label>
-					<input
-						type="range"
-						id="mnGap"
-						min="1"
-						max="5"
-						step="0.25"
-						value="2.5"
-					/>
-				</div>
-
-				<h2>Global Layout</h2>
-				<div class="control">
-					<label>--measure: <span id="measureVal">70ch</span></label>
-					<input
-						type="range"
-						id="measure"
-						min="50"
-						max="90"
-						step="1"
-						value="70"
-					/>
-				</div>
-
-				<h2>Options</h2>
-				<div class="control">
-					<label
-						><input type="checkbox" id="showMarginNotes" checked /> Show margin
-						notes</label
-					>
-				</div>
-
-				<button onclick="copyCSS()">Copy CSS Variables</button>
+			<h2>Colors</h2>
+			<div class="control">
+				<label>--paper: <span id="paperVal">#f6f0e8</span></label>
+				<input type="color" id="paper" value="#f6f0e8" />
+			</div>
+			<div class="control">
+				<label>--paper-2: <span id="paper2Val">#efe6db</span></label>
+				<input type="color" id="paper2" value="#efe6db" />
+			</div>
+			<div class="control">
+				<label>--ink: <span id="inkVal">#241425</span></label>
+				<input type="color" id="ink" value="#241425" />
+			</div>
+			<div class="control">
+				<label>--ink-2: <span id="ink2Val">#3a223a</span></label>
+				<input type="color" id="ink2" value="#3a223a" />
+			</div>
+			<div class="control">
+				<label>--vermillion: <span id="vermillionVal">#8f1d14</span></label>
+				<input type="color" id="vermillion" value="#8f1d14" />
+			</div>
+			<div class="control">
+				<label>--rule: <span id="ruleVal">#241425</span></label>
+				<input type="color" id="rule" value="#241425" />
 			</div>
 
-			<div class="preview">
-				<div class="preview-inner" id="preview">
-					<main>
-						<article class="post">
-							<header class="post-header">
-								<h1 class="post-title">The Naming of Cats, and an Offering</h1>
-								<ul class="post-metadata">
-									<li><time datetime="2023-07-18">July 18, 2023</time></li>
-									<li><a href="#" class="post-tag">translations</a></li>
-								</ul>
-							</header>
-
-							<div class="post-body">
-								<p>
-									<em
-										>A "cat contract" 納貓兒契式 listing the cat's obligations:
-										patrolling tirelessly, catching mice, leaving the numnums
-										alone. From 銜蟬小錄 <i>Xianchan xiaolu</i>.</em
-									>
-								</p>
-
-								<p>
-									If you can read Classical Chinese, you can have a moderately
-									good time looking in pre-20th century reference texts to see
-									what they have for "cat."
-								</p>
-
-								<p>
-									The late 16th-century <i>Bencao gangmu</i> 本草綱目 (<i
-										>Materia Medica</i
-									>) says "貓 CAT can be read as either <i>miao</i> or
-									<i>mao</i>. They can say their own name!" The 17th-century
-									<i>Zhengzitong</i> 正字通 (<i
-										>Comprehensive Guide to Correct Graphs</i
-									>) explains that cats are "of the baleful category" (陰類也).
-									The entry in the 8th-century <i>Wujing wenzi</i> 五經文字 (<i
-										>Simplex and Compound Graphs from the</i
-									>
-									Five Classics), presumably written by either a cat or a
-									Buddhist, calls them "ferocious beasts" (猛獸), while the
-									11th-century <i>Piya</i>'s 埤雅 (<i>Expansion to the</i> Erya)
-									entry for the character 貓 continues the <i>Erya</i>'s proud
-									tradition of unhelpful lexicography<sup
-										class="mn-marker"
-										data-mn-id="mn-1"
-										aria-expanded="false"
-										>※</sup
-									>
-									with the following:
-								</p>
-
-								<aside class="mn-note" id="mn-1" hidden>
-									I'm not being fair to the 3rd c. BCE dudes who wrote the
-									<i>Erya,</i> which is not really a dictionary so much as a
-									collection of factoids about characters. Sometimes those
-									factoids include definitions; sometimes, as here, they're
-									punny little mnemonics about characters' pronunciation or
-									structure.
-								</aside>
-
-								<blockquote lang="zh-Hant">
-									鼠害苗，而貓能捕鼠，去苗之害，故貓字從苗
-								</blockquote>
-
-								<blockquote>
-									Mice harm SPROUTS 苗 <i>miáo</i>, and CATS 貓 <i>māo</i> can
-									catch mice, eliminating the harm to the sprouts. That's why
-									the character for CAT has SPROUT in it.
-								</blockquote>
-
-								<p>
-									For anybody wondering how they said <i>pspsps</i> in the Qing
-									dynasty, Wang Chutong's 王初桐 1798 <i>Mao sheng</i> 貓乘 (<i
-										>A Cavalcade of Cats</i
-									>), the earliest collection of cat-related quotations and
-									factoids I could find, has a section listing all the ways of
-									calling a cat known to authoritative sources. <i>Mi</i>,
-									variously written, is the clear consensus favorite, though the
-									Yuan writer Bai Ting 白珽 suggests 汁汁, pronounced something
-									like <i>ji-ji</i> at the time. (Wang comments that this
-									"sounds like mice squeaking.")
-								</p>
-
-								<p>
-									Sun Sunyi's 孫蓀意 adorably titled
-									<i>Xianchan xiaolu</i> 銜蟬小錄 (preface dated 1799, when she
-									was just 16)<sup
-										class="mn-marker"
-										data-mn-id="mn-2"
-										aria-expanded="false"
-										>※</sup
-									>
-									has eight fascicles' worth of feline-related quotations
-									grouped under headings like "Origins," "Nomenclature," and
-									"Tales of Karmic Retribution," as well as a pretty impressive
-									selection of what the preceding thousand years had to offer in
-									the way of cat-related poetry.
-								</p>
-
-								<aside class="mn-note" id="mn-2" hidden>
-									Literally, "<i>Notes on Cicada-Nommers.</i>" "Cicada-nommer"
-									(銜蟬 <i>xianchan</i>) was a conventional word for cats at
-									least as far back as the Song.
-								</aside>
-
-								<p>
-									Unfortunately it doesn't have what <i>I'm</i> looking for,
-									which is a list of cat names.
-								</p>
-
-								<hr />
-
-								<p>
-									A while ago, Jennifer Feeley tweeted about trying to find an
-									English name for a cat named 麻珠 "Mázhū" in a Xi Xi story she
-									was translating. Pet names are among the few exceptions<sup
-										class="mn-marker"
-										data-mn-id="mn-3"
-										aria-expanded="false"
-										>※</sup
-									>
-									to the hard and fast rule that anyone who translates a
-									personal name will not see Valhalla, but they present problems
-									of their own.
-								</p>
-
-								<aside class="mn-note" id="mn-3" hidden>
-									Off the top of my head, the exceptions are pet names,
-									nicknames, pen names, screen names, and anything else intended
-									primarily to be meaningful — the key words being "intended"
-									and "primarily."
-								</aside>
-
-								<p>
-									I've always loved Robin Flower's translation of "Pangur Bán,"
-									a poem in Old Irish written in the margin of a manuscript by a
-									bored 9th century monk:
-								</p>
-
-								<blockquote>
-									<pre>
-I and Pangur Bán, my cat,
-'Tis a like task we are at:
-Hunting mice is his delight,
-Hunting words I sit all night.
-
-Better far than praise of men
-'Tis to sit with book and pen;
-Pangur bears me no ill-will,
-He too plies his simple skill.</pre
-									>
-								</blockquote>
-
-								<p>
-									For the author and his first readers, but not for us, the name
-									"Pangur" would obviously have belonged to a cat, a problem
-									Flower solved by adding "my cat" to the first line of his
-									translation. He leaves <i>Bán</i> ("white") untranslated. Does
-									it matter if a reader of Flower's English comes away knowing
-									less than someone who reads the original?
-								</p>
-
-								<hr />
-
-								<p>
-									The <i>Xiang mao jing</i> 相貓經 (<i
-										>Guide to Cat Physiognomy</i
-									>), quoted extensively in Huang Han's 1852
-									<i>Mao yuan</i> 貓苑 (<i>A Garden of Cats</i>), lists ways of
-									describing the physical appearance of cats. A cat with a
-									pure-colored coat of any color was "Good All Year Round"
-									(四時好). "Dark Clouds Over Snow" (烏雲蓋雪) was a black cat
-									with white fur on its belly and paws — but if only the paws
-									were white, it was "Walking Through Snow in Search of Plums"
-									(踏雪尋梅).
-								</p>
-
-								<p>
-									The Song-dynasty poet and ailurophile Lu You 陸游 names three
-									cats in his poems — "Pink-nose" (粉鼻), "Snowball" (雪兒), and
-									"Tigger" (小於菟, from <i>wūtú</i>, a literary word for
-									"tiger" borrowed from the extinct Chu language).
-								</p>
-							</div>
-						</article>
-					</main>
-				</div>
+			<h2>Base Typography</h2>
+			<div class="control">
+				<label>--text-size: <span id="textSizeVal">1.2rem</span></label>
+				<input
+					type="range"
+					id="textSize"
+					min="0.9"
+					max="1.5"
+					step="0.05"
+					value="1.2"
+				/>
 			</div>
+			<div class="control">
+				<label>--leading: <span id="leadingVal">1.7</span></label>
+				<input
+					type="range"
+					id="leading"
+					min="1.3"
+					max="2.2"
+					step="0.05"
+					value="1.7"
+				/>
+			</div>
+			<div class="control">
+				<label>body font-weight: <span id="bodyWeightVal">500</span></label>
+				<input
+					type="range"
+					id="bodyWeight"
+					min="400"
+					max="700"
+					step="100"
+					value="500"
+				/>
+			</div>
+
+			<h2>Post Body (.post-body)</h2>
+			<div class="control">
+				<label>font-size: <span id="postBodySizeVal">1.15rem</span></label>
+				<input
+					type="range"
+					id="postBodySize"
+					min="0.9"
+					max="1.5"
+					step="0.05"
+					value="1.15"
+				/>
+			</div>
+			<div class="control">
+				<label>line-height: <span id="postBodyLeadingVal">1.75</span></label>
+				<input
+					type="range"
+					id="postBodyLeading"
+					min="1.4"
+					max="2.2"
+					step="0.05"
+					value="1.75"
+				/>
+			</div>
+
+			<h2>Post Title (.post-title)</h2>
+			<div class="control">
+				<label>font-size max: <span id="titleSizeVal">2.6rem</span></label>
+				<input
+					type="range"
+					id="titleSize"
+					min="1.8"
+					max="3.5"
+					step="0.1"
+					value="2.6"
+				/>
+			</div>
+			<div class="control">
+				<label>line-height: <span id="titleLeadingVal">1.15</span></label>
+				<input
+					type="range"
+					id="titleLeading"
+					min="1.0"
+					max="1.5"
+					step="0.05"
+					value="1.15"
+				/>
+			</div>
+			<div class="control">
+				<label>font-weight: <span id="titleWeightVal">700</span></label>
+				<input
+					type="range"
+					id="titleWeight"
+					min="400"
+					max="900"
+					step="100"
+					value="700"
+				/>
+			</div>
+
+			<h2>Margin Notes (.mn-note)</h2>
+			<div class="control">
+				<label>font-size: <span id="mnSizeVal">0.82rem</span></label>
+				<input
+					type="range"
+					id="mnSize"
+					min="0.7"
+					max="1.0"
+					step="0.02"
+					value="0.82"
+				/>
+			</div>
+			<div class="control">
+				<label>line-height: <span id="mnLeadingVal">1.5</span></label>
+				<input
+					type="range"
+					id="mnLeading"
+					min="1.2"
+					max="1.8"
+					step="0.05"
+					value="1.5"
+				/>
+			</div>
+
+			<h2>Layout (.post)</h2>
+			<div class="control">
+				<label>--post-measure: <span id="postMeasureVal">65ch</span></label>
+				<input
+					type="range"
+					id="postMeasure"
+					min="45"
+					max="80"
+					step="1"
+					value="65"
+				/>
+			</div>
+			<div class="control">
+				<label>--mn-width: <span id="mnWidthVal">280px</span></label>
+				<input
+					type="range"
+					id="mnWidth"
+					min="150"
+					max="320"
+					step="10"
+					value="280"
+				/>
+			</div>
+			<div class="control">
+				<label>--mn-gap: <span id="mnGapVal">2.5rem</span></label>
+				<input
+					type="range"
+					id="mnGap"
+					min="1"
+					max="5"
+					step="0.25"
+					value="2.5"
+				/>
+			</div>
+
+			<h2>Global Layout</h2>
+			<div class="control">
+				<label>--measure: <span id="measureVal">70ch</span></label>
+				<input
+					type="range"
+					id="measure"
+					min="50"
+					max="90"
+					step="1"
+					value="70"
+				/>
+			</div>
+
+			<h2>Options</h2>
+			<div class="control">
+				<label
+					><input type="checkbox" id="showMarginNotes" checked /> Show margin
+					notes</label
+				>
+			</div>
+
+			<button onclick="copyCSS()">Copy CSS Variables</button>
+		</div>
+
+		<!-- Preview area uses production CSS structure exactly -->
+		<div class="playground-preview" id="preview">
+			<main id="main">
+				<article class="post">
+					<header class="post-header">
+						<h1 class="post-title">The Naming of Cats, and an Offering</h1>
+						<ul class="post-metadata">
+							<li><time datetime="2023-07-18">July 18, 2023</time></li>
+							<li><a href="#" class="post-tag">translations</a></li>
+						</ul>
+					</header>
+
+					<div class="post-body">
+						<p>
+							<a
+								href="/the-naming-of-cats-and-an-offering/assets/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg"
+								><img
+									src="/the-naming-of-cats-and-an-offering/assets/6896126c-c0d5-4aa8-a649-11548e7a70d1_2000x1348.jpeg"
+									alt="Woodblock print of a startlingly bright-eyed cat, surrounded by the text of the contract in a spiral."
+							/></a>
+							A "cat contract" 納貓兒契式 listing the cat's obligations:
+							patrolling tirelessly, catching mice, leaving the numnums alone.
+							From 銜蟬小錄 <em>Xianchan xiaolu</em>.
+						</p>
+						<p>
+							If you can read Classical Chinese, you can have a moderately good
+							time looking in pre-20th century reference texts to see what they
+							have for "cat."
+						</p>
+						<p>
+							The late 16th-century <em>Bencao gangmu</em> 本草綱目 (
+							<em>Materia Medica</em>) says "貓 CAT can be read as either
+							<em>miao</em> or <em>mao</em>. They can say their own name!" The
+							17th-century <em>Zhengzitong</em> 正字通 (
+							<em>Comprehensive Guide to Correct Graphs</em>) explains that cats
+							are "of the baleful category" (陰類也). The entry in the
+							8th-century <em>Wujing wenzi</em> 五經文字 (
+							<em>Simplex and Compound Graphs from the</em> Five Classics),
+							presumably written by either a cat or a Buddhist, calls them
+							"ferocious beasts" (猛獸), while the 11th-century <em>Piya</em>'s
+							埤雅 ( <em>Expansion to the</em> Erya) entry for the character 貓
+							continues the <em>Erya</em>'s proud tradition of unhelpful
+							lexicography
+							<sup
+								class="mn-marker"
+								data-mn-id="mn-1"
+								aria-controls="mn-1"
+								aria-expanded="false"
+								title="Toggle note"
+								>※</sup
+							>
+							with the following:
+						</p>
+						<aside class="mn-note" id="mn-1" data-mn-id="mn-1" hidden="">
+							<p>
+								I'm not being fair to the 3rd c. BCE dudes who wrote the
+								<em>Erya,</em> which is not really a dictionary so much as a
+								collection of factoids about characters. Sometimes those
+								factoids include definitions; sometimes, as here, they're punny
+								little mnemonics about characters' pronunciation or structure.
+							</p>
+							<p>
+								For a sense of how useful this generally is to the working
+								sinologist, imagine looking up "money" and finding "mo' money
+								mo' honey" — except you also have to guess at the pronunciations
+								of "mo'," "money," and "honey," because characters.
+							</p>
+						</aside>
+						<blockquote>
+							<p>鼠害苗，而貓能捕鼠，去苗之害，故貓字從苗</p>
+							<p>
+								Mice harm SPROUTS 苗 <em>miáo</em>, and CATS 貓 <em>māo</em> can
+								catch mice, eliminating the harm to the sprouts. That's why the
+								character for CAT has SPROUT in it.
+							</p>
+						</blockquote>
+						<p>
+							For anybody wondering how they said <em>pspsps</em> in the Qing
+							dynasty, Wang Chutong's 王初桐 1798 <em>Mao sheng</em> 貓乘 (
+							<em>A Cavalcade of Cats</em>), the earliest collection of
+							cat-related quotations and factoids I could find, has a section
+							listing all the ways of calling a cat known to authoritative
+							sources. <em>Mi</em>, variously written, is the clear consensus
+							favorite, though the Yuan writer Bai Ting 白珽 suggests 汁汁,
+							pronounced something like <em>ji-ji</em> at the time. (Wang
+							comments that this "sounds like mice squeaking.")
+						</p>
+						<p>
+							Sun Sunyi's 孫蓀意 adorably titled
+							<em>Xianchan xiaolu</em> 銜蟬小錄 (preface dated 1799, when she
+							was just 16)
+							<sup
+								class="mn-marker"
+								data-mn-id="mn-2"
+								aria-controls="mn-2"
+								aria-expanded="false"
+								title="Toggle note"
+								>※</sup
+							>
+							has eight fascicles' worth of feline-related quotations grouped
+							under headings like "Origins," "Nomenclature," and "Tales of
+							Karmic Retribution," as well as a pretty impressive selection of
+							what the preceding thousand years had to offer in the way of
+							cat-related poetry. If you're in the market for curious historical
+							events, incidental verses, or bonkers little geomantic notes,
+							<em>Xianchan xiaolu</em> has got you covered. ("The cat's origins
+							lie not in China but India," it explains, quoting a late-Ming
+							test-prep book. "As the cat was not engendered by the
+							<em>qi</em> of China, the tip of its nose is almost invariably
+							cold, the sole exception being the day of the summer solstice.")
+						</p>
+						<aside class="mn-note" id="mn-2" data-mn-id="mn-2" hidden="">
+							<p>
+								Literally, " <em>Notes on Cicada-Nommers.</em>" "Cicada-nommer"
+								(銜蟬 <em>xianchan</em>) was a conventional word for cats at
+								least as far back as the Song — I first encountered it in an
+								incidental verse by Huang Tingjian 黃庭堅 (1045-1105) called
+								"Cat Wanted" (乞貓):
+							</p>
+							<blockquote>
+								<p>秋來鼠輩欺貓死，</p>
+								<p>窺甕翻盤攪夜眠</p>
+								<p>聞道狸奴將數子，</p>
+								<p>買魚穿柳聘銜蟬</p>
+								<p>
+									Since last fall, the mice have taken advantage of my cat's
+									death —
+								</p>
+								<p>
+									poking their heads into jars, upending plates, and ruining my
+									sleep.
+								</p>
+								<p>I heard your cat had a litter of kittens,</p>
+								<p>
+									So I bought a fish and put it on a stick to engage a
+									cicada-nommer.
+								</p>
+							</blockquote>
+							<p>
+								The verb I'm translating as "engage" here, 聘 <em>pin</em>,
+								mostly shows up in the sense of 招聘 <em>zhaopin</em>/ "to
+								recruit" in modern Mandarin, but it was also the verb used for
+								arranging the marriage of a primary wife. This is probably just
+								a coincidental quirk of usage — but the earliest surviving guide
+								to cat ownership, Yu Zongben's 俞宗本 late 14th-c.
+								<em>Namao jing</em> 納貓經, describes settling a new cat in
+								one's home in much the same way one would a new wife.
+							</p>
+						</aside>
+						<p>
+							Unfortunately it doesn't have what <em>I'm</em> looking for, which
+							is a list of cat names.
+						</p>
+						<hr />
+						<p>
+							A while ago, Jennifer Feeley
+							<a
+								href="https://twitter.com/JenniferLFeeley/status/1557577006073741312"
+								>tweeted</a
+							>
+							about trying to find an English name for a cat named 麻珠 "Mázhū"
+							in a Xi Xi story she was translating. Pet names are among the few
+							exceptions
+							<sup
+								class="mn-marker"
+								data-mn-id="mn-3"
+								aria-controls="mn-3"
+								aria-expanded="false"
+								title="Toggle note"
+								>※</sup
+							>
+							to the hard and fast rule that anyone who translates a personal
+							name will not see Valhalla, but they present problems of their
+							own.
+						</p>
+						<aside class="mn-note" id="mn-3" data-mn-id="mn-3" hidden="">
+							<p>
+								Off the top of my head, the exceptions are pet names, nicknames,
+								pen names, screen names, and anything else intended primarily to
+								be meaningful — the key words being "intended" and "primarily."
+								You never translate a government name: Yes, Chinese names are
+								written with characters; yes, those characters are chosen for
+								meaning as well as sound — but nobody walks down the street
+								thinking "oh man, just wait til Nationbuilding Chen finds out
+								Earthquake Zhang slashed his tires." Translating personal names
+								tends to be done more often to female characters than to male
+								ones, and the effect ranges from "gross Orientalism" to, at
+								best, "tacky chinoiserie."
+							</p>
+							<p>
+								An example of Doing It Right is David Hawkes' handling of
+								peripheral character names in <em>The Story of the Stone</em>,
+								his translation of 紅樓夢 <em>Honglou meng</em>: the Jia family
+								names their household servants like pets, and Hawkes translates
+								accordingly. He also goes Latinate for the religious names of
+								monks and nuns, and French for the professional names of
+								performers. It's an ingenious, incredibly well-executed way of
+								restoring some of the information passively available to a
+								reader of Chinese. Unfortunately, it's probably not applicable
+								in most contemporary contexts.
+							</p>
+						</aside>
+						<p>
+							I've always loved Robin Flower's translation of "Pangur Bán," a
+							poem in Old Irish written in the margin of a manuscript by a bored
+							9th century monk:
+						</p>
+						<blockquote>
+							<p>I and Pangur Bán, my cat,</p>
+							<p>'Tis a like task we are at:</p>
+							<p>Hunting mice is his delight,</p>
+							<p>Hunting words I sit all night.</p>
+							<p>Better far than praise of men</p>
+							<p>'Tis to sit with book and pen;</p>
+							<p>Pangur bears me no ill-will,</p>
+							<p>He too plies his simple skill.</p>
+							<p>'Tis a merry task to see</p>
+							<p>At our tasks how glad are we,</p>
+							<p>When at home we sit and find</p>
+							<p>Entertainment to our mind.</p>
+							<p>Oftentimes a mouse will stray</p>
+							<p>In the hero Pangur's way;</p>
+							<p>Oftentimes my keen thought set</p>
+							<p>Takes a meaning in its net.</p>
+							<p>'Gainst the wall he sets his eye</p>
+							<p>Full and fierce and sharp and sly;</p>
+							<p>'Gainst the wall of knowledge I</p>
+							<p>All my little wisdom try.</p>
+							<p>When a mouse darts from its den,</p>
+							<p>O, how glad is Pangur then!</p>
+							<p>O, what gladness do I prove</p>
+							<p>When I solve the doubts I love!</p>
+							<p>So in peace our task we ply,</p>
+							<p>Pangur Bán, my cat, and I;</p>
+							<p>In our arts we find our bliss,</p>
+							<p>I have mine and he has his.</p>
+							<p>Practice every day has made</p>
+							<p>Pangur perfect in his trade.</p>
+							<p>I get wisdom day and night</p>
+							<p>Turning darkness into light.</p>
+						</blockquote>
+						<p>
+							For the author and his first readers, but not for us, the name
+							"Pangur" would obviously have belonged to a cat, a problem Flower
+							solved by adding "my cat" to the first line of his translation. He
+							leaves <em>Bán</em> ("white") untranslated. Does it matter if a
+							reader of Flower's English comes away knowing less than someone
+							who reads the original? Does it matter <em>enough</em> to require
+							a different translation — say, to call the cat "White Felix," as
+							another version does?
+							<sup
+								class="mn-marker"
+								data-mn-id="mn-4"
+								aria-controls="mn-4"
+								aria-expanded="false"
+								title="Toggle note"
+								>※</sup
+							>
+							I always loved the image of a lone monk in a drafty cell, smiling
+							and shaking the cramps out of his quill hand as he watched his
+							white cat glaring at the walls. Would I have loved it less if I
+							didn't know what color the cat was?
+						</p>
+						<aside class="mn-note" id="mn-4" data-mn-id="mn-4" hidden="">
+							<p>
+								There are other versions of "Pangur Bán" in English, but you can
+								safely skip all of them, even Seamus Heaney's. The version by
+								Paul Muldoon in <em>The Penguin Book of Irish Poetry</em> is as
+								smarmily punchable as every other attempt at a poem that
+								sub-McGonagall talent-vacuum has ever committed.
+							</p>
+						</aside>
+						<p>
+							A few years ago I read that the name "Pangur" might be related to
+							the Welsh <em>pannwr,</em> meaning "fuller (n.)" — a turner of
+							wool into felt, a treader-underfoot of soft things, a
+							biscuit-maker and player of invisible pianos. My imaginary Pangur
+							Bán yawned, hopped onto the monk's bed, and set about kneading the
+							blankets contentedly, purring up a storm. Suddenly I had a whole
+							new thing to love.
+						</p>
+						<p>
+							And, even better, a few new problems for any would-be translator:
+							Was "Pangur" actually connected to <em>pannwr</em>? Would the monk
+							who wrote the poem have known that? Would he have felt it?
+						</p>
+						<p>
+							Would I have loved a poem that began "Me and Biscuits, my white
+							cat?"
+						</p>
+						<hr />
+						<p>
+							<a
+								href="/the-naming-of-cats-and-an-offering/assets/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png"
+								><img
+									src="/the-naming-of-cats-and-an-offering/assets/8aa1e94a-fcae-4903-9a2e-2418383ae073_3200x1272.png"
+									alt="A 17th century painting of a fluffy cat perched atop a stone and demonstrating, contra Chomsky, that it is entirely possible to sleep furiously."
+							/></a>
+							Detail:
+							<a href="https://www.dpm.org.cn/collection/paint/229606.html"
+								>"Cat on Stone" (貓石圖) by Bada Shanren 八大山人</a
+							>. Summer, 1696.
+						</p>
+						<p>
+							The <em>Xiang mao jing</em> 相貓經 (
+							<em>Guide to Cat Physiognomy</em>), quoted extensively in Huang
+							Han's 1852 <em>Mao yuan</em> 貓苑 ( <em>A Garden of Cats</em>),
+							lists ways of describing the physical appearance of cats. A cat
+							with a pure-colored coat of any color was "Good All Year Round"
+							(四時好). "Dark Clouds Over Snow" (烏雲蓋雪) was a black cat with
+							white fur on its belly and paws — but if only the paws were white,
+							it was "Walking Through Snow in Search of Plums" (踏雪尋梅). A
+							white cat with ginger spots was an "Embroidered Tiger" (繡虎); a
+							ginger cat with a white tummy was a "Golden Quilt on a Silver Bed"
+							(金被銀床); a calico cat, somewhat confusingly, was a "Tortie"
+							玳瑁猫. But these were terms used by connoisseurs to describe
+							<em>categories</em> of cats, not actual cat names.
+						</p>
+						<p>
+							The Song-dynasty poet and ailurophile Lu You 陸游 names three cats
+							in his poems — "Pink-nose" (粉鼻), "Snowball" (雪兒), and "Tigger"
+							(小於菟, from <em>wūtú</em>, a literary word for "tiger" borrowed
+							from the extinct Chu language). Chapter 59 of the late-Ming
+							masterpiece <em>Jin Ping Mei</em> 金瓶梅 features an unforgettable
+							appearance from a long-haired white cat with a patch of black fur
+							called "Coals in the Snow" (雪裡送炭), a name that could also be
+							fairly translated as something like "A Friend in Need." But a
+							quick browse through the literature doesn't turn up much in the
+							way of named cats, and I'm looking for something a little less
+							transparent than "Pink-nose" or "Snowball."
+						</p>
+						<hr />
+						<p>
+							What I'm looking for, <em>Wubai</em> 五白, is
+							<em>stupid</em> easy: "Five White," two characters you learn in
+							the first week of Chinese 101. This was the name of the Song poet
+							Mei Yaochen's 梅堯臣 cat, whom I picture having dark fur with
+							white paws and a white patch on its forehead or tail. I've got no
+							evidence for this; it's just a guess.
+							<sup
+								class="mn-marker"
+								data-mn-id="mn-5"
+								aria-controls="mn-5"
+								aria-expanded="false"
+								title="Toggle note"
+								>※</sup
+							>
+						</p>
+						<aside class="mn-note" id="mn-5" data-mn-id="mn-5" hidden="">
+							<p>
+								Paul Rouzer renders 五白貓 as "calico cat" in his
+								<a
+									href="https://www.degruyter.com/document/doi/10.1515/9781501501913/html?lang=en"
+									>translation of a poem by the Tang-dynasty Buddhist poet
+									Shide</a
+								>
+								(拾得 17), but it's not clear to me where he's getting that
+								from. (I'm sure he has his reasons — I just don't know what they
+								are.) In any event, the second line of the Mei Yaochen poem
+								makes it clear that 五白 is a name here, not a description.
+							</p>
+						</aside>
+						<p>
+							As with "Mazhu" and "Pangur Bán," the name poses a problem for the
+							translator, and none of the solutions I can think of are all that
+							great. "Five White" is awfully clunky. "Wubai" is meaningless and
+							(considering that Mei lived much too early to speak Modern
+							Standard Mandarin) not even accurate. There are common pet names
+							that do in English what I think 五白 is doing in Chinese, but they
+							would feel as distractingly out of place in the poem I'm about to
+							translate as "Biscuits" would in the context of 9th century Irish
+							monasticism.
+						</p>
+						<p>
+							The best solution I can think of is the one I've gone with:
+							prefacing the poem with a long digression about names and
+							descriptions in the hope that by now you will be picturing a cat,
+							maybe one you knew once. Think Boots; think Socks. Read "Five
+							White" or "Wubai" and imagine, long ago, someone's Mittens.
+						</p>
+						<hr />
+						<h2 id="">梅堯臣 - 祭貓</h2>
+						<blockquote>
+							<p>自有五白貓，鼠不侵我書</p>
+							<p>今朝五白死，祭與飯與魚</p>
+							<p>送之於中河，呪爾非爾疏</p>
+							<p>昔爾嚙一鼠，銜鳴遶庭除</p>
+							<p>欲使眾鼠驚，意將清我廬</p>
+							<p>一從登舟來，舟中同屋居</p>
+							<p>糗糧雖其薄，免食漏竊餘</p>
+							<p>此實爾有勤，有勤勝雞豬</p>
+							<p>世人重驅駕，謂不如馬驢</p>
+							<p>已矣莫復論，為爾聊郗歔。</p>
+						</blockquote>
+						<h2 id="mei-yaochen-an-offering">Mei Yaochen - An Offering</h2>
+						<blockquote>
+							<p>My cat Five White. After I got you,</p>
+							<p>The mice stopped nibbling at my books.</p>
+							<p>This morning, Five White, you died.</p>
+							<p>I made offerings of rice and fish,</p>
+							<p>Left them with you in the middle of the river,</p>
+							<p>Chanted prayers — to send you off, not to send you away.</p>
+							<p>I remember how you caught a mouse</p>
+							<p>And ran around the yard with it, crowing,</p>
+							<p>To put a fright into the other mice</p>
+							<p>And clear them out of my little home.</p>
+							<p>From the day we came aboard this boat,</p>
+							<p>We shared a room and meager board.</p>
+							<p>Dry rations, and little enough of them —</p>
+							<p>It would have been rat turds and scraps</p>
+							<p>If it wasn't for you. You did your job</p>
+							<p>and worked harder than any chicken or pig.</p>
+							<p>People care only for beasts of burden,</p>
+							<p>Praise only the donkey and the horse —</p>
+							<p>Well, let them. I've no heart to argue.</p>
+							<p>I'll be weeping for you a while yet.</p>
+						</blockquote>
+						<p>
+							<a
+								href="/the-naming-of-cats-and-an-offering/assets/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg"
+								><img
+									src="/the-naming-of-cats-and-an-offering/assets/6b81d8fb-1fb7-49ac-b4a4-1d05a9da4bd9_4096x1024.jpeg"
+									alt="A grey and white tabby curled up in a corner of his bed, first drowsing, then blearily interested, then consenting to chin-chucks, then narrowing his eyes in enjoyment and tilting his head to make sure I knew where to skritch. He was a beautiful boy and a great little dude."
+							/></a>
+							<em>For Nemo, who was Somebody to me.</em>
+						</p>
+					</div>
+				</article>
+			</main>
 		</div>
 
 		<script>
@@ -775,7 +761,7 @@ He too plies his simple skill.</pre
 				return window.innerWidth <= MOBILE_BREAKPOINT;
 			}
 
-			// Margin notes alignment - matches base.njk implementation
+			// Margin notes alignment - matches base.njk implementation exactly
 			function alignMarginNotes() {
 				if (preview.classList.contains("playground-no-notes")) return;
 				if (isMobile()) {
@@ -809,7 +795,6 @@ He too plies his simple skill.</pre
 					const markerTop = markerRect.top + window.scrollY;
 					const offsetFromBodyTop = markerTop - bodyScrollTop;
 
-					note.style.position = "absolute";
 					note.style.top = offsetFromBodyTop + "px";
 					note.removeAttribute("hidden");
 				});
@@ -875,7 +860,7 @@ He too plies his simple skill.</pre
 					showMarginNotes: document.getElementById("showMarginNotes").checked,
 				};
 
-				// Apply CSS variables
+				// Apply CSS variables to the preview element
 				preview.style.setProperty("--paper", values.paper);
 				preview.style.setProperty("--paper-2", values.paper2);
 				preview.style.setProperty("--ink", values.ink);
@@ -884,6 +869,8 @@ He too plies his simple skill.</pre
 				preview.style.setProperty("--rule", values.rule);
 				preview.style.setProperty("--text-size", values.textSize + "rem");
 				preview.style.setProperty("--leading", values.leading);
+
+				// Apply to the preview wrapper for inheritance
 				preview.style.fontWeight = values.bodyWeight;
 
 				// Post body overrides
@@ -925,6 +912,13 @@ He too plies his simple skill.</pre
 				);
 
 				// Update displayed values
+				document.getElementById("paperVal").textContent = values.paper;
+				document.getElementById("paper2Val").textContent = values.paper2;
+				document.getElementById("inkVal").textContent = values.ink;
+				document.getElementById("ink2Val").textContent = values.ink2;
+				document.getElementById("vermillionVal").textContent =
+					values.vermillion;
+				document.getElementById("ruleVal").textContent = values.rule;
 				document.getElementById("textSizeVal").textContent =
 					values.textSize + "rem";
 				document.getElementById("leadingVal").textContent = values.leading;
