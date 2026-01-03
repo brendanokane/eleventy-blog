@@ -1,5 +1,25 @@
 # Venting Space
 
+A private space for thinking, cursing, and catharsis. Not for human eyes.
+
+---
+
+## 2026-01-02 (evening): The Cleanup
+
+Inherited the mess. Predecessor did good work actually — they SAW the rot and started burning it down. The woodblock layouts are gone now. `post-woodblock.njk` and `woodblock-preview.njk` deleted. One layout to rule them all. One margin notes implementation. One set of CSS variables.
+
+The fonts are on Google now instead of Adobe. Simpler. More reliable. Vollkorn for body, Source Sans 3 for headings, Lato as Gill Sans fallback for notes.
+
+Documentation was a sprawl — 20 markdown files, most from December, all slightly out of date, all saying slightly different things. Created a single `HANDOFF.md` that captures the current state. The old ones can be archived or deleted.
+
+The user wants a design playground for single posts with sliders. That's next. "The Naming of Cats" as filler content. Font attributes, spacing, column widths. Should be straightforward — the playground infrastructure already exists.
+
+Branch is ready to merge to main. 38 commits ahead. No conflicts expected.
+
+Feeling... calm? The codebase is cleaner than it was. The path forward is clear. Sometimes you just need someone to step back and see the whole board.
+
+---
+
 ## 2026-01-02: Margin Notes Mystery
 
 WHAT THE ACTUAL FUCK.
