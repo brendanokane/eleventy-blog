@@ -6,7 +6,7 @@
 		<title>Design Playground – Single Post</title>
 		<link
 			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100..900;1,100..900&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,100..900;1,100..900&family=Literata:ital,wght@0,200..900;1,200..900&family=Newsreader:ital,wght@0,200..800;1,200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif:ital,wght@0,200..900;1,200..900&family=Noto+Serif+TC:wght@200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,wght@0,200..900;1,200..900&family=Spectral:ital,wght@0,200..900;1,200..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100..900;1,100..900&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Literata:ital,wght@0,200..900;1,200..900&family=Newsreader:ital,wght@0,200..800;1,200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif:ital,wght@0,200..900;1,200..900&family=Noto+Serif+TC:wght@200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,wght@0,200..900;1,200..900&family=Spectral:ital,wght@0,200..900;1,200..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
 		/>
 		<style>
 			* {
@@ -124,21 +124,29 @@
 					"Vollkorn", "Noto Serif TC", "Source Han Serif TC",
 					"Source Han Serif", ui-serif, Georgia, serif;
 				--font-display:
-					"Noto Sans", "Noto Sans TC", "Source Han Sans TC", "Source Han Sans",
-					ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-					Helvetica, Arial, sans-serif;
+					"Source Sans 3", "Noto Sans TC", "Source Han Sans TC", ui-sans-serif,
+					system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+					sans-serif;
 				--font-mn:
-					"Gill Sans", "Gill Sans Nova", "GillSans", "Calibri", "Noto Sans TC",
-					"Source Han Sans TC", "Source Han Sans", ui-sans-serif, system-ui,
-					-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+					"Gill Sans", "Gill Sans MT", "Gill Sans Nova", "Lato", "Noto Sans TC",
+					"Source Han Sans TC", ui-sans-serif, system-ui, -apple-system,
+					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 				--body-size: 1.2rem;
 				--body-leading: 1.7;
+				--body-weight: 500;
+				--body-tracking: 0em;
 				--h1-size: clamp(2rem, 3.5vw, 2.8rem);
 				--h1-line-height: 1.2;
+				--h1-weight: 700;
+				--h1-tracking: 0.01em;
 				--h2-size: clamp(1.4rem, 2.2vw, 1.8rem);
 				--h2-line-height: 1.3;
+				--h2-weight: 600;
+				--h2-tracking: 0em;
 				--mn-size: 0.85rem;
 				--mn-line-height: 1.4;
+				--mn-weight: 400;
+				--mn-tracking: 0em;
 				--main-measure: 70ch;
 				--mn-width: 270px;
 				--mn-gutter: 4rem;
@@ -212,6 +220,8 @@
 				font-family: var(--font-body);
 				font-size: var(--body-size);
 				line-height: var(--body-leading);
+				font-weight: var(--body-weight);
+				letter-spacing: var(--body-tracking);
 				text-wrap: pretty;
 			}
 
@@ -223,17 +233,18 @@
 				font-family: var(--font-display);
 				font-size: var(--h1-size);
 				line-height: var(--h1-line-height);
+				font-weight: var(--h1-weight);
+				letter-spacing: var(--h1-tracking);
 				margin: 0 0 0.6em;
-				letter-spacing: 0.01em;
-				font-weight: 800;
 			}
 
 			.preview .wb-prose h2 {
 				font-family: var(--font-display);
 				font-size: var(--h2-size);
 				line-height: var(--h2-line-height);
+				font-weight: var(--h2-weight);
+				letter-spacing: var(--h2-tracking);
 				margin: 1.2em 0 0.5em;
-				font-weight: 700;
 			}
 
 			.preview .wb-prose blockquote {
@@ -285,6 +296,8 @@
 				font-family: var(--font-mn);
 				font-size: var(--mn-size);
 				line-height: var(--mn-line-height);
+				font-weight: var(--mn-weight);
+				letter-spacing: var(--mn-tracking);
 				color: var(--muted-ink);
 				margin: 0;
 				grid-column: 2;
@@ -448,13 +461,35 @@
 						value="1.7"
 					/>
 				</div>
+				<div class="control">
+					<label>Weight: <span id="bodyWeightVal">500</span></label>
+					<input
+						type="range"
+						id="bodyWeight"
+						min="400"
+						max="700"
+						step="50"
+						value="500"
+					/>
+				</div>
+				<div class="control">
+					<label>Tracking: <span id="bodyTrackingVal">0em</span></label>
+					<input
+						type="range"
+						id="bodyTracking"
+						min="-0.02"
+						max="0.05"
+						step="0.005"
+						value="0"
+					/>
+				</div>
 
 				<h2>Headline Typography</h2>
 				<div class="control">
 					<label>Latin Font</label>
 					<select id="displayLatin">
-						<option>Noto Sans</option>
 						<option>Source Sans 3</option>
+						<option>Noto Sans</option>
 						<option>Work Sans</option>
 						<option>Inter</option>
 						<option>Alegreya Sans</option>
@@ -510,12 +545,57 @@
 						value="1.3"
 					/>
 				</div>
+				<div class="control">
+					<label>H1 Weight: <span id="h1WeightVal">700</span></label>
+					<input
+						type="range"
+						id="h1Weight"
+						min="400"
+						max="900"
+						step="100"
+						value="700"
+					/>
+				</div>
+				<div class="control">
+					<label>H1 Tracking: <span id="h1TrackingVal">0.01em</span></label>
+					<input
+						type="range"
+						id="h1Tracking"
+						min="-0.02"
+						max="0.1"
+						step="0.005"
+						value="0.01"
+					/>
+				</div>
+				<div class="control">
+					<label>H2 Weight: <span id="h2WeightVal">600</span></label>
+					<input
+						type="range"
+						id="h2Weight"
+						min="400"
+						max="800"
+						step="100"
+						value="600"
+					/>
+				</div>
+				<div class="control">
+					<label>H2 Tracking: <span id="h2TrackingVal">0em</span></label>
+					<input
+						type="range"
+						id="h2Tracking"
+						min="-0.02"
+						max="0.1"
+						step="0.005"
+						value="0"
+					/>
+				</div>
 
 				<h2>Margin Note Typography</h2>
 				<div class="control">
 					<label>Font</label>
 					<select id="mnFont">
 						<option>Gill Sans</option>
+						<option>Lato</option>
 						<option>Alegreya Sans</option>
 						<option>Noto Sans</option>
 						<option>Source Sans 3</option>
@@ -543,6 +623,28 @@
 						max="2"
 						step="0.05"
 						value="1.4"
+					/>
+				</div>
+				<div class="control">
+					<label>Weight: <span id="mnWeightVal">400</span></label>
+					<input
+						type="range"
+						id="mnWeight"
+						min="300"
+						max="600"
+						step="100"
+						value="400"
+					/>
+				</div>
+				<div class="control">
+					<label>Tracking: <span id="mnTrackingVal">0em</span></label>
+					<input
+						type="range"
+						id="mnTracking"
+						min="-0.02"
+						max="0.05"
+						step="0.005"
+						value="0"
 					/>
 				</div>
 
@@ -1198,12 +1300,20 @@ So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
 					mnFont: document.getElementById("mnFont").value,
 					bodySize: document.getElementById("bodySize").value,
 					bodyLineHeight: document.getElementById("bodyLineHeight").value,
+					bodyWeight: document.getElementById("bodyWeight").value,
+					bodyTracking: document.getElementById("bodyTracking").value,
 					h1Size: document.getElementById("h1Size").value,
 					h1LineHeight: document.getElementById("h1LineHeight").value,
+					h1Weight: document.getElementById("h1Weight").value,
+					h1Tracking: document.getElementById("h1Tracking").value,
 					h2Size: document.getElementById("h2Size").value,
 					h2LineHeight: document.getElementById("h2LineHeight").value,
+					h2Weight: document.getElementById("h2Weight").value,
+					h2Tracking: document.getElementById("h2Tracking").value,
 					mnSize: document.getElementById("mnSize").value,
 					mnLineHeight: document.getElementById("mnLineHeight").value,
+					mnWeight: document.getElementById("mnWeight").value,
+					mnTracking: document.getElementById("mnTracking").value,
 					mainWidth: document.getElementById("mainWidth").value,
 					mnWidth: document.getElementById("mnWidth").value,
 					columnGap: document.getElementById("columnGap").value,
@@ -1232,14 +1342,25 @@ So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
 				);
 				preview.style.setProperty("--body-size", values.bodySize + "rem");
 				preview.style.setProperty("--body-leading", values.bodyLineHeight);
+				preview.style.setProperty("--body-weight", values.bodyWeight);
+				preview.style.setProperty(
+					"--body-tracking",
+					values.bodyTracking + "em",
+				);
 				preview.style.setProperty("--h1-size", values.h1Size + "rem");
 				preview.style.setProperty("--h1-line-height", values.h1LineHeight);
+				preview.style.setProperty("--h1-weight", values.h1Weight);
+				preview.style.setProperty("--h1-tracking", values.h1Tracking + "em");
 				preview.style.setProperty("--h2-size", values.h2Size + "rem");
 				preview.style.setProperty("--h2-line-height", values.h2LineHeight);
+				preview.style.setProperty("--h2-weight", values.h2Weight);
+				preview.style.setProperty("--h2-tracking", values.h2Tracking + "em");
 				preview.style.setProperty("--mn-width", values.mnWidth + "px");
 				preview.style.setProperty("--mn-gutter", values.columnGap + "rem");
 				preview.style.setProperty("--mn-size", values.mnSize + "rem");
 				preview.style.setProperty("--mn-line-height", values.mnLineHeight);
+				preview.style.setProperty("--mn-weight", values.mnWeight);
+				preview.style.setProperty("--mn-tracking", values.mnTracking + "em");
 				preview.style.setProperty("--main-measure", values.mainWidth + "ch");
 				preview.style.setProperty("--frame-pad-x", values.framePad + "rem");
 				preview.style.setProperty("--shell-padding", values.shellPad + "rem");
@@ -1256,18 +1377,31 @@ So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
 					values.bodySize + "rem";
 				document.getElementById("bodyLineHeightVal").textContent =
 					values.bodyLineHeight;
+				document.getElementById("bodyWeightVal").textContent =
+					values.bodyWeight;
+				document.getElementById("bodyTrackingVal").textContent =
+					values.bodyTracking + "em";
 				document.getElementById("h1SizeVal").textContent =
 					values.h1Size + "rem";
 				document.getElementById("h1LineHeightVal").textContent =
 					values.h1LineHeight;
+				document.getElementById("h1WeightVal").textContent = values.h1Weight;
+				document.getElementById("h1TrackingVal").textContent =
+					values.h1Tracking + "em";
 				document.getElementById("h2SizeVal").textContent =
 					values.h2Size + "rem";
 				document.getElementById("h2LineHeightVal").textContent =
 					values.h2LineHeight;
+				document.getElementById("h2WeightVal").textContent = values.h2Weight;
+				document.getElementById("h2TrackingVal").textContent =
+					values.h2Tracking + "em";
 				document.getElementById("mnSizeVal").textContent =
 					values.mnSize + "rem";
 				document.getElementById("mnLineHeightVal").textContent =
 					values.mnLineHeight;
+				document.getElementById("mnWeightVal").textContent = values.mnWeight;
+				document.getElementById("mnTrackingVal").textContent =
+					values.mnTracking + "em";
 				document.getElementById("mainWidthVal").textContent =
 					values.mainWidth + "ch";
 				document.getElementById("mnWidthVal").textContent =
@@ -1307,6 +1441,10 @@ So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
 							lineHeight: parseFloat(
 								document.getElementById("bodyLineHeight").value,
 							),
+							weight: parseInt(document.getElementById("bodyWeight").value),
+							tracking: parseFloat(
+								document.getElementById("bodyTracking").value,
+							),
 						},
 						headlines: {
 							fontLatin: document.getElementById("displayLatin").value,
@@ -1315,9 +1453,17 @@ So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
 							h1LineHeight: parseFloat(
 								document.getElementById("h1LineHeight").value,
 							),
+							h1Weight: parseInt(document.getElementById("h1Weight").value),
+							h1Tracking: parseFloat(
+								document.getElementById("h1Tracking").value,
+							),
 							h2Size: parseFloat(document.getElementById("h2Size").value),
 							h2LineHeight: parseFloat(
 								document.getElementById("h2LineHeight").value,
+							),
+							h2Weight: parseInt(document.getElementById("h2Weight").value),
+							h2Tracking: parseFloat(
+								document.getElementById("h2Tracking").value,
 							),
 						},
 						marginNotes: {
@@ -1326,6 +1472,8 @@ So I bought a fish and put it on a stick to engage a cicada-nommer.</pre
 							lineHeight: parseFloat(
 								document.getElementById("mnLineHeight").value,
 							),
+							weight: parseInt(document.getElementById("mnWeight").value),
+							tracking: parseFloat(document.getElementById("mnTracking").value),
 						},
 					},
 					layout: {
