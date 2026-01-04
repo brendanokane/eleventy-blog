@@ -6,3 +6,6 @@ node_modules/
 # Mirrors: content/blog/<slug>/assets/** -> content/<slug>/assets/**
 content/*/assets/
 .DS_Store
+
+# Archived documentation
+docs-archive/
