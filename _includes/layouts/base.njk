@@ -175,6 +175,16 @@
 				handleLayout();
 			}
 
+			// Re-run after fonts load (fixes initial positioning)
+			if (document.fonts && document.fonts.ready) {
+				document.fonts.ready.then(function() {
+					handleLayout();
+				});
+			}
+
+			// Also run on window load as fallback
+			window.addEventListener('load', handleLayout);
+
 			// Debounced resize handler
 			var resizeTimeout;
 			window.addEventListener('resize', function() {
