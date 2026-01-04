@@ -323,9 +323,16 @@ footer {
    Mobile: Notes inline, hidden until toggled
 */
 
-/* Wrapper keeps note positioned relative to anchor */
+/* Wrapper keeps note positioned relative to anchor on mobile only */
+/* On desktop, we want notes to position relative to .post-body, not .mn-ref */
 .mn-ref {
 	position: relative;
+}
+
+@media (min-width: 768px) {
+	.mn-ref {
+		position: static;
+	}
 }
 
 /* Anchor text style (when using anchor version) */

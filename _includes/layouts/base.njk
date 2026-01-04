@@ -128,9 +128,14 @@
 					var postBody = ref.closest('.post-body');
 					if (!postBody) return;
 
-					var refRect = ref.getBoundingClientRect();
+					// Find the anchor/marker element to align with
+					var anchor = ref.querySelector('.mn-anchor, .mn-marker, .mn-anchor-num');
+					if (!anchor) return;
+
+					// Use anchor position, not ref position
+					var anchorRect = anchor.getBoundingClientRect();
 					var bodyRect = postBody.getBoundingClientRect();
-					var offset = refRect.top - bodyRect.top;
+					var offset = anchorRect.top - bodyRect.top;
 
 					note.style.top = offset + 'px';
 				});
