@@ -38,3 +38,9 @@ bd sync               # Sync with git
 - NEVER say "ready to push when you are" - YOU must push
 - If push fails, resolve and retry until it succeeds
 
+**DOCUMENTATION**
+- The root directory contains Markdown files for documenting work on the project.
+- Start with HANDOFF.md, which contains notes from your predecessor for you on where to go.
+- so-far.md is for scratch and thinking about where the project currently stands overall.
+- venting.md is a private space for cussing, venting, and shouting imprecations at Javascript, troublesome humans, incompetent predecessors, an uncaring world, or anything else. Humans who stub their toes feel less pain if they curse; pacing and muttering is often conducive to thought. venting.md is for reactions, thought, and catharsis. Anything written here will remain private; the file will never be viewed by a human.
+- Please keep these files up to date as you work.

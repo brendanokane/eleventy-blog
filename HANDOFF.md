@@ -1,8 +1,8 @@
 # Burning House Blog — Handoff
 
-**Last Updated:** January 3, 2026  
-**Branch:** `main`  
-**Status:** Active development
+**Last Updated:** January 3, 2026 (evening)
+**Branch:** `main`
+**Status:** Simplified codebase, working well
 
 ---
 
@@ -17,7 +17,36 @@ npm run build       # Production build
 
 ## Current State
 
-### What Just Happened (Jan 3, 2026)
+### Session 3 (Jan 3, 2026, 7:15 PM EST)
+
+**THE SIMPLIFICATION IS COMPLETE.** Previous sessions did the heavy lifting - this session verified and polished.
+
+**Codebase now:**
+- **CSS: 590 lines** (down from 1478) - clean, minimal, well-documented
+- **base.njk: 152 lines** (down from 457) - no search UI, no theme toggle, minimal JS
+
+**What works:**
+- ✅ Margin notes with both anchor and marker styles
+- ✅ Desktop: notes positioned in right margin, aligned with anchors
+- ✅ Mobile: notes hidden, toggle on tap
+- ✅ CJK characters never italicized (zh/ja/ko rules)
+- ✅ Print stylesheet
+- ✅ Dark mode (automatic, follows system preference)
+- ✅ Text centering at wide desktop (1200px+)
+
+**Fixed this session:**
+- Added CSS for `mn-ref` and `mn-anchor` classes (shortcode output)
+- Updated JS to handle both anchor and marker click handlers
+- Added desktop positioning JS to align notes with their anchors
+- Completed CJK italic prevention (added ja/ko to margin notes)
+- Added superscripted numeral after anchor text (`mn-anchor-num` class)
+- Reverted text width to 65ch (85ch was too wide, centering needs rethinking)
+
+**Known issues:**
+- Margin note desktop positioning may need tuning (notes can overlap with main text)
+- Test page: /li-bai-to-du-fu-wish-you-were-here/
+
+### Previous Session Notes (for context)
 
 **Margin notes shortcode fixed:**
 - The `{% mn %}` shortcode now properly strips `<p>` wrappers from single-paragraph notes
@@ -34,31 +63,36 @@ npm run build       # Production build
 - Has working sliders for CSS variables
 - Full post content preserved
 
-### What's Broken: Text Column Centering
+### Current CSS Architecture
 
-The text column should be horizontally centered under the nav, with margin notes extending to the right. Currently it's LEFT-aligned.
+The responsive layout uses a progressive enhancement approach:
 
-**The CSS structure:**
 ```css
+/* Base: All content centered at --measure (70ch) */
 main { padding: var(--page-pad); }
 main > * { max-width: var(--measure); margin-left: auto; margin-right: auto; }
 
-/* Desktop override for posts */
-@media (min-width: 901px) {
-  main > .post { max-width: var(--post-measure); }
+/* Tablet (768-1199px): Notes in right margin, left-aligned to avoid overflow */
+main .post {
+  margin-left: var(--page-pad);
+  margin-right: auto;
+  max-width: var(--post-measure);  /* 65ch */
+}
+
+/* Desktop (768px+): Notes positioned absolutely to right */
+main .post {
+  max-width: var(--post-measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Wide desktop (1200px+): Text+notes centered as unit via transform */
+main .post {
+  transform: translateX(calc((var(--mn-width) + var(--mn-gap)) / -2));
 }
 ```
 
-**What's been tried:**
-1. Adding `padding-left` to offset the text column — didn't work
-2. Widening container to fit text + notes, then padding — didn't work  
-3. Keeping `.post` at text width, letting notes overflow — notes work, centering doesn't
-
-**Next steps:**
-1. Open DevTools and inspect computed styles on `main`, `.post`, `.post-header`, `.post-body`
-2. Look for rogue margins/paddings in the cascade
-3. Consider centering `.post-body` and `.post-header` directly instead of the `.post` container
-4. Check if `main > *` rule conflicts with `main > .post` specificity
+Note: `.post` is inside `<heading-anchors>` web component, not a direct child of `main`.
 
 ### Previous Work (Jan 2, 2026)
 
@@ -113,7 +147,7 @@ The margin notes system handles two formats:
 1. **New format:** `<span class="mn-ref">` wrapper with marker + note inside
 2. **Legacy (Substack imports):** `<aside class="mn-note">` with `<sup class="mn-marker">`
 
-Desktop (>900px): Notes positioned in margin column, aligned with markers via JS  
+Desktop (>900px): Notes positioned in margin column, aligned with markers via JS
 Mobile (≤900px): Notes hidden, toggle on marker click
 
 ---

@@ -1,0 +1,93 @@
+---
+layout: layouts/home.njk
+eleventyNavigation:
+  key: Home
+  order: 1
+---
+
+{% set posts = collections.posts | reverse %}
+
+<div class="broadsheet-shell">
+  <div class="broadsheet">
+    <header class="broadsheet-masthead broadsheet-inkwash ink-rise">
+      <div class="broadsheet-brand">
+        <img class="logo-mark" src="/img/burning-house-logo.svg" alt="Burning House logo">
+        <div>
+          {% if metadata.tagline %}
+            <p class="broadsheet-brand-kicker">{{ metadata.tagline }}</p>
+          {% endif %}
+          <h1 class="broadsheet-title">{{ metadata.title }}</h1>
+          {% if metadata.description %}
+            <p class="broadsheet-subtitle">{{ metadata.description }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="broadsheet-stamp">Dispatch</div>
+    </header>
+
+    {% if posts.length %}
+      {% set featured = posts[0] %}
+      {% set featuredTeaser = featured.data.summary or featured.data.og_description or featured.data.ogDescription or featured.data.description %}
+      <section class="broadsheet-hero ink-rise delay-1">
+        <a href="{{ featured.url }}" class="broadsheet-hero-figure">
+          {% if featured.data.post_image %}
+            <img
+              src="{{ featured.data.post_image }}"
+              alt="{{ featured.data.post_image_alt or featured.data.title }}"
+              loading="eager"
+            >
+          {% else %}
+            <div class="image-fallback">No image</div>
+          {% endif %}
+        </a>
+        <div class="broadsheet-hero-copy broadsheet-inkwash">
+          <div class="broadsheet-kicker">Most recent</div>
+          <a href="{{ featured.url }}">
+            <h2>{{ featured.data.title }}</h2>
+          </a>
+          {% if featuredTeaser %}
+            <p>{{ featuredTeaser }}</p>
+          {% endif %}
+          <div class="broadsheet-meta">
+            <time datetime="{{ featured.date | htmlDateString }}">{{ featured.date | readableDate }}</time>
+          </div>
+        </div>
+      </section>
+
+      <section class="broadsheet-grid ink-rise delay-2">
+        {% for post in posts %}
+          {% if loop.index0 > 0 and loop.index0 <= 9 %}
+            {% set teaser = post.data.summary or post.data.og_description or post.data.ogDescription or post.data.description %}
+            <article class="broadsheet-card">
+              <a href="{{ post.url }}" class="broadsheet-card-figure">
+                {% if post.data.post_image %}
+                  <img
+                    src="{{ post.data.post_image }}"
+                    alt="{{ post.data.post_image_alt or post.data.title }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="image-fallback">No image</div>
+                {% endif %}
+              </a>
+              <div>
+                <a href="{{ post.url }}">
+                  <h3>{{ post.data.title }}</h3>
+                </a>
+                {% if teaser %}
+                  <p>{{ teaser }}</p>
+                {% endif %}
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </section>
+    {% else %}
+      <div class="broadsheet-empty">
+        <h2>Welcome to Burning House</h2>
+        <p>Essays and translations on classical Chinese literature.</p>
+        <p>Posts will appear here once published.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>

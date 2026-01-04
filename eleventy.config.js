@@ -217,10 +217,49 @@ export default async function (eleventyConfig) {
 	// Desktop: note appears in margin column, aligned via JS
 
 	let mnCounter = 0; // Reset per build for unique IDs
+	let figCounter = 0;
 
 	eleventyConfig.on("eleventy.before", () => {
 		mnCounter = 0;
+		figCounter = 0;
 	});
+
+	// Figure shortcode with Tufte-style margin captions
+	// Usage:
+	//   {% figure "image.jpg", "alt text" %}Caption with *markdown*{% endfigure %}
+	//   {% figure "image.jpg", "alt text", "center" %}Centered caption{% endfigure %}
+	eleventyConfig.addPairedShortcode(
+		"figure",
+		function (caption, src, alt, style) {
+			figCounter++;
+			const figId = `fig-${figCounter}`;
+			const isCentered = style === "center";
+
+			// Render caption markdown to HTML
+			const renderedCaption = md.render(caption.trim());
+
+			// Strip wrapping <p> tags for single-paragraph captions
+			let captionHtml = renderedCaption.trim();
+			const singleParagraphMatch = captionHtml.match(/^<p>([\s\S]*)<\/p>$/);
+			if (singleParagraphMatch && !singleParagraphMatch[1].includes("<p>")) {
+				captionHtml = singleParagraphMatch[1];
+			}
+
+			if (isCentered) {
+				// Centered caption below image
+				return `<figure class="fig-centered" id="${figId}">
+<img src="${src}" alt="${alt || ""}">
+<figcaption>${captionHtml}</figcaption>
+</figure>`;
+			} else {
+				// Margin caption (Tufte-style) - caption in right margin
+				return `<figure class="fig-margin" id="${figId}">
+<img src="${src}" alt="${alt || ""}">
+<figcaption class="fig-caption-margin">${captionHtml}</figcaption>
+</figure>`;
+			}
+		},
+	);
 
 	eleventyConfig.addPairedShortcode("mn", function (content, anchor) {
 		mnCounter++;
@@ -239,11 +278,11 @@ export default async function (eleventyConfig) {
 		}
 
 		if (anchor) {
-			// Anchor version: the anchor text is highlighted, no ※ marker
-			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><span class="mn-note" id="${noteId}" role="note">${noteHtml}</span></span>`;
+			// Anchor version: dotted underline on anchor text + superscripted numeral after
+			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><sup class="mn-anchor-num">${mnCounter}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${mnCounter}.</span> ${noteHtml}</span></span>`;
 		} else {
-			// Marker version: ※ superscript marker
-			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">※</sup><span class="mn-note" id="${noteId}" role="note">${noteHtml}</span></span>`;
+			// Marker version: numbered superscript marker only
+			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${mnCounter}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${mnCounter}.</span> ${noteHtml}</span></span>`;
 		}
 	});
 

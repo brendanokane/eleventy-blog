@@ -7,16 +7,16 @@ bluesky_thread:
 ---
 # Li Bai to Du Fu: Wish You Were Here
 
-“In {% mn "4,000 years of history" %}A _lot_ happened in the 20th century.{% endmn %}, the poet Wen Yiduo wrote, “with the exception of Confucius and Laozi, no other meeting has been so important, so sacred, so worthy of memorialization” as that of Li Bai (701-762) and Du Fu (712-770), whom later tradition would call “the Poet-Transcendent” 詩仙 and “the Poet-Sage” 詩聖. It isn’t hard to see why so much has been made — most recently in the 2023 3D animated film _Chang'an_ 长安三万里 — of the friendship between the two men. But I think the evidence points to something more interesting.
+“In {% mn "4,000 years of history" %}A _lot_ happened in the 20th century.{% endmn %}," the poet Wen Yiduo wrote, "with the exception of Confucius and Laozi, no other meeting has been so important, so sacred, so worthy of memorialization" as that of Li Bai (701-762) and Du Fu (712-770), whom later tradition would call "the Poet-Transcendent" 詩仙 and "the Poet-Sage" 詩聖. It isn’t hard to see why so much has been made — most recently in the 2023 3D animated film _Chang'an_ 长安三万里 — of the friendship between the two men. But I think the evidence points to something more interesting.
 
-[![](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png)](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png) Li Bai and Du Fu, as depicted in _Chang’an_. Which is probably fun; I haven’t watched it.
+[![](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png)](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png) Li Bai and Du Fu, as depicted in _Chang'an_. Which is probably fun; I haven’t watched it.
 
 #### Du Fu 杜甫 - To Li Bai 贈李白
 
 > 秋來相顧尚飄蓬， 未就丹砂愧葛洪。
 > 痛飲狂歌空度日， 飛揚跋扈為誰雄？
 > ```
-> Autumn’s come.
+> Autumn's come.
 >    I look at you:
 >       Still a tumbleweed adrift.
 > Still no key

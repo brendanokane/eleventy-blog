@@ -5,7 +5,7 @@ draft: true
 publish: false
 bluesky_thread:
 post_image: "/mid-autumn-tiger-hill-late-ming/assets/b9fe2012-f5ee-4098-98a1-9452a1ec68fe_2241x500.jpeg"
-post_image_alt: "Shen Zhou painting: A Farewell on Tiger Hill"
+post_image_alt: "Shen Zhou 沈周, 'A Farewell on Tiger Hill' (虎丘餞別圖)"
 ---
 # Mid-Autumn, Tiger Hill, Late Ming
 
@@ -25,4 +25,6 @@ By the second watch the crowds had quieted and all the instruments fallen silent
 
 By the third watch, the moon hung alone in the sky, a chill had come into the air, and everyone was perfectly silent, even the mosquitoes. A lone figure strode out onto a rock high above, sat down, and sang, unaccompanied by flute or clapper, in a voice as fine as silk thread that rose and fell but never wavered, powerful enough to split stones and pierce clouds, every word as clear as a carving. The listeners sat transfixed, listening raptly to every subtle modulation of his voice. Nobody dared clap along. The hundred-odd people who sat there like stranded geese could only nod their heads in mute approval. Where but Suzhou could you find such connoisseurs!
 
-[![](/mid-autumn-tiger-hill-late-ming/assets/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg)](/mid-autumn-tiger-hill-late-ming/assets/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg) Mooncake-eating competition, Philadelphia Chinatown, 2024
+{% figure "/mid-autumn-tiger-hill-late-ming/assets/5953cda2-dd20-4656-b4b8-d2f1906224d9_4032x3024.jpeg", "Mooncake-eating competition" %}
+Mooncake-eating competition, **Philadelphia Chinatown**, 2024.
+{% endfigure %}

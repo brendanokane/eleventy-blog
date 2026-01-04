@@ -6,100 +6,44 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		{#-
-			SEO/OG/Twitter metadata
-			Per-page/frontmatter overrides supported (all optional):
-			- title, description
-			- canonical_url
-			- og_title, og_description, og_image, og_image_alt, og_type
-			- twitter_card, twitter_title, twitter_description, twitter_image
-			- robots
-		#}
-
-		{# Canonical + absolute URL helpers (Nunjucks-safe; no JS methods/ternaries) #}
+		{# SEO/OG metadata #}
 		{% set siteUrl = (metadata.url or "") | trim %}
-		{% if siteUrl %}
-			{% set lastChar = siteUrl | slice(-1) %}
-			{% if lastChar == "/" %}
-				{% set siteUrl = siteUrl | slice(0, -1) %}
-			{% endif %}
+		{% if siteUrl and siteUrl | slice(-1) == "/" %}
+			{% set siteUrl = siteUrl | slice(0, -1) %}
 		{% endif %}
-		{% if siteUrl %}
-			{% set absPageUrl = siteUrl + pageUrl %}
-		{% else %}
-			{% set absPageUrl = pageUrl %}
-		{% endif %}
+		{% set absPageUrl = siteUrl + pageUrl if siteUrl else pageUrl %}
 		{% set canonicalUrl = canonical_url or absPageUrl %}
 
-		{# Title/description fallbacks #}
 		{% set pageTitle = title or metadata.title %}
 		{% set pageDescription = description or metadata.description %}
 
-		{# OG fallbacks #}
 		{% set ogTitle = og_title or pageTitle %}
 		{% set ogDescription = og_description or pageDescription %}
-		{% set ogType = og_type or (metadata.og and metadata.og.type) or "website" %}
 		{% set ogImage = og_image or (metadata.og and metadata.og.defaultImage) %}
 		{% if ogImage %}
-			{% if "http" in ogImage %}
-				{# Already absolute URL #}
-				{% set ogImageAbs = ogImage %}
-			{% else %}
-				{# Relative URL - make it absolute #}
-				{% set ogImageAbs = siteUrl + ogImage %}
-			{% endif %}
-		{% else %}
-			{% set ogImageAbs = "" %}
+			{% set ogImageAbs = ogImage if "http" in ogImage else siteUrl + ogImage %}
 		{% endif %}
-		{% set ogImageAlt = og_image_alt or (metadata.og and metadata.og.imageAlt) or pageTitle %}
-		{% set ogSiteName = (metadata.og and metadata.og.siteName) or metadata.title %}
-
-		{# Twitter fallbacks #}
-		{% set twitterCard = twitter_card or (metadata.twitter and metadata.twitter.card) or "summary" %}
-		{% if ogImageAbs %}
-			{% set twitterCard = twitter_card or (metadata.twitter and metadata.twitter.card) or "summary_large_image" %}
-		{% endif %}
-		{% set twitterTitle = twitter_title or ogTitle %}
-		{% set twitterDescription = twitter_description or ogDescription %}
-		{% set twitterImage = twitter_image or ogImageAbs %}
-		{% set twitterSite = (metadata.twitter and metadata.twitter.site) %}
-		{% set twitterCreator = (metadata.twitter and metadata.twitter.creator) %}
-
-		{# Robots fallback #}
-		{% set robotsValue = robots or (metadata.seo and metadata.seo.robots) or "index,follow" %}
 
 		<title>{{ pageTitle }}</title>
 		<meta name="description" content="{{ pageDescription }}">
 		<link rel="canonical" href="{{ canonicalUrl }}">
 
-		<meta name="robots" content="{{ robotsValue }}">
-
 		{# OpenGraph #}
-		<meta property="og:site_name" content="{{ ogSiteName }}">
-		<meta property="og:type" content="{{ ogType }}">
+		<meta property="og:site_name" content="{{ metadata.title }}">
+		<meta property="og:type" content="article">
 		<meta property="og:title" content="{{ ogTitle }}">
 		<meta property="og:description" content="{{ ogDescription }}">
 		<meta property="og:url" content="{{ canonicalUrl }}">
 		{% if ogImageAbs %}
 		<meta property="og:image" content="{{ ogImageAbs }}">
-		<meta property="og:image:alt" content="{{ ogImageAlt }}">
-		{% endif %}
-		{% if metadata.locale %}
-		<meta property="og:locale" content="{{ metadata.locale }}">
 		{% endif %}
 
 		{# Twitter Card #}
-		<meta name="twitter:card" content="{{ twitterCard }}">
-		<meta name="twitter:title" content="{{ twitterTitle }}">
-		<meta name="twitter:description" content="{{ twitterDescription }}">
-		{% if twitterImage %}
-		<meta name="twitter:image" content="{{ twitterImage }}">
-		{% endif %}
-		{% if twitterSite %}
-		<meta name="twitter:site" content="{{ twitterSite }}">
-		{% endif %}
-		{% if twitterCreator %}
-		<meta name="twitter:creator" content="{{ twitterCreator }}">
+		<meta name="twitter:card" content="{{ 'summary_large_image' if ogImageAbs else 'summary' }}">
+		<meta name="twitter:title" content="{{ ogTitle }}">
+		<meta name="twitter:description" content="{{ ogDescription }}">
+		{% if ogImageAbs %}
+		<meta name="twitter:image" content="{{ ogImageAbs }}">
 		{% endif %}
 
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="{{ metadata.title }}">
@@ -107,50 +51,19 @@
 		{# Favicons #}
 		<link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 		<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
-		<link rel="manifest" href="/site.webmanifest">
 
-		{#- Add CSS to the bundle #}
-		<style>/* This is an arbitrary CSS string added to the bundle */</style>
+		{# CSS - inlined #}
+		<style eleventy:ignore>{% include "css/index.css" %}</style>
 
-		{#- Add the contents of a file to the bundle #}
-		<style>{% include "css/index.css" %}</style>
-
-		{#- Render the CSS bundle using inlined CSS #}
-		<style>{% getBundle "css" %}</style>
-
-		{#- Add the heading-anchors web component to the JavaScript bundle #}
-		<script type="module">{% include "node_modules/@zachleat/heading-anchors/heading-anchors.js" %}</script>
-
-		{# Web Fonts: Vollkorn (body), Source Sans 3 (headings), Lato (Gill Sans fallback for notes) #}
+		{# Web Fonts #}
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=Vollkorn:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 	</head>
-	<body{% if isEmailPage %} data-pagefind-ignore="all"{% endif %}>
-		<!-- Woodblock SVG Filters -->
-		<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
-			<defs>
-				<!-- Very subtle organic border distortion -->
-				<filter id="woodblock-border">
-					<feTurbulence
-						type="turbulence"
-						baseFrequency="0.015"
-						numOctaves="2"
-						result="turbulence"
-						seed="1"/>
-					<feDisplacementMap
-						in="SourceGraphic"
-						in2="turbulence"
-						scale="1.2"
-						xChannelSelector="R"
-						yChannelSelector="G"/>
-				</filter>
-			</defs>
-		</svg>
 
-		<a href="#main" id="skip-link" class="visually-hidden">Skip to main content</a>
+	<body{% if isEmailPage %} data-pagefind-ignore="all"{% endif %}>
+		<a href="#main" class="visually-hidden">Skip to main content</a>
 
 		<header>
 			<div class="site-header">
@@ -158,485 +71,112 @@
 					<img class="site-logo" src="/img/burning-house-logo.svg" alt="" aria-hidden="true">
 					<span>{{ metadata.title }}</span>
 				</a>
-
-				<div class="site-actions">
-					<nav>
-						<h2 class="visually-hidden">Top level navigation menu</h2>
-						<ul class="nav">
-							<li class="nav-item"><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a></li>
-							<li class="nav-item"><a href="/blog/"{% if page.url == "/blog/" %} aria-current="page"{% endif %}>Archive</a></li>
-							<li class="nav-item"><a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>About</a></li>
-						</ul>
-					</nav>
-					<form class="site-search" action="/search/" method="get" role="search" data-search-form>
-						<label class="visually-hidden" for="site-search-input">Search posts</label>
-						<input
-							type="search"
-							id="site-search-input"
-							name="q"
-							class="site-search-input"
-							autocomplete="off"
-							placeholder="Search posts..."
-							aria-controls="site-search-panel"
-							aria-expanded="false"
-							data-search-input
-						>
-						<button class="site-search-button" type="submit">Search</button>
-						<div class="site-search-panel" id="site-search-panel" data-search-panel hidden>
-							<div class="site-search-panel-header">
-								<span class="site-search-heading" data-search-heading>Recent posts</span>
-								<span class="site-search-count" data-search-count></span>
-							</div>
-							<div class="site-search-results" data-search-results role="list"></div>
-						</div>
-					</form>
-					<button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle color theme">
-						<span class="theme-toggle-label" data-theme-label>Theme</span>
-					</button>
-				</div>
+				<nav>
+					<ul class="nav">
+						<li><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a></li>
+						<li><a href="/blog/"{% if page.url == "/blog/" %} aria-current="page"{% endif %}>Archive</a></li>
+						<li><a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>About</a></li>
+					</ul>
+				</nav>
 			</div>
 		</header>
 
 		<main id="main">
-			<heading-anchors>
-				{{ content | safe }}
-			</heading-anchors>
+			{{ content | safe }}
 		</main>
 
 		<footer>
-			<p>
-				<em>Built with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a></em>
-			</p>
+			<p><em>Built with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a></em></p>
 		</footer>
 
-		{% set recentPosts = collections.posts | reverse %}
-		<script type="application/json" id="search-suggestions-data" eleventy:ignore>
-		[
-		{% for post in recentPosts %}
-			{% set title = post.data.title or "Untitled" %}
-			{% set summary = post.data.summary or post.data.subtitle or post.data.description or "" %}
-			{
-				"title": {{ title | safeJson }},
-				"url": {{ post.url | safeJson }},
-				"summary": {{ summary | safeJson }},
-				"image": {{ (post.data.post_image_thumb or post.data.post_image or "") | safeJson }},
-				"imageAlt": {{ (post.data.post_image_alt or title) | safeJson }}
-			}{% if not loop.last %},{% endif %}
-		{% endfor %}
-		]
-		</script>
+		{# Minimal margin notes JS - mobile toggle + desktop positioning #}
+		<script eleventy:ignore>
+		(function() {
+			var MOBILE_BREAKPOINT = 768;
+			var wasMobile = window.innerWidth < MOBILE_BREAKPOINT;
 
-		<!-- This page `{{ page.url }}` was built on {% currentBuildDate %} -->
-		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
-		<script>
-			// =======================================================================
-			// Margin Notes
-			// =======================================================================
-			// Handles both new format (<span class="mn-ref">) and legacy Substack format
-			// Desktop (>900px): Notes positioned absolutely in margin, aligned with markers via JS
-			// Mobile (<=900px): Notes hidden by CSS, toggle visibility on click
-			(function () {
-				const MOBILE_BREAKPOINT = 900;
-				let resizeTimeout;
+			// Mobile toggle for margin notes (anchor, anchor-num, or marker)
+			document.addEventListener('click', function(e) {
+				var trigger = e.target.closest('.mn-anchor, .mn-anchor-num, .mn-marker');
+				if (!trigger) return;
 
-				function isMobile() {
-					return window.innerWidth <= MOBILE_BREAKPOINT;
+				// Only toggle on mobile
+				if (window.innerWidth >= MOBILE_BREAKPOINT) return;
+
+				var ref = trigger.closest('.mn-ref');
+				if (!ref) return;
+
+				var note = ref.querySelector('.mn-note');
+				if (!note) return;
+
+				e.preventDefault();
+				note.classList.toggle('is-visible');
+
+				// Update aria-expanded
+				var anchor = ref.querySelector('.mn-anchor, .mn-marker');
+				if (anchor) {
+					anchor.setAttribute('aria-expanded', note.classList.contains('is-visible'));
 				}
+			});
 
-				// Debounce helper
-				function debounce(fn, delay) {
-					return function(...args) {
-						clearTimeout(resizeTimeout);
-						resizeTimeout = setTimeout(() => fn.apply(this, args), delay);
-					};
-				}
-
-				// Find the note element for a given trigger
-				function findNoteForTrigger(trigger) {
-					// New format: note is inside .mn-ref wrapper
-					const ref = trigger.closest('.mn-ref');
-					if (ref) {
-						return ref.querySelector('.mn-note');
-					}
-
-					// Legacy format: note is a sibling with matching ID
-					const noteId = trigger.getAttribute('data-mn-id') || trigger.getAttribute('aria-controls');
-					if (noteId) {
-						return document.getElementById(noteId);
-					}
-
-					return null;
-				}
-
-				// Align notes vertically with their markers (desktop only)
-				function alignMarginNotes() {
-					if (isMobile()) return;
-
-					const postBody = document.querySelector('.post-body');
-					if (!postBody) return;
-
-					// Get post body's position for offset calculations
-					const bodyRect = postBody.getBoundingClientRect();
-					const bodyScrollTop = bodyRect.top + window.scrollY;
-
-					// Handle new format
-					document.querySelectorAll('.mn-ref').forEach(ref => {
-						const trigger = ref.querySelector('.mn-marker, .mn-anchor');
-						const note = ref.querySelector('.mn-note');
-						if (!trigger || !note) return;
-
-						// Move note to be a direct child of post-body for proper positioning
-						if (note.parentElement !== postBody) {
-							postBody.appendChild(note);
-						}
-
-						const triggerRect = trigger.getBoundingClientRect();
-						const triggerTop = triggerRect.top + window.scrollY;
-						const offsetFromBodyTop = triggerTop - bodyScrollTop;
-						note.style.top = offsetFromBodyTop + 'px';
-					});
-
-					// Handle legacy format (markers not inside .mn-ref)
-					document.querySelectorAll('.mn-marker:not(.mn-ref .mn-marker)').forEach(trigger => {
-						const note = findNoteForTrigger(trigger);
-						if (!note) return;
-
-						// Move note to be a direct child of post-body for proper positioning
-						if (note.parentElement !== postBody) {
-							postBody.appendChild(note);
-						}
-
-						const triggerRect = trigger.getBoundingClientRect();
-						const triggerTop = triggerRect.top + window.scrollY;
-						const offsetFromBodyTop = triggerTop - bodyScrollTop;
-						note.style.top = offsetFromBodyTop + 'px';
-
-						// Remove hidden attribute on desktop for legacy notes
-						note.removeAttribute('hidden');
-					});
-				}
-
-				// Toggle note visibility (mobile)
-				function handleTriggerClick(e) {
-					if (!isMobile()) return;
-
-					const trigger = e.currentTarget;
-					const note = findNoteForTrigger(trigger);
+			// Desktop: position notes to align with their anchors
+			function positionNotes() {
+				document.querySelectorAll('.mn-ref').forEach(function(ref) {
+					var note = ref.querySelector('.mn-note');
 					if (!note) return;
 
-					e.preventDefault();
+					var postBody = ref.closest('.post-body');
+					if (!postBody) return;
 
-					// For new format, use class toggle
-					// For legacy format (aside with hidden attr), toggle hidden
-					const hasHiddenAttr = note.hasAttribute('hidden');
-					const isVisible = note.classList.contains('is-visible') || !hasHiddenAttr;
+					var refRect = ref.getBoundingClientRect();
+					var bodyRect = postBody.getBoundingClientRect();
+					var offset = refRect.top - bodyRect.top;
 
-					if (isVisible && !hasHiddenAttr) {
-						note.classList.remove('is-visible');
-						note.setAttribute('hidden', '');
-						trigger.setAttribute('aria-expanded', 'false');
-					} else {
-						note.classList.add('is-visible');
-						note.removeAttribute('hidden');
-						trigger.setAttribute('aria-expanded', 'true');
-					}
-				}
-
-				// Handle keyboard activation
-				function handleTriggerKeydown(e) {
-					if (e.key === 'Enter' || e.key === ' ') {
-						e.preventDefault();
-						handleTriggerClick(e);
-					}
-				}
-
-				// Wire up event listeners
-				function init() {
-					document.querySelectorAll('.mn-marker, .mn-anchor').forEach(trigger => {
-						trigger.addEventListener('click', handleTriggerClick);
-						trigger.addEventListener('keydown', handleTriggerKeydown);
-					});
-
-					// Initial alignment after fonts load
-					if (document.fonts && document.fonts.ready) {
-						document.fonts.ready.then(() => {
-							alignMarginNotes();
-						});
-					} else {
-						// Fallback for browsers without font loading API
-						window.addEventListener('load', alignMarginNotes);
-					}
-
-					// Re-align on resize (debounced)
-					window.addEventListener('resize', debounce(alignMarginNotes, 150));
-				}
-
-				init();
-			})();
-		</script>
-		<script>
-			(function () {
-				const storageKey = "theme";
-				const root = document.documentElement;
-				const toggle = document.querySelector("[data-theme-toggle]");
-				const label = toggle ? toggle.querySelector("[data-theme-label]") : null;
-				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
-
-				function applyTheme(theme) {
-					root.dataset.theme = theme;
-					if (toggle) {
-						toggle.setAttribute("aria-pressed", theme === "dark");
-					}
-					if (label) {
-						label.textContent = theme === "dark" ? "Light mode" : "Dark mode";
-					}
-				}
-
-				function getPreferredTheme() {
-					const stored = localStorage.getItem(storageKey);
-					if (stored === "light" || stored === "dark") {
-						return stored;
-					}
-					return systemTheme.matches ? "dark" : "light";
-				}
-
-				function setTheme(theme) {
-					localStorage.setItem(storageKey, theme);
-					applyTheme(theme);
-				}
-
-				applyTheme(getPreferredTheme());
-
-				if (toggle) {
-					toggle.addEventListener("click", () => {
-						const next = root.dataset.theme === "dark" ? "light" : "dark";
-						setTheme(next);
-					});
-				}
-
-				systemTheme.addEventListener("change", (event) => {
-					if (!localStorage.getItem(storageKey)) {
-						applyTheme(event.matches ? "dark" : "light");
-					}
+					note.style.top = offset + 'px';
 				});
-			})();
-		</script>
-		<script>
-			(function () {
-				const form = document.querySelector("[data-search-form]");
-				const dataScript = document.getElementById("search-suggestions-data");
-				if (!form || !dataScript) return;
+			}
 
-				const input = form.querySelector("[data-search-input]");
-				const panel = form.querySelector("[data-search-panel]");
-				const results = form.querySelector("[data-search-results]");
-				const heading = form.querySelector("[data-search-heading]");
-				const count = form.querySelector("[data-search-count]");
-
-				if (!input || !panel || !results || !heading || !count) return;
-
-				let suggestions = [];
-				try {
-					suggestions = JSON.parse(dataScript.textContent) || [];
-				} catch {
-					suggestions = [];
-				}
-
-				const suggestionMap = new Map(
-					suggestions.map((item) => [item.url, item]),
-				);
-
-				const maxResults = 6;
-				let pagefindPromise;
-				let pagefindConfigured = false;
-				let activeSearch = 0;
-
-				async function getPagefind() {
-					if (!pagefindPromise) {
-						pagefindPromise = import("/pagefind/pagefind.js");
-					}
-
-					const pagefind = await pagefindPromise;
-					if (!pagefindConfigured) {
-						await pagefind.options({ excerptLength: 15 });
-						pagefindConfigured = true;
-					}
-					return pagefind;
-				}
-
-				function truncate(text, maxLength) {
-					const clean = (text || "").toString().trim();
-					if (clean.length <= maxLength) return clean;
-					return `${clean.slice(0, maxLength - 1)}…`;
-				}
-
-				function buildEmpty(message) {
-					results.innerHTML = "";
-					const empty = document.createElement("div");
-					empty.className = "site-search-empty";
-					empty.textContent = message;
-					results.appendChild(empty);
-				}
-
-				function renderLoading() {
-					results.innerHTML = "";
-					const loading = document.createElement("div");
-					loading.className = "site-search-loading";
-					loading.textContent = "Searching…";
-					results.appendChild(loading);
-				}
-
-				function renderItems(items, query, useHtmlSummary = false) {
-					results.innerHTML = "";
-					heading.textContent = query ? "Search results" : "Recent posts";
-					count.textContent = items.length ? `${items.length}` : "";
-
-					if (!items.length) {
-						buildEmpty(
-							query
-								? "No results yet. Press Enter to search everything."
-								: "Type to search. Recent posts will appear here.",
-						);
-						return;
-					}
-
-					items.forEach((item) => {
-						const link = document.createElement("a");
-						link.className = "site-search-item";
-						link.href = item.url;
-
-						const thumb = document.createElement("div");
-						thumb.className = "site-search-thumb";
-
-						if (item.image) {
-							const img = document.createElement("img");
-							img.src = item.image;
-							img.alt = item.imageAlt || item.title || "";
-							img.loading = "lazy";
-							thumb.appendChild(img);
-						} else {
-							const fallback = document.createElement("div");
-							fallback.className = "site-search-thumb-fallback";
-							fallback.textContent = "No image";
-							thumb.appendChild(fallback);
-						}
-
-						const meta = document.createElement("div");
-						meta.className = "site-search-meta";
-
-						const title = document.createElement("div");
-						title.className = "site-search-title";
-						title.textContent = item.title || "Untitled";
-
-						const summary = document.createElement("div");
-						summary.className = "site-search-summary";
-
-						if (item.summary) {
-							if (useHtmlSummary) {
-								summary.innerHTML = item.summary;
-							} else {
-								summary.textContent = truncate(item.summary, 120);
-							}
-						}
-
-						meta.appendChild(title);
-						if (summary.textContent || summary.innerHTML) {
-							meta.appendChild(summary);
-						}
-
-						link.appendChild(thumb);
-						link.appendChild(meta);
-						results.appendChild(link);
-					});
-				}
-
-				function renderRecent() {
-					renderItems(suggestions.slice(0, maxResults), "");
-				}
-
-				async function renderSearch(query) {
-					const searchId = ++activeSearch;
-					renderLoading();
-
-					try {
-						const pagefind = await getPagefind();
-						const searchResults = await pagefind.search(query);
-						const sliced = searchResults.results.slice(0, maxResults);
-						const data = await Promise.all(
-							sliced.map((result) => result.data()),
-						);
-
-						if (searchId !== activeSearch) return;
-
-						const items = data.map((result) => {
-							const fallback = suggestionMap.get(result.url) || {};
-							return {
-								title: result.meta?.title || fallback.title || "Untitled",
-								url: result.url,
-								summary: result.excerpt || fallback.summary || "",
-								image: result.meta?.image || fallback.image || "",
-								imageAlt:
-									result.meta?.image_alt ||
-									fallback.imageAlt ||
-									result.meta?.title ||
-									fallback.title ||
-									"",
-							};
-						});
-
-						renderItems(items, query, true);
-					} catch (error) {
-						console.error("Search error:", error);
-						buildEmpty("Search is currently unavailable.");
-					}
-				}
-
-				function openPanel() {
-					panel.hidden = false;
-					input.setAttribute("aria-expanded", "true");
-				}
-
-				function closePanel() {
-					panel.hidden = true;
-					input.setAttribute("aria-expanded", "false");
-				}
-
-				let debounce;
-				function update() {
-					const query = input.value.trim();
-					if (!query) {
-						renderRecent();
-						return;
-					}
-					renderSearch(query);
-				}
-
-				input.addEventListener("focus", () => {
-					update();
-					openPanel();
+			// Clean up mobile state when transitioning to desktop
+			function clearMobileState() {
+				document.querySelectorAll('.mn-note.is-visible').forEach(function(note) {
+					note.classList.remove('is-visible');
 				});
-
-				input.addEventListener("input", () => {
-					window.clearTimeout(debounce);
-					debounce = window.setTimeout(() => {
-						update();
-						openPanel();
-					}, 120);
+				document.querySelectorAll('.mn-anchor[aria-expanded], .mn-marker[aria-expanded]').forEach(function(el) {
+					el.setAttribute('aria-expanded', 'false');
 				});
+			}
 
-				input.addEventListener("keydown", (event) => {
-					if (event.key === "Escape") {
-						closePanel();
-						input.blur();
-					}
-				});
+			// Handle layout based on viewport
+			function handleLayout() {
+				var isMobile = window.innerWidth < MOBILE_BREAKPOINT;
 
-				document.addEventListener("click", (event) => {
-					if (!form.contains(event.target)) {
-						closePanel();
-					}
-				});
-			})();
+				// If transitioning from mobile to desktop, clean up
+				if (wasMobile && !isMobile) {
+					clearMobileState();
+				}
+
+				// Position notes on desktop
+				if (!isMobile) {
+					positionNotes();
+				}
+
+				wasMobile = isMobile;
+			}
+
+			// Run on load
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', handleLayout);
+			} else {
+				handleLayout();
+			}
+
+			// Debounced resize handler
+			var resizeTimeout;
+			window.addEventListener('resize', function() {
+				clearTimeout(resizeTimeout);
+				resizeTimeout = setTimeout(handleLayout, 100);
+			});
+		})();
 		</script>
 	</body>
 </html>
