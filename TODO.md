@@ -2,6 +2,14 @@
 
 ## Completed
 
+### ✅ Content Model & CMS Setup (2026-01-05)
+- Defined content model in CONTENT-MODEL.md
+- Set up Front Matter CMS extension (frontmatter.json)
+- Set up Decap CMS at /admin with full schema
+- Removed deprecated `publish` field from all posts
+- Added `og_description` for separate social summaries
+- Added `related` field for manual post curation
+
 ### ✅ Poem Shortcode (2026-01-05)
 - Implemented `{% poem "id" %}` shortcode for bilingual poems
 - Looks first in frontmatter `poems` array, then in `content/poems/{id}.yaml`
@@ -27,6 +35,11 @@
 
 ## Future Enhancements
 
+### Poem Shortcode Enhancements
+- Support for poems with only one language
+- Alternative layout options (e.g., interleaved lines, columnar fanti)
+- Optional source/attribution field
+
 ### Figure Caption Styling
 - Review margin caption positioning on mid-autumn-tiger-hill page
 - Ensure captions align properly with images
@@ -34,14 +47,9 @@
 ### Consolidate Marker Styles
 - `fn-marker` and `mn-marker` could share styles (both are superscripted numerals)
 
-### Double Blockquote Issue
-- Some content has double blockquote rendering
-- Low priority - can be fixed in markdown source
-
-### Poem Shortcode Enhancements
-- Support for poems with only one language
-- Alternative layout options (e.g., interleaved lines)
-- Optional source/attribution field
+### Decap CMS Authentication
+- Currently configured for git-gateway (requires Netlify Identity or similar)
+- For local dev, uncomment `local_backend: true` in admin/config.yml
 
 ---
 

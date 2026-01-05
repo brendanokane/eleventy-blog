@@ -2,7 +2,6 @@
 title: "Unidentified Flying Object Seen Over Yangzhou"
 date: 2023-02-14
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Unidentified Flying Object Seen Over Yangzhou

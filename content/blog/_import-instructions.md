@@ -1,7 +1,6 @@
 ---
 title: "Import Instructions (Substack/BHArchive)"
 draft: true
-publish: false
 permalink: false
 eleventyExcludeFromCollections: true
 ---
@@ -12,7 +11,6 @@ This file documents the one-off Substack import that created `content/blog/<slug
 - Import script: `scripts/import-substack.mjs`
 - All imported posts are created with:
   - `draft: true`
-  - `publish: false`
   - `bluesky_thread:` empty
 
 To re-run the import locally:

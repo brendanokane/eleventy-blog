@@ -1,0 +1,193 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# For local development, uncomment this:
+# local_backend: true
+
+media_folder: "public/img/uploads"
+public_folder: "/img/uploads"
+
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+    path: "{{slug}}/index"
+    media_folder: "assets"
+    public_folder: "assets"
+    extension: "md"
+    format: "yaml-frontmatter"
+    editor:
+      preview: false
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        required: true
+
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: true
+        required: false
+
+      - label: "Description (RSS/SEO)"
+        name: "description"
+        widget: "text"
+        required: false
+        hint: "Descriptive summary for RSS feeds and search engines"
+
+      - label: "OG Description (Social)"
+        name: "og_description"
+        widget: "text"
+        required: false
+        hint: "Hookier summary for social media previews"
+
+      - label: "Post Image"
+        name: "post_image"
+        widget: "image"
+        required: false
+        hint: "Image for social sharing"
+
+      - label: "Post Image Alt"
+        name: "post_image_alt"
+        widget: "string"
+        required: false
+
+      - label: "Bluesky Thread"
+        name: "bluesky_thread"
+        widget: "string"
+        required: false
+        hint: "URL to Bluesky post for comments"
+
+      - label: "Related Posts"
+        name: "related"
+        widget: "list"
+        required: false
+        hint: "Post slugs (folder names) of related posts"
+        field:
+          label: "Post Slug"
+          name: "slug"
+          widget: "string"
+
+      - label: "Poems"
+        name: "poems"
+        widget: "list"
+        required: false
+        collapsed: true
+        fields:
+          - label: "Poem ID"
+            name: "id"
+            widget: "string"
+            required: true
+            hint: "Unique ID to reference with {% poem 'id' %}"
+
+          - label: "Poet"
+            name: "poet"
+            widget: "object"
+            collapsed: true
+            fields:
+              - label: "English Name"
+                name: "en"
+                widget: "string"
+                required: false
+              - label: "Chinese Name"
+                name: "zh"
+                widget: "string"
+                required: false
+
+          - label: "Title"
+            name: "title"
+            widget: "object"
+            collapsed: true
+            fields:
+              - label: "English Title"
+                name: "en"
+                widget: "string"
+                required: false
+              - label: "Chinese Title"
+                name: "zh"
+                widget: "string"
+                required: false
+
+          - label: "Text"
+            name: "text"
+            widget: "object"
+            collapsed: true
+            fields:
+              - label: "English Text"
+                name: "en"
+                widget: "text"
+                required: false
+              - label: "Chinese Text"
+                name: "zh"
+                widget: "text"
+                required: false
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+
+  - name: "poems"
+    label: "Poems (Global)"
+    folder: "content/poems"
+    create: true
+    slug: "{{id}}"
+    extension: "yaml"
+    format: "yaml"
+    editor:
+      preview: false
+    fields:
+      - label: "Poem ID"
+        name: "id"
+        widget: "string"
+        required: true
+
+      - label: "Poet"
+        name: "poet"
+        widget: "object"
+        fields:
+          - label: "English Name"
+            name: "en"
+            widget: "string"
+            required: false
+          - label: "Chinese Name"
+            name: "zh"
+            widget: "string"
+            required: false
+
+      - label: "Title"
+        name: "title"
+        widget: "object"
+        fields:
+          - label: "English Title"
+            name: "en"
+            widget: "string"
+            required: false
+          - label: "Chinese Title"
+            name: "zh"
+            widget: "string"
+            required: false
+
+      - label: "Text"
+        name: "text"
+        widget: "object"
+        fields:
+          - label: "English Text"
+            name: "en"
+            widget: "text"
+            required: false
+          - label: "Chinese Text"
+            name: "zh"
+            widget: "text"
+            required: false

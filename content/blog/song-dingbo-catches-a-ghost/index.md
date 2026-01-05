@@ -2,7 +2,6 @@
 title: "Song Dingbo Catches a Ghost"
 date: 2024-10-11
 draft: true
-publish: false
 bluesky_thread:
 post_image: "/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.jpg"
 post_image_alt: "A sassy Qin variant of the character for ghost, from Shuihudi"

@@ -2,7 +2,6 @@
 title: "Li Bai to Du Fu: Wish You Were Here"
 date: 2024-03-29
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Li Bai to Du Fu: Wish You Were Here

@@ -7,7 +7,6 @@ tags:
   - posts
   - another tag
 draft: true
-publish: false
 bluesky_thread:
 ---
 This is my third post, and it has a bunch of interesting things in it.

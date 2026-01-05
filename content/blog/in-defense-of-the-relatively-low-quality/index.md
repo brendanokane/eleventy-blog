@@ -2,7 +2,6 @@
 title: "In Defense of the 'Relatively Low Quality'"
 date: 2023-12-26
 draft: true
-publish: false
 bluesky_thread:
 ---
 # In Defense of the 'Relatively Low Quality'

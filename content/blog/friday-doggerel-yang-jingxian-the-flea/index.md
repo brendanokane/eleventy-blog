@@ -2,7 +2,6 @@
 title: "Friday Doggerel: Yang Jingxian - \"The Flea\""
 date: 2023-12-15
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Friday Doggerel: Yang Jingxian - "The Flea"

@@ -2,7 +2,6 @@
 title: "Tao Yuanming Reads on a Summer Evening"
 date: 2024-05-17
 draft: true
-publish: false
 bluesky_thread:
 post_image: "/tao-yuanming-reads-on-a-summer-evening/assets/f993de39-ae98-4723-8285-49a33baa19b2_1220x746.png"
 post_image_alt: "Tao Yuanming reading illustration"

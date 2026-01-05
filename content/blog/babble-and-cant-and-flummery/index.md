@@ -2,7 +2,6 @@
 title: "Babble and Cant and Flummery"
 date: 2024-03-26
 draft: false
-publish: true
 bluesky_thread:
 ---
 # Babble and Cant and Flummery

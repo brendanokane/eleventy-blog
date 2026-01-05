@@ -2,7 +2,6 @@
 title: "What's Good?"
 date: 2022-08-03
 draft: true
-publish: false
 bluesky_thread:
 ---
 # What's Good?

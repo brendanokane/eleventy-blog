@@ -2,7 +2,6 @@
 title: "Friday Doggerel: \"The Grubber\""
 date: 2022-08-05
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Friday Doggerel: "The Grubber"

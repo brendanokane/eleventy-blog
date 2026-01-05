@@ -2,7 +2,6 @@
 title: "Spring and Stone and the Total Perspective Vortex"
 date: 2024-03-22
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Spring and Stone and the Total Perspective Vortex

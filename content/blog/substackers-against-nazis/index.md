@@ -2,7 +2,6 @@
 title: "Substackers Against Nazis"
 date: 2023-12-14
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Substackers Against Nazis

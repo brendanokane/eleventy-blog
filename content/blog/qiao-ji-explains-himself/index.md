@@ -2,7 +2,6 @@
 title: "Qiao Ji Explains Himself"
 date: 2023-12-28
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Qiao Ji Explains Himself

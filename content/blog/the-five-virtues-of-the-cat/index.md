@@ -2,7 +2,6 @@
 title: "The Five Virtues of the Cat"
 date: 2023-11-07
 draft: true
-publish: false
 bluesky_thread:
 ---
 # The Five Virtues of the Cat

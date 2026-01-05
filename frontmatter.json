@@ -1,0 +1,219 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "post",
+      "pageBundle": true,
+      "previewPath": "/",
+      "filePrefix": null,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "required": true,
+          "dateFormat": "yyyy-MM-dd"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "title": "Description (RSS/SEO)",
+          "name": "description",
+          "type": "string",
+          "description": "Descriptive summary for RSS feeds and search engines"
+        },
+        {
+          "title": "OG Description (Social)",
+          "name": "og_description",
+          "type": "string",
+          "description": "Hookier summary for social media previews"
+        },
+        {
+          "title": "Post Image",
+          "name": "post_image",
+          "type": "image",
+          "description": "Image for social sharing and OG tags"
+        },
+        {
+          "title": "Post Image Alt",
+          "name": "post_image_alt",
+          "type": "string",
+          "description": "Alt text for the post image"
+        },
+        {
+          "title": "Bluesky Thread",
+          "name": "bluesky_thread",
+          "type": "string",
+          "description": "URL to Bluesky post for comments integration"
+        },
+        {
+          "title": "Related Posts",
+          "name": "related",
+          "type": "contentRelationship",
+          "contentTypeName": "post",
+          "multiple": true,
+          "description": "Manually curated related posts"
+        },
+        {
+          "title": "Poems",
+          "name": "poems",
+          "type": "block",
+          "fieldGroup": [
+            {
+              "name": "id",
+              "type": "string",
+              "title": "Poem ID",
+              "required": true
+            },
+            {
+              "name": "poet",
+              "type": "fields",
+              "title": "Poet",
+              "fields": [
+                {
+                  "name": "en",
+                  "type": "string",
+                  "title": "English Name"
+                },
+                {
+                  "name": "zh",
+                  "type": "string",
+                  "title": "Chinese Name"
+                }
+              ]
+            },
+            {
+              "name": "title",
+              "type": "fields",
+              "title": "Title",
+              "fields": [
+                {
+                  "name": "en",
+                  "type": "string",
+                  "title": "English Title"
+                },
+                {
+                  "name": "zh",
+                  "type": "string",
+                  "title": "Chinese Title"
+                }
+              ]
+            },
+            {
+              "name": "text",
+              "type": "fields",
+              "title": "Text",
+              "fields": [
+                {
+                  "name": "en",
+                  "type": "string",
+                  "title": "English Text",
+                  "wysiwyg": false
+                },
+                {
+                  "name": "zh",
+                  "type": "string",
+                  "title": "Chinese Text",
+                  "wysiwyg": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Blog Posts",
+      "path": "[[workspace]]/content/blog",
+      "contentTypes": ["post"],
+      "filePrefix": null
+    }
+  ],
+  "frontMatter.content.publicFolder": "[[workspace]]/public",
+  "frontMatter.framework.id": "eleventy",
+  "frontMatter.preview.host": "http://localhost:8080",
+  "frontMatter.content.snippets": {
+    "Margin Note": {
+      "description": "Insert a margin note",
+      "body": "{% mn %}[[content]]{% endmn %}",
+      "fields": [
+        {
+          "name": "content",
+          "title": "Note content",
+          "type": "string"
+        }
+      ]
+    },
+    "Margin Note with Anchor": {
+      "description": "Insert a margin note with anchor text",
+      "body": "{% mn \"[[anchor]]\" %}[[content]]{% endmn %}",
+      "fields": [
+        {
+          "name": "anchor",
+          "title": "Anchor text",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "title": "Note content",
+          "type": "string"
+        }
+      ]
+    },
+    "Footnote": {
+      "description": "Insert a footnote",
+      "body": "{% fn %}[[content]]{% endfn %}",
+      "fields": [
+        {
+          "name": "content",
+          "title": "Note content",
+          "type": "string"
+        }
+      ]
+    },
+    "Poem": {
+      "description": "Insert a poem reference",
+      "body": "{% poem \"[[id]]\" %}",
+      "fields": [
+        {
+          "name": "id",
+          "title": "Poem ID",
+          "type": "string"
+        }
+      ]
+    },
+    "Figure": {
+      "description": "Insert a figure with caption",
+      "body": "{% figure \"[[src]]\", \"[[alt]]\" %}[[caption]]{% endfigure %}",
+      "fields": [
+        {
+          "name": "src",
+          "title": "Image path",
+          "type": "string"
+        },
+        {
+          "name": "alt",
+          "title": "Alt text",
+          "type": "string"
+        },
+        {
+          "name": "caption",
+          "title": "Caption",
+          "type": "string"
+        }
+      ]
+    }
+  }
+}

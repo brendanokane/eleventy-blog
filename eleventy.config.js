@@ -45,6 +45,8 @@ export default async function (eleventyConfig) {
 		.addPassthroughCopy({
 			"./css/index.css": "/css/production.css",
 		})
+		// Decap CMS config (must be copied as-is, not processed)
+		.addPassthroughCopy("./content/admin/config.yml")
 		// Note: Post assets are copied via eleventy.after event below to achieve blog-less URLs
 		.addPassthroughCopy("./content/feed/pretty-atom-feed.xsl");
 

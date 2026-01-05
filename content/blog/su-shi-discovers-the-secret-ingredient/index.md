@@ -2,7 +2,6 @@
 title: "Su Shi Discovers the Secret Ingredient"
 date: 2024-04-19
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Su Shi Discovers the Secret Ingredient

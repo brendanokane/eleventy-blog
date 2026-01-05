@@ -2,7 +2,6 @@
 title: "Two Poems for a Rainy Sunday"
 date: 2023-12-10
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Two Poems for a Rainy Sunday

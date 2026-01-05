@@ -2,7 +2,6 @@
 title: "The Naming of Cats, and an Offering"
 date: 2023-07-18
 draft: true
-publish: false
 bluesky_thread:
 ---
 # The Naming of Cats, and an Offering

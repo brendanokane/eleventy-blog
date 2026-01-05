@@ -7,7 +7,6 @@ tags:
   - posts
   - another tag
 draft: true
-publish: false
 bluesky_thread:
 ---
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquet nunc, vitae ultricies nisl nunc eu nisl.

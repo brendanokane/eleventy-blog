@@ -2,7 +2,6 @@
 title: "“A Failure as a Mouser. A Failure as a Cat!”"
 date: 2023-12-13
 draft: false
-publish: true
 bluesky_thread:
 ---
 # “A Failure as a Mouser. A Failure as a Cat!”

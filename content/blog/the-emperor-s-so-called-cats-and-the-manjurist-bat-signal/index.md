@@ -2,7 +2,6 @@
 title: "The Emperor's So-Called Cats and the Manjurist Bat-Signal"
 date: 2024-04-07
 draft: true
-publish: false
 bluesky_thread:
 ---
 # The Emperor's So-Called Cats and the Manjurist Bat-Signal

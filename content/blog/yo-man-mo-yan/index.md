@@ -2,7 +2,6 @@
 title: "Yo Man, Mo Yan"
 date: 2024-04-04
 draft: true
-publish: false
 bluesky_thread:
 ---
 # Yo Man, Mo Yan

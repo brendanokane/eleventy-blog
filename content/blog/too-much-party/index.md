@@ -2,7 +2,6 @@
 title: "Too Much Party"
 date: 2024-05-05
 draft: true
-publish: false
 bluesky_thread:
 post_image: "/too-much-party/assets/e9ba3c2f-3771-489d-a031-2b5452381ab4.jpg"
 post_image_alt: "Yuan dynasty wine jar with ʼPhags-pa script advertising 'Good Grape Wine'"
