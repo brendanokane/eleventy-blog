@@ -8,11 +8,17 @@ import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import MarkdownIt from "markdown-it";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import yaml from "js-yaml";
 
 import pluginFilters from "./_config/filters.js";
 import blueskyComments from "./_config/bluesky-comments.js";
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+	html: true, // Enable HTML tags in source
+	breaks: true, // Convert \n in paragraphs into <br> for poetry
+});
 
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 export default async function (eleventyConfig) {
@@ -216,12 +222,20 @@ export default async function (eleventyConfig) {
 	// Mobile: note is hidden, toggles on click
 	// Desktop: note appears in margin column, aligned via JS
 
-	let mnCounter = 0; // Reset per build for unique IDs
-	let figCounter = 0;
+	// Use a Map to track counters per page during build
+	// This ensures each page gets its own counter starting at 0
+	const pageCounters = new Map();
+
+	function getPageCounter(page) {
+		const key = page?.inputPath || "unknown";
+		if (!pageCounters.has(key)) {
+			pageCounters.set(key, { mn: 0, fig: 0 });
+		}
+		return pageCounters.get(key);
+	}
 
 	eleventyConfig.on("eleventy.before", () => {
-		mnCounter = 0;
-		figCounter = 0;
+		pageCounters.clear();
 	});
 
 	// Figure shortcode with Tufte-style margin captions
@@ -231,8 +245,9 @@ export default async function (eleventyConfig) {
 	eleventyConfig.addPairedShortcode(
 		"figure",
 		function (caption, src, alt, style) {
-			figCounter++;
-			const figId = `fig-${figCounter}`;
+			const counters = getPageCounter(this.page);
+			counters.fig++;
+			const figId = `fig-${counters.fig}`;
 			const isCentered = style === "center";
 
 			// Render caption markdown to HTML
@@ -262,8 +277,9 @@ export default async function (eleventyConfig) {
 	);
 
 	eleventyConfig.addPairedShortcode("mn", function (content, anchor) {
-		mnCounter++;
-		const noteId = `mn-${mnCounter}`;
+		const counters = getPageCounter(this.page);
+		counters.mn++;
+		const noteId = `mn-${counters.mn}`;
 
 		// Render markdown content to HTML
 		const renderedContent = md.render(content.trim());
@@ -279,11 +295,166 @@ export default async function (eleventyConfig) {
 
 		if (anchor) {
 			// Anchor version: dotted underline on anchor text + superscripted numeral after
-			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><sup class="mn-anchor-num">${mnCounter}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${mnCounter}.</span> ${noteHtml}</span></span>`;
+			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><sup class="mn-anchor-num">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span> ${noteHtml}</span></span>`;
 		} else {
 			// Marker version: numbered superscript marker only
-			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${mnCounter}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${mnCounter}.</span> ${noteHtml}</span></span>`;
+			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span> ${noteHtml}</span></span>`;
 		}
+	});
+
+	// Footnote shortcode - shares counter with margin notes for consistent numbering
+	// Usage:
+	//   {% fn %}Long note content that's too large for margin{% endfn %}
+	//   {% fn "anchor text" %}Long note content{% endfn %}
+	// Output: Creates a superscript reference in text, note stored in page data for template to render
+	eleventyConfig.addPairedShortcode("fn", function (content, anchor) {
+		const counters = getPageCounter(this.page);
+		counters.mn++; // Share counter with margin notes
+		const noteNum = counters.mn;
+		const noteId = `fn-${noteNum}`;
+		const refId = `fnref-${noteNum}`;
+
+		// Render markdown content to HTML
+		const renderedContent = md.render(content.trim());
+		const noteHtml = renderedContent.trim();
+
+		// Store footnote in page data for the template to collect
+		// This avoids the problem of markdown breaking embedded HTML
+		if (!this.page._footnotes) {
+			this.page._footnotes = [];
+		}
+		this.page._footnotes.push({
+			num: noteNum,
+			id: noteId,
+			refId: refId,
+			content: noteHtml,
+		});
+
+		if (anchor) {
+			// Anchor version: dotted underline on anchor text + superscripted numeral after
+			return `<span class="fn-ref" data-fn-id="${noteId}"><a href="#${noteId}" id="${refId}" class="fn-anchor">${anchor}</a><sup class="fn-anchor-num"><a href="#${noteId}">${noteNum}</a></sup></span>`;
+		} else {
+			// Marker version: numbered superscript marker only
+			return `<sup class="fn-ref" data-fn-id="${noteId}"><a href="#${noteId}" id="${refId}" class="fn-marker">${noteNum}</a></sup>`;
+		}
+	});
+
+	// ----------------------------------------------------------------------
+	// --- POEM SHORTCODE ---
+	// ----------------------------------------------------------------------
+	//
+	// Usage:
+	//   {% poem "drinking_alone" %}
+	//
+	// Looks for poem data in two places (in order):
+	//   1. Post frontmatter: poems array with matching id
+	//   2. External file: content/poems/{id}.yaml or content/poems/{id}.md
+	//
+	// Data structure (frontmatter or YAML file):
+	//   poems:
+	//     - id: drinking_alone
+	//       poet:
+	//         en: "Li Bai"
+	//         zh: "李白"
+	//       title:
+	//         en: "Drinking Alone by Moonlight"
+	//         zh: "月下獨酌"
+	//       text:
+	//         en: |
+	//           From a pot of wine among the flowers
+	//           I drink alone...
+	//         zh: |
+	//           花間一壺酒，
+	//           獨酌無相親...
+	//
+	// Output: Structured HTML with poem-container, poem-header, poem-body
+
+	eleventyConfig.addShortcode("poem", function (poemId) {
+		let poemData = null;
+
+		// 1. Look in frontmatter first
+		if (this.ctx && this.ctx.poems && Array.isArray(this.ctx.poems)) {
+			poemData = this.ctx.poems.find((p) => p.id === poemId);
+		}
+
+		// 2. Fallback to external file
+		if (!poemData) {
+			const poemsDir = path.join(process.cwd(), "content", "poems");
+
+			// Try YAML first
+			const yamlPath = path.join(poemsDir, `${poemId}.yaml`);
+			const ymlPath = path.join(poemsDir, `${poemId}.yml`);
+			const mdPath = path.join(poemsDir, `${poemId}.md`);
+
+			try {
+				if (fs.existsSync(yamlPath)) {
+					const content = fs.readFileSync(yamlPath, "utf-8");
+					poemData = yaml.load(content);
+				} else if (fs.existsSync(ymlPath)) {
+					const content = fs.readFileSync(ymlPath, "utf-8");
+					poemData = yaml.load(content);
+				} else if (fs.existsSync(mdPath)) {
+					// For .md files, parse YAML frontmatter
+					const content = fs.readFileSync(mdPath, "utf-8");
+					const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+					if (fmMatch) {
+						poemData = yaml.load(fmMatch[1]);
+					}
+				}
+			} catch (err) {
+				console.warn(`Warning: Error loading poem "${poemId}":`, err.message);
+			}
+		}
+
+		// 3. If not found, return error message
+		if (!poemData) {
+			return `<div class="poem-error" style="color: var(--vermillion); padding: 1em; border: 2px dashed var(--vermillion); margin: 1em 0;">
+				<strong>⚠️ Poem not found:</strong> <code>${poemId}</code>
+				<br><small>Check frontmatter or content/poems/${poemId}.yaml</small>
+			</div>`;
+		}
+
+		// 4. Render the poem
+		const titleEn = poemData.title?.en || "";
+		const titleZh = poemData.title?.zh || "";
+		const poetEn = poemData.poet?.en || "";
+		const poetZh = poemData.poet?.zh || "";
+		const textEn = poemData.text?.en || "";
+		const textZh = poemData.text?.zh || "";
+
+		// Process text: convert line breaks to <br> for display
+		const formatPoemText = (text) => {
+			if (!text) return "";
+			return text
+				.trim()
+				.split("\n")
+				.map((line) => line.trim())
+				.join("<br>\n");
+		};
+
+		const textEnHtml = formatPoemText(textEn);
+		const textZhHtml = formatPoemText(textZh);
+
+		// Build header - only include elements that exist
+		let headerHtml = '<div class="poem-header">';
+		if (titleZh)
+			headerHtml += `<h3 class="poem-title-zh" lang="zh">${titleZh}</h3>`;
+		if (poetZh) headerHtml += `<p class="poem-poet-zh" lang="zh">${poetZh}</p>`;
+		if (titleEn) headerHtml += `<h4 class="poem-title-en">${titleEn}</h4>`;
+		if (poetEn) headerHtml += `<p class="poem-poet-en">${poetEn}</p>`;
+		headerHtml += "</div>";
+
+		// Build body
+		let bodyHtml = '<div class="poem-body">';
+		if (textZhHtml)
+			bodyHtml += `<div class="poem-text-zh" lang="zh">${textZhHtml}</div>`;
+		if (textEnHtml) bodyHtml += `<div class="poem-text-en">${textEnHtml}</div>`;
+		bodyHtml += "</div>";
+
+		return `<div class="poem-container" data-poem-id="${poemId}">
+${headerHtml}
+${bodyHtml}
+</div>`;
 	});
 
 	// ----------------------------------------------------------------------
@@ -295,6 +466,9 @@ export default async function (eleventyConfig) {
 	eleventyConfig.addShortcode("currentBuildDate", () => {
 		return new Date().toISOString();
 	});
+
+	// Set the markdown library to use our configured instance with breaks enabled
+	eleventyConfig.setLibrary("md", md);
 
 	// Features to make your build faster (when you need them)
 

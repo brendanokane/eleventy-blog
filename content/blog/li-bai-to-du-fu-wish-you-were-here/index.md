@@ -9,7 +9,7 @@ bluesky_thread:
 
 “In {% mn "4,000 years of history" %}A _lot_ happened in the 20th century.{% endmn %}," the poet Wen Yiduo wrote, "with the exception of Confucius and Laozi, no other meeting has been so important, so sacred, so worthy of memorialization" as that of Li Bai (701-762) and Du Fu (712-770), whom later tradition would call "the Poet-Transcendent" 詩仙 and "the Poet-Sage" 詩聖. It isn’t hard to see why so much has been made — most recently in the 2023 3D animated film _Chang'an_ 长安三万里 — of the friendship between the two men. But I think the evidence points to something more interesting.
 
-[![](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png)](/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png) Li Bai and Du Fu, as depicted in _Chang'an_. Which is probably fun; I haven’t watched it.
+{% figure "/li-bai-to-du-fu-wish-you-were-here/assets/38ea5abf-d15d-4fb0-a306-f9f9bba67e67_1432x598.png", "A couple of computer-generated Tang-dynasty buddies", "center" %}Li Bai and Du Fu, as depicted in _Chang'an_, which is probably fun.{% endfigure %}
 
 #### Du Fu 杜甫 - To Li Bai 贈李白
 

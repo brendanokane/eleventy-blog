@@ -30,20 +30,35 @@ layout: layouts/base.njk
 		</ul>
 	</header>
 
+	{# Strip leading H1 #}
+	{% set cleanContent = content | stripLeadingH1 %}
 	<div class="post-body">
-		{{ content | stripLeadingH1 | safe }}
+		{{ cleanContent | safe }}
 	</div>
-</article>
 
-{%- if collections.posts %}
-{%- set previousPost = collections.posts | getPreviousCollectionItem %}
-{%- set nextPost = collections.posts | getNextCollectionItem %}
-{%- if nextPost or previousPost %}
-<nav class="post-nav" aria-label="Post navigation">
-	<ul class="links-nextprev">
-		{%- if previousPost %}<li class="links-nextprev-prev"><a href="{{ previousPost.url }}">← {{ previousPost.data.title }}</a></li>{% endif %}
-		{%- if nextPost %}<li class="links-nextprev-next"><a href="{{ nextPost.url }}">{{ nextPost.data.title }} →</a></li>{% endif %}
-	</ul>
-</nav>
-{%- endif %}
-{%- endif %}
+	{# Footnotes are stored in page._footnotes by the {% fn %} shortcode #}
+	{%- if page._footnotes and page._footnotes.length %}
+	<section class="footnotes">
+		<hr class="footnotes-separator">
+		<h2 class="footnotes-title" id="notes">Notes</h2>
+		<ol class="footnotes-list">
+			{%- for note in page._footnotes %}
+			<li id="{{ note.id }}">{{ note.content | safe }} <a href="#{{ note.refId }}" class="footnote-backref" aria-label="Back to content">↩</a></li>
+			{%- endfor %}
+		</ol>
+	</section>
+	{%- endif %}
+
+	{%- if collections.posts %}
+	{%- set previousPost = collections.posts | getPreviousCollectionItem %}
+	{%- set nextPost = collections.posts | getNextCollectionItem %}
+	{%- if nextPost or previousPost %}
+	<nav class="post-nav" aria-label="Post navigation">
+		<ul class="links-nextprev">
+			{%- if previousPost %}<li class="links-nextprev-prev"><a href="{{ previousPost.url }}">← {{ previousPost.data.title }}</a></li>{% endif %}
+			{%- if nextPost %}<li class="links-nextprev-next"><a href="{{ nextPost.url }}">{{ nextPost.data.title }} →</a></li>{% endif %}
+		</ul>
+	</nav>
+	{%- endif %}
+	{%- endif %}
+</article>

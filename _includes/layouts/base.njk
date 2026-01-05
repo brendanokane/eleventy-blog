@@ -65,8 +65,8 @@
 	<body{% if isEmailPage %} data-pagefind-ignore="all"{% endif %}>
 		<a href="#main" class="visually-hidden">Skip to main content</a>
 
-		<header>
-			<div class="site-header">
+		<div class="site-header-container">
+			<header class="site-header">
 				<a href="/" class="home-link">
 					<img class="site-logo" src="/img/burning-house-logo.svg" alt="" aria-hidden="true">
 					<span>{{ metadata.title }}</span>
@@ -78,32 +78,35 @@
 						<li><a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>About</a></li>
 					</ul>
 				</nav>
-			</div>
-		</header>
+			</header>
+		</div>
 
-		<main id="main">
-			{{ content | safe }}
+		<main id="main" class="main-content-container">
+			<div class="layout-container">
+				{{ content | safe }}
+			</div>
 		</main>
 
-		<footer>
-			<p><em>Built with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a></em></p>
-		</footer>
+		<div class="site-footer-container">
+			<footer class="site-footer">
+				<p><em>Built with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a></em></p>
+			</footer>
+		</div>
 
 		{# Minimal margin notes JS - mobile toggle + desktop positioning #}
 		<script eleventy:ignore>
 		(function() {
-			var MOBILE_BREAKPOINT = 768;
+			var MOBILE_BREAKPOINT = 1024; // Match CSS breakpoint
 			var wasMobile = window.innerWidth < MOBILE_BREAKPOINT;
 
-			// Mobile toggle for margin notes (anchor, anchor-num, or marker)
+			// Mobile toggle for margin notes
 			document.addEventListener('click', function(e) {
-				var trigger = e.target.closest('.mn-anchor, .mn-anchor-num, .mn-marker');
+				var trigger = e.target.closest('.mn-anchor, .mn-anchor-num, .mn-marker, .fn-marker, .fn-anchor');
 				if (!trigger) return;
 
-				// Only toggle on mobile
 				if (window.innerWidth >= MOBILE_BREAKPOINT) return;
 
-				var ref = trigger.closest('.mn-ref');
+				var ref = trigger.closest('.mn-ref, .fn-ref');
 				if (!ref) return;
 
 				var note = ref.querySelector('.mn-note');
@@ -112,32 +115,40 @@
 				e.preventDefault();
 				note.classList.toggle('is-visible');
 
-				// Update aria-expanded
-				var anchor = ref.querySelector('.mn-anchor, .mn-marker');
-				if (anchor) {
-					anchor.setAttribute('aria-expanded', note.classList.contains('is-visible'));
+				var ariaTrigger = ref.querySelector('[aria-expanded]');
+				if (ariaTrigger) {
+					ariaTrigger.setAttribute('aria-expanded', note.classList.contains('is-visible'));
 				}
 			});
 
 			// Desktop: position notes to align with their anchors
 			function positionNotes() {
-				document.querySelectorAll('.mn-ref').forEach(function(ref) {
+				// Position margin notes
+				document.querySelectorAll('.post-body .mn-ref').forEach(function(ref) {
 					var note = ref.querySelector('.mn-note');
-					if (!note) return;
-
-					var postBody = ref.closest('.post-body');
-					if (!postBody) return;
-
-					// Find the anchor/marker element to align with
 					var anchor = ref.querySelector('.mn-anchor, .mn-marker, .mn-anchor-num');
-					if (!anchor) return;
+					if (!note || !anchor) return;
 
-					// Use anchor position, not ref position
 					var anchorRect = anchor.getBoundingClientRect();
+					var postBody = ref.closest('.post-body');
+					if(!postBody) return;
+
 					var bodyRect = postBody.getBoundingClientRect();
 					var offset = anchorRect.top - bodyRect.top;
 
 					note.style.top = offset + 'px';
+				});
+
+				// Position figure captions in margin
+				document.querySelectorAll('figure.fig-margin').forEach(function(fig) {
+					var img = fig.querySelector('img');
+					var caption = fig.querySelector('.fig-caption-margin');
+					if(!img || !caption) return;
+
+					var imgRect = img.getBoundingClientRect();
+					var figRect = fig.getBoundingClientRect();
+					var offset = imgRect.top - figRect.top;
+					caption.style.top = offset + 'px';
 				});
 			}
 
@@ -146,51 +157,43 @@
 				document.querySelectorAll('.mn-note.is-visible').forEach(function(note) {
 					note.classList.remove('is-visible');
 				});
-				document.querySelectorAll('.mn-anchor[aria-expanded], .mn-marker[aria-expanded]').forEach(function(el) {
+				document.querySelectorAll('[aria-expanded="true"]').forEach(function(el) {
 					el.setAttribute('aria-expanded', 'false');
 				});
 			}
 
-			// Handle layout based on viewport
 			function handleLayout() {
 				var isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-
-				// If transitioning from mobile to desktop, clean up
-				if (wasMobile && !isMobile) {
-					clearMobileState();
-				}
-
-				// Position notes on desktop
-				if (!isMobile) {
-					positionNotes();
-				}
-
+				if (wasMobile && !isMobile) clearMobileState();
+				if (!isMobile) positionNotes();
 				wasMobile = isMobile;
 			}
 
-			// Run on load
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', handleLayout);
-			} else {
-				handleLayout();
-			}
-
-			// Re-run after fonts load (fixes initial positioning)
-			if (document.fonts && document.fonts.ready) {
-				document.fonts.ready.then(function() {
-					handleLayout();
-				});
-			}
-
-			// Also run on window load as fallback
-			window.addEventListener('load', handleLayout);
-
 			// Debounced resize handler
 			var resizeTimeout;
-			window.addEventListener('resize', function() {
+			function onResize() {
 				clearTimeout(resizeTimeout);
 				resizeTimeout = setTimeout(handleLayout, 100);
-			});
+			}
+
+			function init() {
+				handleLayout();
+				window.addEventListener('resize', onResize);
+
+				// Re-run after fonts load (fixes initial positioning)
+				if (document.fonts && document.fonts.ready) {
+					document.fonts.ready.then(handleLayout);
+				}
+
+				// Re-run on window load as a fallback for images, etc.
+				window.addEventListener('load', handleLayout);
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', init);
+			} else {
+				init();
+			}
 		})();
 		</script>
 	</body>

@@ -60,6 +60,7 @@
 	"dependencies": {
 		"@11ty/eleventy-fetch": "^5.1.1",
 		"@zachleat/heading-anchors": "^1.0.5",
+		"js-yaml": "^4.1.1",
 		"markdown-it": "^14.1.0"
 	}
 }

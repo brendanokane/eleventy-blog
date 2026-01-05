@@ -1,0 +1,18 @@
+id: drinking_alone
+poet:
+  en: "Li Bai"
+  zh: "李白"
+title:
+  en: "Drinking Alone by Moonlight"
+  zh: "月下獨酌"
+text:
+  en: |
+    From a pot of wine among the flowers
+    I drink alone. There is no one with me—
+    Till, raising my cup, I ask the bright moon
+    To bring me my shadow and make us three.
+  zh: |
+    花間一壺酒，
+    獨酌無相親。
+    舉杯邀明月，
+    對影成三人。
