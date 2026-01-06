@@ -181,6 +181,28 @@ export default function (eleventyConfig) {
 			},
 		);
 
+		// NEW SHORTCODE FORMAT: Convert margin notes (mn-ref) to endnotes
+		// Pattern: <span class="mn-ref">...<span class="mn-note">content</span></span>
+		// Handles both marker version (with mn-marker) and anchor version (with mn-anchor)
+		const mnPattern =
+			/<span class="mn-ref"[^>]*data-mn-id="([^"]+)"[^>]*>(?:<span class="mn-anchor"[^>]*>([^<]*)<\/span><sup class="mn-anchor-num">\d+<\/sup>|<sup class="mn-marker"[^>]*>\d+<\/sup>)<span class="mn-note"[^>]*><span class="mn-note-number"[^>]*>\d+\.<\/span>\s*([\s\S]*?)<\/span><\/span>/g;
+
+		transformed = transformed.replace(
+			mnPattern,
+			(match, noteId, anchorText, noteContent) => {
+				noteCounter++;
+				endnotes.push(addBackReference(noteContent, noteCounter));
+
+				if (anchorText) {
+					// Anchor version: keep the anchor text, add footnote marker after
+					return `${anchorText}<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">${noteCounter}</a></sup>`;
+				} else {
+					// Marker version: just the footnote number
+					return `<sup class="fn"><a href="#fn-${noteCounter}" id="fnref-${noteCounter}">${noteCounter}</a></sup>`;
+				}
+			},
+		);
+
 		// Legacy patterns for old imports (keep these for backwards compatibility)
 
 		// Pattern: Legacy Substack import HTML with <aside> tags

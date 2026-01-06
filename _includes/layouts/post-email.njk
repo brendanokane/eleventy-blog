@@ -150,7 +150,6 @@ layout: layouts/base.njk
       {%- for note in endnotes %}
       <li id="fn-{{ loop.index }}">
         {{ note | safe }}
-        <a href="#fnref-{{ loop.index }}" class="backlink" aria-label="Back to reference {{ loop.index }}">↩</a>
       </li>
       {%- endfor %}
     </ol>

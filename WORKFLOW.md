@@ -26,24 +26,28 @@ npm run assets:mirror           # Mirror assets for blog-less URLs (runs automat
 
 ## Writing & Publishing Posts
 
-### 1. Create Post Structure
+### Quick Start
+
+**For the full publishing workflow with previews and confirmations:**
+
+```bash
+npm run publish
+```
+
+See [PUBLISHING.md](./PUBLISHING.md) for complete documentation.
+
+### Manual Steps
+
+If you prefer to do it manually:
+
+#### 1. Create Post Structure
 
 ```bash
 mkdir -p content/blog/<slug>/assets
 touch content/blog/<slug>/index.md
 ```
 
-### 2. Frontmatter (Required)
-
-```yaml
----
-title: "Post Title"
-date: 2025-01-15
-publish: false  # Set to true when ready
----
-```
-
-### 3. Preview Locally
+#### 2. Write & Preview
 
 ```bash
 npm start
@@ -51,44 +55,18 @@ npm start
 # Email: http://localhost:8080/emails/<slug>/
 ```
 
-### 4. Publish to Web
-
-Update frontmatter:
-```yaml
-publish: true
-```
-
-Build and deploy:
-```bash
-npm run build
-# Deploy _site/ to your hosting
-```
-
----
-
-## Email Publishing (Buttondown)
-
-### Setup (One-Time)
+#### 3. Publish
 
 ```bash
-export BUTTONDOWN_API_KEY="your-api-key-here"
-# Or add to ~/.zshrc or ~/.bashrc
+# Use the guided workflow (recommended)
+npm run publish
+
+# Or do it manually:
+# 1. Set draft: false in frontmatter
+# 2. Run npm run build
+# 3. Post to Bluesky
+# 4. Send to Buttondown (optional)
 ```
-
-### Publishing Flow
-
-```bash
-# List posts ready to send
-npm run buttondown:list
-
-# Preview what would be sent (safe)
-npm run buttondown:send:dry <slug>
-
-# Actually send the email
-npm run buttondown:send <slug>
-```
-
-**Important:** Emails only send once (tracked via `buttondown_sent: true` in frontmatter). Subsequent edits update web/RSS but don't trigger emails.
 
 ---
 

@@ -21,7 +21,9 @@
 		"buttondown:list": "node scripts/publish-to-buttondown.mjs --list-pending",
 		"buttondown:send": "node scripts/publish-to-buttondown.mjs --post",
 		"buttondown:send:dry": "node scripts/publish-to-buttondown.mjs --post",
-		"search": "npx pagefind --site _site"
+		"search": "npx pagefind --site _site",
+		"publish": "node scripts/publish-workflow.mjs",
+		"publish:post": "node scripts/publish-workflow.mjs --post"
 	},
 	"repository": {
 		"type": "git",
