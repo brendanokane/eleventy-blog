@@ -185,7 +185,7 @@ export default function (eleventyConfig) {
 		// Pattern: <span class="mn-ref">...<span class="mn-note">content</span></span>
 		// Handles both marker version (with mn-marker) and anchor version (with mn-anchor)
 		const mnPattern =
-			/<span class="mn-ref"[^>]*data-mn-id="([^"]+)"[^>]*>(?:<span class="mn-anchor"[^>]*>([^<]*)<\/span><sup class="mn-anchor-num">\d+<\/sup>|<sup class="mn-marker"[^>]*>\d+<\/sup>)<span class="mn-note"[^>]*><span class="mn-note-number"[^>]*>\d+\.<\/span>\s*([\s\S]*?)<\/span><\/span>/g;
+			/<span class="mn-ref"[^>]*data-mn-id="([^"]+)"[^>]*>(?:<span class="mn-anchor"[^>]*>([\s\S]*?)<\/span><sup class="mn-anchor-num">\d+<\/sup>|<sup class="mn-marker"[^>]*>\d+<\/sup>)<span class="mn-note"[^>]*><span class="mn-note-number"[^>]*>\d+\.<\/span>\s*([\s\S]*?)<\/span><\/span>/g;
 
 		transformed = transformed.replace(
 			mnPattern,
