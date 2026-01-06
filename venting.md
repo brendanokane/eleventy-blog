@@ -51,3 +51,25 @@ Picked up from the previous session. Reviewed the codebase - everything is actua
 The previous session's "critical bug" notes were stale - the fix was already in place. Just cleaned up the documentation to reflect reality.
 
 Now moving on to implementing the poem shortcode. Finally, new features instead of bug fixes!
+
+---
+
+## 2026-01-06 Morning Session (Current)
+
+**Victory lap time!** Fixed a cluster of margin note and footnote display issues that had been lurking:
+
+1. **First margin note not displaying**: The culprit was a blank line within the note content creating multiple `<p>` tags inside an inline `<span>` - invalid HTML that broke browser rendering. Fixed by removing the blank line and also removing markdown italics from the anchor parameter (Nunjucks can't handle markdown in parameters).
+
+2. **Inherited italic formatting**: Margin notes inside italicized paragraphs were inheriting the italic styling. Added explicit `font-style: normal` to `.mn-note`, `.mn-anchor`, and `.mn-anchor-num` to prevent inheritance.
+
+3. **Endnotes font mismatch**: Footnotes were using default body font. Updated `.footnotes-list` to use `var(--font-mn)` and adjusted size from 0.9rem to 0.85rem to match margin notes.
+
+4. **Number positioning**: Implemented hanging indent style - numbers now project left into the gutter with text starting at a clean left edge. Applied to both margin notes and footnotes for consistency.
+
+5. **Nested lists in footnotes**: Custom CSS counters were numbering nested list items. Fixed with child selector (`>`) so only direct children get custom numbering. Nested lists display with standard bullets/numbers.
+
+6. **Back-reference positioning**: The ↩ link was appearing on its own line. Created `insertBackref` filter to inject it before the last closing HTML tag in footnote content, so it appears inline at the end.
+
+**Key takeaway:** The shortcode architecture is solid. The issues were all about CSS specificity, HTML structure validity, and careful handling of nested content. Now everything works beautifully - margin notes in the margin with clean hanging indents, footnotes at the bottom with matching styling, and all content properly formatted regardless of nesting complexity.
+
+Time to commit and move forward!

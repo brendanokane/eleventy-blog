@@ -97,21 +97,24 @@ This is {% mn "important text" %}A note explaining why this is important.{% endm
 **With Markdown in note:**
 ```liquid
 {% mn "API endpoint" %}
-See the [documentation](https://example.com) for details.
-
-- Point 1
-- Point 2
+See the [documentation](https://example.com) for details. Multiple paragraphs are supported but avoid blank lines within the note content to prevent rendering issues.
 {% endmn %}
 ```
+
+### Important Notes
+
+- **Anchor text cannot contain markdown**: Parameters in Nunjucks shortcodes cannot contain markdown formatting. Use plain text only: `{% mn "important text" %}` not `{% mn "_important_ text" %}`
+- **Avoid blank lines in note content**: Blank lines within margin note content create multiple `<p>` tags which break the inline structure. Keep content continuous or use explicit line breaks if needed.
+- **Single-paragraph notes work best**: For multi-paragraph notes, consider using the `{% fn %}` (footnote) shortcode instead.
 
 ### Output
 
 The shortcode generates a `<span class="mn-ref">` wrapper containing:
 - The anchor text (with dotted underline) or a superscript marker
 - A superscript number
-- The note content in a `<span class="mn-note">`
+- The note content in a `<span class="mn-note">` with the number positioned in the left gutter
 
-On desktop, CSS positions the note in the right margin. On mobile, notes are hidden by default and toggle on tap.
+On desktop, CSS positions the note in the right margin with the number projecting left into the gutter between main text and margin. On mobile, notes are hidden by default and toggle on tap.
 
 ---
 
@@ -153,6 +156,8 @@ First observation{% mn %}Quick margin note.{% endmn %} and second observation{% 
 The shortcode generates:
 - A superscript link in the text pointing to the footnote
 - The footnote content is stored in `page._footnotes` and rendered by the template at the bottom of the article
+- Each footnote is displayed with its number projecting into the left gutter (matching margin note styling)
+- A back-reference link (↩) appears inline at the end of the footnote content
 
 ### Numbering
 
@@ -163,6 +168,17 @@ Footnotes share the counter with margin notes, so if you have:
 - Margin note (becomes #4)
 
 The numbering stays sequential throughout the document.
+
+### Nested Content
+
+Footnotes support complex nested content including:
+- Multiple paragraphs
+- Bulleted lists (`<ul>`)
+- Numbered lists (`<ol>`)
+- Blockquotes
+- Code blocks
+
+Nested lists within footnotes will display with standard bullet points or numbers, not with the custom footnote numbering.
 
 ---
 
@@ -392,4 +408,21 @@ All shortcode content is processed through MarkdownIt with:
 
 ---
 
-*Last updated: 2026-01-05*
+## CSS Styling Notes
+
+### Margin Note Formatting
+
+- **Number positioning**: The note number is positioned absolutely to the left, projecting into the gutter between main text and margin notes
+- **Text alignment**: The first line of note text begins at the left edge of the margin column, creating a clean hanging indent effect
+- **Font inheritance**: All margin note elements explicitly set `font-style: normal` to prevent inheriting italic formatting from parent elements
+
+### Footnote Formatting
+
+- **Custom numbering**: Footnotes use CSS counters instead of browser-default list numbering
+- **Consistent styling**: Numbers use the same styling as margin notes (color, font, positioning)
+- **Back-reference positioning**: The ↩ symbol is inserted before the last closing HTML tag in the footnote content, ensuring it appears inline at the end
+- **Nested lists**: Child selector (`>`) ensures custom numbering only applies to direct children, not nested list items
+
+---
+
+*Last updated: 2026-01-06*

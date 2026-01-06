@@ -299,6 +299,7 @@ i:lang(ko) {
 	text-decoration-thickness: 1px;
 	text-underline-offset: 0.15em;
 	cursor: pointer;
+	font-style: normal; /* Don't inherit italic from parent */
 }
 .mn-anchor:hover,
 .mn-anchor:focus {
@@ -319,6 +320,7 @@ i:lang(ko) {
 	line-height: 0;
 	margin-left: 0.1em;
 	text-decoration: none;
+	font-style: normal; /* Don't inherit italic from parent */
 }
 
 .mn-marker,
@@ -365,13 +367,18 @@ sup.fn-ref a {
 	font-size: 0.85rem;
 	line-height: 1.5;
 	color: var(--ink-2);
+	font-style: normal; /* Don't inherit italic from parent */
+	position: relative;
+	padding-left: 1.5em; /* Space for the number */
 }
 .mn-note-number {
 	font-family: var(--font-display);
 	font-weight: 600;
 	color: var(--vermillion);
 	font-size: 0.9em;
-	margin-right: 0.25em;
+	position: absolute;
+	left: 0;
+	margin-right: 0;
 }
 .mn-note p {
 	margin: 0 0 0.5em;
@@ -443,12 +450,49 @@ sup.fn-ref a {
 .footnotes-list {
 	padding: 0;
 	list-style: none;
-	font-size: 0.9rem;
+	font-family: var(--font-mn);
+	font-size: 0.85rem;
 	line-height: 1.6;
 	color: var(--ink-2);
+	counter-reset: footnote;
 }
-.footnotes-list li {
+.footnotes-list > li {
 	margin-bottom: 1em;
+	position: relative;
+	padding-left: 1.5em; /* Space for the number */
+	counter-increment: footnote;
+}
+.footnotes-list > li::before {
+	content: counter(footnote) ".";
+	font-family: var(--font-display);
+	font-weight: 600;
+	color: var(--vermillion);
+	position: absolute;
+	left: 0;
+}
+/* Nested lists within footnotes should display normally */
+.footnotes-list li ul,
+.footnotes-list li ol {
+	margin-top: 0.5em;
+	padding-left: 1.5em;
+}
+.footnotes-list li ul li,
+.footnotes-list li ol li {
+	padding-left: 0;
+}
+.footnotes-list li ul {
+	list-style: disc;
+}
+.footnotes-list li ol {
+	list-style: decimal;
+}
+.footnote-backref {
+	margin-left: 0.25em;
+	text-decoration: none;
+	font-size: 0.9em;
+}
+.footnote-backref::before {
+	content: "\00A0\00A0"; /* Two non-breaking spaces */
 }
 
 /* ==========================================================================

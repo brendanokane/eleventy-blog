@@ -192,6 +192,18 @@ export default async function (eleventyConfig) {
 		blueskyComments.getCommentCount,
 	);
 
+	// Filter to insert backref link before the last closing tag in footnote content
+	eleventyConfig.addFilter("insertBackref", function (content, backrefHtml) {
+		// Find the last closing tag (</p>, </li>, </blockquote>, etc.)
+		const lastClosingTagMatch = content.match(/(<\/[^>]+>)(?![\s\S]*<\/)/);
+		if (lastClosingTagMatch) {
+			const pos = lastClosingTagMatch.index;
+			return content.slice(0, pos) + backrefHtml + content.slice(pos);
+		}
+		// Fallback: just append if no closing tag found
+		return content + backrefHtml;
+	});
+
 	eleventyConfig.addPlugin(IdAttributePlugin, {
 		// by default we use Eleventy’s built-in `slugify` filter:
 		// slugify: eleventyConfig.getFilter("slugify"),

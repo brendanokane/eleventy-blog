@@ -1,39 +1,27 @@
 ---
-title: "What's Good?"
+title: What's Good?
 date: 2022-08-03
 draft: true
-bluesky_thread:
+bluesky_thread: null
+post_image: assets/image-bb106374ccca.jpeg
+post_image_alt: Woodblock-printed 'Jinguyuan' edition of Jin Shengtan's commentary on 'The Romance of the Western Chamber,' open to the relevant pages
 ---
-
+- 
 # What's Good?
 
-[![A scan of the Jinguyuan edition of Jin Shengtan's version of The Romance of the Western Chamber, open to the pages translated here](/whats-good/assets/image-bb106374ccca.jpeg)](https://substackcdn.com/image/fetch/$s_!VmLi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb9cca365-1abb-4ee8-bcde-4447efd0b32f_2620x2048.jpeg) Jin Shengtan's introduction to "33 Nice Things," 清書坊金谷園刊本
+{% figure "/what-s-good/assets/image-bb106374ccca.jpeg", "A scan of the Jinguyuan edition of Jin Shengtan's version of The Romance of the Western Chamber, open to the pages translated here", "center" %}Jin Shengtan's introduction to '33 Nice Things,' 清書坊金谷園刊本{% endfigure %}
 
 So you're reading _The Romance of the Western Chamber_ 西廂記, as one does, and you're reading it in an old woodblock edition, because obviously, and you're hooked. Young Student Zhang has driven away the Flying Tiger and his bandits, and for a moment it looks like there'll be nothing more to stand in the way of his marriage to the well-bred Cui Yingying – but Yingying's mother is having second thoughts about the promise she made. The young lovers have been relying on Yingying's sassy maidservant Hongniang to pass messages, but Yingying's mother is onto them.
 
-Is all hope lost? (No.) Will true love prevail? (Yes.) But before you can find out what happens next, you’re confronted with a chatty little digression from the commentator: a list of delightful things, each ending with the words 不亦快哉 _bù yì kuài zāi_ — “Is _that_ not a delight?” <sup class="mn-marker" data-mn-id="mn-1" aria-controls="mn-1" aria-expanded="false" title="Toggle note">※</sup>
-<aside class="mn-note" id="mn-1" data-mn-id="mn-1" hidden>
-
-[Lin Yutang's translation](https://web.archive.org/web/20220202205924/https://artoflivingguide.org/happiness/thirty-three-happy-moments), the only other one I know of in English, consistently renders _bù yì kuài zāi_ as “Ah, is this not happiness?” while [Pierre Ryckmans' French translation](https://web.archive.org/web/20220704142950/https://www.letemps.ch/opinions/trentetrois-delices-jin-shengtan) goes with “Ah, quel délice!” throughout.
-
-I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.
-
-</aside>
-
-Stories from a Burning House is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
-
+Is all hope lost? (No.) Will true love prevail? (Yes.) But before you can find out what happens next, you’re confronted with a chatty little digression from the commentator: a list of delightful things, each ending with the words 不亦快哉 _bù yì kuài zāi_ — {% mn "Is that not a delight?" %}Or: [Lin Yutang's translation](https://web.archive.org/web/20220202205924/https://artoflivingguide.org/happiness/thirty-three-happy-moments), the only other one I know of in English, consistently renders _bù yì kuài zāi_ as “Ah, is this not happiness?” while [Pierre Ryckmans' French translation](https://web.archive.org/web/20220704142950/https://www.letemps.ch/opinions/trentetrois-delices-jin-shengtan) goes with “Ah, quel délice!” throughout.
+I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.{% endmn %} 
 This is Jin Shengtan's 金聖嘆 "Thirty-three Nice Things" 不亦快哉三十三則, a digression so powerful that it broke free of its original context to become widely known and beloved in its own right, even among the sort of people who do not habitually read pre-20th century editions of 17th-century commentaries on 13th-century updates of 12th-century dramatizations of 9th-century romantic fiction. I thought I might cheer myself up by translating it, and when I was done I thought my friends might enjoy it. I hope you will too.
 
 * * *
 
 昔與斵山同客共住，霖雨十日，對床無聊，因約賭說快事，以破積悶。至今相距既二十年，亦都不自記憶。偶因讀《西廂》至“拷豔”一篇，見紅娘口中作如許快文，恨當時何不檢取共讀，何積悶之不破。於是反自追索，猶憶得數則，附之左方。但不能辨何句是斵山語，何句是聖嘆語矣。
 
-_Once, when Zhuoshan_ <sup class="mn-marker" data-mn-id="mn-2" aria-controls="mn-2" aria-expanded="false" title="Toggle note">※</sup> _and I were lodging together, a ten-day stretch of rain left us stuck indoors with nothing to do but stare at the furniture, and we decided to go back and forth listing happy things to break up the boredom_. _This was twenty years ago, and I’d forgotten all about it until I read this section of_ The Romance of the Western Chamber _, “The Questioning,” saw the wonderful lines the author gives Hongniang, and found myself wishing Zhuoshan and I had thought to read the play together. Boredom wouldn’t have stood a chance!_
-<aside class="mn-note" id="mn-2" data-mn-id="mn-2" hidden>
-
-‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on _The Romance of the Western Chamber_ to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “ _Jin Shengtan nianpu_ 金聖嘆年譜” in Xu, _Wan Ming qujia nianpu_ 晚明曲家年譜, 1.735.
-
-</aside>
+_Once, when {% mn "Zhuoshan" %}‘Zhuoshan’ is probably Wang Han 王瀚. Xu Shuofang 徐朔方 dates Jin’s commentary on _The Romance of the Western Chamber_ to 1657 or slightly later, which would put Jin and Wang’s original list of nice things around 1637; see “ _Jin Shengtan nianpu_ 金聖嘆年譜” in Xu, _Wan Ming qujia nianpu_ 晚明曲家年譜, 1.735.{% endmn %} and I were lodging together, a ten-day stretch of rain left us stuck indoors with nothing to do but stare at the furniture, and we decided to go back and forth listing happy things to break up the boredom_. _This was twenty years ago, and I’d forgotten all about it until I read this section of_ The Romance of the Western Chamber _, “The Questioning,” saw the wonderful lines the author gives Hongniang, and found myself wishing Zhuoshan and I had thought to read the play together. Boredom wouldn’t have stood a chance!_
 
 _After searching my memory I was able to recover a few of the things we said, which I’ve listed below, but I can’t tell which lines are Zhuoshan’s and which are mine._
 
@@ -51,12 +39,7 @@ And you’re just about to throw up your hands when all of a sudden the sky goes
 
 十年別友，抵暮忽至。開門一揖畢，不及問其船來陸來，並不及命其坐床坐榻，便自疾趨入內，卑辭叩內子；“君豈有斗酒如東坡婦乎？”內子欣然拔金簪相付。計之可作三日供也 —— 不亦快哉！
 
-A friend I haven't seen in ten years shows up one evening. I greet him and immediately dash back inside, even before asking how he got here or inviting him to have a seat, to ask my wife: "I don't suppose you could make like Su Dongpo's old lady <sup class="mn-marker" data-mn-id="mn-3" aria-controls="mn-3" aria-expanded="false" title="Toggle note">※</sup> and bring us a dipperful of wine?" And she cheerfully pulls the gold pin out of her hair and we figure it'll cover three days' worth of drinking —
-<aside class="mn-note" id="mn-3" data-mn-id="mn-3" hidden>
-
-In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需)
-
-</aside>
+A friend I haven't seen in ten years shows up one evening. I greet him and immediately dash back inside, even before asking how he got here or inviting him to have a seat, to ask my wife: "I don't suppose you could make {% mn "like Su Dongpo's old lady" %}In the Song-dynasty scholar-official Su Dongpo’s 蘇東坡 ‘Second Rhapsody on the Red Cliff’ (後赤壁賦), Su laments that he has no wine to offer his visitors, but his wife reveals that she’s kept a bit of wine stored away for just such an occasion: (我有鬥酒，藏之久矣，以待子不時之需){% endmn %} and bring us a dipperful of wine?" And she cheerfully pulls the gold pin out of her hair and we figure it'll cover three days' worth of drinking —
 
 — if _that_’s not nice, what is?
 
@@ -216,15 +199,9 @@ A hard-luck case comes to borrow money, but he can’t bring himself to say so a
 
 坐小船，遇利風，苦不得張帆，一快其心。忽逢舟艑舸，疾行如風。試伸挽鉤，聊復挽之。不意挽之便著，因取纜，纜向其尾，口中高吟老杜“青惜峰巒過，黃知橘柚來”之句，極大笑樂 —— 不亦快哉！
 
-I’m on a little boat when a favorable wind rises, and me without a sail to catch it. A big junk passes, moving quick as the wind, and since I’ve nothing better to do I try throwing my grapnel at it a few times. It catches, to my surprise, and the cable drags me along in the larger boat’s wake, singing Du Fu’s “Unmooring” <sup class="mn-marker" data-mn-id="mn-4" aria-controls="mn-4" aria-expanded="false" title="Toggle note">※</sup> at the top of my lungs and laughing for joy —
-<aside class="mn-note" id="mn-4" data-mn-id="mn-4" hidden>
-
-Not gonna lie, I really wanted to translate the title as " [I'm On A Boat](https://www.youtube.com/watch?v=avaSdC0QOUM)."
-
-</aside>
+I’m on a little boat when a favorable wind rises, and me without a sail to catch it. A big junk passes, moving quick as the wind, and since I’ve nothing better to do I try throwing my grapnel at it a few times. It catches, to my surprise, and the cable drags me along in the larger boat’s wake, singing Du Fu’s {% mn "“Unmooring”" %}Not gonna lie, I really wanted to translate the title as " [I'm On A Boat](https://www.youtube.com/watch?v=avaSdC0QOUM)."{% endmn %} at the top of my lungs and laughing for joy —
 
 > Green: too soon the peaks and ridges pass.
->
 > (The orange is the citrus trees ahead.)
 
 — talk about happiness!
@@ -301,17 +278,10 @@ Paying off the last of a debt —
 
 讀《虯髯客傳》，不亦快哉！
 
-Reading _The Stranger with the Curly Beard_ <sup class="mn-marker" data-mn-id="mn-5" aria-controls="mn-5" aria-expanded="false" title="Toggle note">※</sup> —
-<aside class="mn-note" id="mn-5" data-mn-id="mn-5" hidden>
-
-Like Yuan Zhen’s 元稹 _The Tale of Yingying_ 鶯鶯傳, which _Western Chamber_ is based on, _The Stranger with the Curly Beard_ is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's _Tang Dynasty Tales: A Guided Reader_, 189 ff.
-
-</aside>
+Reading _The Stranger with the Curly Beard_ —{% mn %}Like Yuan Zhen’s 元稹 _The Tale of Yingying_ 鶯鶯傳, which _Western Chamber_ is based on, _The Stranger with the Curly Beard_ is one of the major works of Tang-dynasty fiction. For the interested, Wang Jing has an exhaustively annotated translation and a very helpful Translator's Note in Bill Nienhauser's _Tang Dynasty Tales: A Guided Reader_, 189 ff.{% endmn %}
 
 * * *
 
 We'll leave Jin Shengtan here for now, reading his books and remembering happier times. The next time we check in with him it'll be almost a quarter century after his conversation with Zhuoshan. We'll talk about snappy retorts, vegetarian ham recipes, official corruption, the transfer of New World food crops, and one last ‘ _bù yì kuài zāi_.’ There'll be some ground to cover between now and then, and probably a lot of tangents, detours, and wild goose chases — but hopefully it'll be worth the going.
 
 Have a nice one. See you next time.
-
-If you enjoyed this and you’d like more, you can sign up for automatic e-mail updates.
