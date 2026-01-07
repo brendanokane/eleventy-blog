@@ -106,12 +106,13 @@
 					return;
 				}
 
+				var trigger = e.target.closest('.mn-marker, .mn-anchor-text, .fn-marker, .fn-anchor');
+				if (!trigger) return;
+
+				// Only prevent default if we're actually activating a trigger
 				if (e.type === 'keydown') {
 					e.preventDefault(); // Prevent space from scrolling page
 				}
-
-				var trigger = e.target.closest('.mn-marker, .fn-marker, .fn-anchor');
-				if (!trigger) return;
 
 				// Only toggle on mobile
 				if (window.innerWidth >= MOBILE_BREAKPOINT) return;
@@ -169,33 +170,23 @@
 
 			// Desktop: position notes to align with their anchors
 			function positionNotes() {
-				// Position margin notes
+				// Position margin notes - use marker for alignment, not anchor text
 				document.querySelectorAll('.post-body .mn-ref').forEach(function(ref) {
 					var note = ref.querySelector('.mn-note');
-					var anchor = ref.querySelector('.mn-anchor-text, .mn-marker');
-					if (!note || !anchor) return;
+					var marker = ref.querySelector('.mn-marker');
+					if (!note || !marker) return;
 
-					var anchorRect = anchor.getBoundingClientRect();
+					var markerRect = marker.getBoundingClientRect();
 					var postBody = ref.closest('.post-body');
 					if(!postBody) return;
 
 					var bodyRect = postBody.getBoundingClientRect();
-					var offset = anchorRect.top - bodyRect.top;
+					var offset = markerRect.top - bodyRect.top;
 
 					note.style.top = offset + 'px';
 				});
 
-				// Position figure captions in margin
-				document.querySelectorAll('figure.fig-margin').forEach(function(fig) {
-					var img = fig.querySelector('img');
-					var caption = fig.querySelector('.fig-caption-margin');
-					if(!img || !caption) return;
-
-					var imgRect = img.getBoundingClientRect();
-					var figRect = fig.getBoundingClientRect();
-					var offset = imgRect.top - figRect.top;
-					caption.style.top = offset + 'px';
-				});
+				// Figure captions positioned via CSS (bottom-right corner)
 			}
 
 			// Clean up mobile state when transitioning to desktop

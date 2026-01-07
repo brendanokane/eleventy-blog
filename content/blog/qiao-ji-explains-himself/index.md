@@ -15,7 +15,16 @@ I [mentioned](https://www.burninghou.se/p/in-defense-of-the-relatively-low-quali
 > 立身則小學，修身則大學，
 > 智和能都不及鴨青鈔。
 
-> There are no readers at the top —
+> There are {% mn "no readers at the top —" %}There’s another poem in the _Quan Yuan sanqu_ that shares the same opening to each line, which I won’t attempt to reflect in translation. Here’s the start:
+
+> 不讀書有權，不識字有錢，
+> 不曉事倒有人誇薦。
+
+> The powerful don’t read,
+> The illiterate are loaded,
+> And only fuck-ups get promoted.
+
+When you see a doublet like this, what you’re looking at is an invitation, received a few centuries too late, to a boozy party where friends shouted lines out over cups of wine for other friends to complete, rhyme with, or outdo. I translate to keep the party going.{% endmn %}
 > Illiterate? You'll benefit. And praise
 > Is the prize for idiocy nowadays.
 > For Heaven won't discriminate
@@ -29,16 +38,7 @@ I [mentioned](https://www.burninghou.se/p/in-defense-of-the-relatively-low-quali
 > The learned and the competent
 > Are worth less than a copper cent.
 >
-> _Anonymous_{% mn %}There’s another poem in the _Quan Yuan sanqu_ that shares the same opening to each line, which I won’t attempt to reflect in translation. Here’s the start:
-
-> 不讀書有權，不識字有錢，
-> 不曉事倒有人誇薦。
-
-> The powerful don’t read,
-> The illiterate are loaded,
-> And only fuck-ups get promoted.
-
-When you see a doublet like this, what you’re looking at is an invitation, received more than 700 years too late, to a boozy party where friends shouted lines out over cups of wine for other friends to complete, rhyme with, or outdo. I translate to keep the party going.{% endmn %}
+> _Anonymous_
 
 But having nothing left to lose is just another way of describing freedom, as Kris Kristofferson said if you apply the symmetric property of equality. Here’s the poet and playwright Qiao Ji 喬吉 (1280-1345) to close out 2023 with one of my all-time favorite articulations of the joy and goodwill universally felt by all humans, in all places and times, upon leaving a PhD program:
 
@@ -59,26 +59,26 @@ But having nothing left to lose is just another way of describing freedom, as Kr
 > I won’t be up for celebration
 > 	in Biographies of Worthy Men.
 > But I play the Sage of Drinking now and then —
->        and, here and there, find inspiration
->                for poetic Zen.
+>   and, here and there, find inspiration
+>      for poetic Zen.
 >
 > I’m a demimonde valedictorian,
->        transcendently boozy
->                and far past reformation,
+>    transcendently boozy
+>       and far past reformation,
 > Laughingly playing Imperial Historian
->         as I judge the world
->                  for praise or condemnation.
+>    as I judge the world
+>       for praise or condemnation.
 >
 > I   r o a m,
 > My friends and peers —
 > Jotting comments on the wind my only occupation,
->        footnoting the moonlight for my poems
->                these forty years.
+>    footnoting the moonlight for my poems
+>       these forty years.
 > ```
 
 * * *
 
-{% figure "/qiao-ji-explains-himself/assets/7e5eb4fe-088a-4fd1-98e4-40605feca89d.jpg", "", "center" %}Detail from [“Fishermen, after Jing Hao” 仿荊浩 漁父圖](https://asia.si.edu/explore-art-culture/collections/search/edanmdm:fsg_F1937.12/), collection of the Smithsonian Museum Formerly Known As Sackler.{% endfigure %}
+{% figure "/qiao-ji-explains-himself/assets/7e5eb4fe-088a-4fd1-98e4-40605feca89d.jpg", "" %}Detail from [“Fishermen, after Jing Hao” 仿荊浩 漁父圖](https://asia.si.edu/explore-art-culture/collections/search/edanmdm:fsg_F1937.12/), collection of the Smithsonian Museum Formerly Known As Sackler.{% endfigure %}
 
 That’s it; that’s the poem I wanted to share, and well-adjusted people can stop reading here. But I started talking about _sanqu_ in the first place partly because I wanted to talk about translation — some people have expressed an interest in hearing more about my translation process; consider your bluff called.
 
@@ -127,13 +127,12 @@ And {% mn "Owen," %}_An Anthology of Chinese Literature_, 735.{% endmn %} whose 
 >       my own kind of Royal Historian.
 > After forty years I still endure,
 > of life's finer pleasures,
->      connoisseur.
+>       connoisseur.
 > ```
 
 Crump reads the “Drunken Sage of Lake and Stream” and “Graduate of Sunset Sky” as referring to Qiao Ji’s friends rather than the poet himself. I don’t think this is a _good_ reading, but it’s not an indefensible one, and I like his amplification (“ascertained…”) of “Imperial Historian.” Owen reads 處處 as “everywhere” rather than “here and there,” but that’s a judgment call, as is “beer” versus “wine” for 酒. I think he misses the point with “Royal Historian,” or at least doesn’t make it as clear to his readers as he could, but on the whole I’d say all three versions are more or less in agreement so far.
 
 The last two lines are where it all starts to break down.
-
 Crump and I both expand, while Owen keeps to two lines, but the differences start with 留連 _liúlián_, a word for which the _Hanyu da cidian_ includes the definitions “to be at a standstill,” “to wander,” “to delay,” “to linger (because unwilling to leave),” “to continue or drag out,” “to urge a guest to stay,” and “durian, if you write it wrong.”
 
 “Untranslatable” is not a good word; it’s for lazy translators and {% mn "laypeople who have never really thought about language." %}“‘Relationships’ is an untranslatable word meaning _guanx_—” —— _BZZZZZT_. You translated it!{% endmn %} But there _are_ words — way more than you’d think — for which a “literal translation” is a logical impossibility. The translator can’t shirk their responsibility here: there is no way to translate this word without making an interpretive choice. (Try to imagine any translator seriously entertaining the possibility of “durian.”)

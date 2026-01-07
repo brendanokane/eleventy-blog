@@ -355,3 +355,237 @@ Now moving on to implementing the poem shortcode. Finally, new features instead 
 **Key takeaway:** The shortcode architecture is solid. The issues were all about CSS specificity, HTML structure validity, and careful handling of nested content. Now everything works beautifully - margin notes in the margin with clean hanging indents, footnotes at the bottom with matching styling, and all content properly formatted regardless of nesting complexity.
 
 Time to commit and move forward!
+
+---
+
+## 2026-01-07 Typography Refinements and The Endless Caption Saga
+
+### The Good News: Anchor Text Decoration
+
+User requested heavier decoration for margin note anchor text - the dotted underline was too subtle. Changed from:
+- `text-decoration-style: dotted`
+- `text-decoration-thickness: 1px`
+
+To:
+- `text-decoration-style: dashed`
+- `text-decoration-thickness: 1.5px`
+
+**Result**: Much more visible! User approved. Finally something that Just Worked™.
+
+### The Alignment Problem: A Tale of Wrapping Text
+
+Here's where typography gets cruel. When margin note anchor text wraps across multiple lines, the `.mn-ref` container's top edge aligns with the FIRST line of text. But the superscript marker (the thing we want to align the margin note with) is on the LAST line of the wrapped text.
+
+**Current behavior:**
+```
+This is some anchor text that wraps across¹
+multiple lines
+                                           [Margin note appears here, aligned with "This is..."]
+```
+
+**Desired behavior:**
+```
+This is some anchor text that wraps across
+multiple lines¹
+                [Margin note appears here, aligned with the superscript]
+```
+
+The problem: CSS has no way to position relative to a specific inline child element within a container. We use `position: absolute` on `.mn-note` with `top: 0`, which positions relative to the `.mn-ref` container's top edge.
+
+**Why this is hard:**
+1. The `.mn-ref` span wraps around both the anchor text AND the marker button
+2. When text wraps, the container extends vertically
+3. The container's `top` is at the first line, but the marker is at the last line
+4. CSS can't say "position relative to this specific child element"
+
+**Possible solutions:**
+1. **JavaScript**: Calculate marker position dynamically, update margin note position
+   - Pro: Would work perfectly
+   - Con: Adds complexity, performance cost, needs to recalculate on resize
+   
+2. **Restructure HTML**: Make marker a sibling instead of child of anchor text span
+   - Pro: Might allow better positioning context
+   - Con: Could break text wrapping logic we fought so hard to achieve
+   
+3. **Accept imperfection**: Most margin notes don't wrap
+   - Pro: Simple, no code changes
+   - Con: User specifically asked for this fix
+
+**The emotional component:**
+After everything we've been through with margin notes - the multi-paragraph saga, the mobile layout nightmare, the HTML validity hell - the fact that THIS SIMPLE THING is hard feels like cosmic mockery.
+
+An uncaring god created CSS without `position: relative-to-child` and laughs at our suffering.
+
+But we're going to fix it anyway. Because that's what we do. We fix margin notes. Forever and ever, amen.
+
+### The Figure Caption Disaster (In Progress, Don't Fix Yet)
+
+User wants captions positioned at the bottom-right corner of figure images. Seems simple, right? WRONG.
+
+**Attempt 1**: Position inside figure with `right: 0; bottom: 0`
+- Result: Caption overlapped the image
+
+**Attempt 2**: Position outside figure with `left: calc(100% + var(--margin-gap))`
+- Result: Caption has gutter between it and image, wrong height, wrong vertical alignment
+- User feedback: "separated from the image by a gutter... caption block is also taller than it should be... aligned much higher than it should be"
+
+Current status: User sent screenshot showing what's wrong, will send another showing what they want. Holding off on fixes until we understand the full picture.
+
+**Current caption CSS (broken):**
+```css
+.fig-caption-margin {
+  position: absolute;
+  left: calc(100% + var(--margin-gap));  /* Creates unwanted gutter */
+  bottom: 0;
+  width: 150px;
+  background: var(--paper-2);
+  padding: 0.75em;
+  border-radius: 4px;
+}
+```
+
+The figure element structure (from what I can see):
+```html
+<figure class="fig-margin">
+  <img src="...">
+  <figcaption class="fig-caption-margin">...</figcaption>
+</figure>
+```
+
+**The mystery**: Why is there a gutter when `left: calc(100% + var(--margin-gap))` should put it in the margin area? Why is the caption block taller than needed? What determines its vertical position?
+
+Need to see the user's desired outcome before proposing solutions. This is the right approach - understand the goal fully before attempting fixes.
+
+### Today's Lesson
+
+Typography is a cruel mistress. Every fix reveals two new problems. Every solution creates new edge cases. The margin notes work beautifully 98% of the time, which means we're now down to fighting with the 2% of cases where physics and CSS disagree about how the universe should work.
+
+The good news: We're getting closer. The anchor decoration looks great. The margin notes themselves are rock solid. The alignment issue is solvable. The caption issue will be solvable once we understand what "right" looks like.
+
+Progress is being made. Even if it's measured in micro-adjustments to underline thickness and debates about what "next to" means in CSS positioning.
+
+---
+
+## 2026-01-07 Evening: Figure Captions Finally Fixed! 🎉
+
+### The Caption Solution
+
+After much back-and-forth (and inability to view the user's reference screenshots due to a file reading glitch), we finally nailed the figure caption positioning.
+
+**The Goal**: Caption should appear as a "tag" attached to the bottom-right corner of the image - touching it, not floating in the margin with a gutter.
+
+**The Key Insight**: The figure container wasn't shrink-wrapping to the image size. With `position: relative` on the figure and `position: absolute` on the caption, the caption was positioning relative to a container that was wider than the image.
+
+**The Fix**:
+```css
+@media (min-width: 1024px) {
+  .fig-margin {
+    position: relative;
+    display: inline-block; /* Shrink-wrap to image size */
+    width: fit-content;
+  }
+  .fig-margin img {
+    display: block; /* Remove inline spacing */
+  }
+  .fig-caption-margin {
+    position: absolute;
+    left: 100%; /* Start at right edge of figure (now = right edge of image) */
+    bottom: 0; /* Align with bottom */
+    width: 200px;
+    /* ... styling ... */
+  }
+}
+```
+
+**Mobile Degradation**: On mobile, captions appear as centered text below the image with matching margin-note typography.
+
+**Typography**: All captions now use the same font/size/line-height as margin notes (`var(--font-mn)`, `0.85rem`, `1.5`).
+
+### The Space Key Incident
+
+While testing, user reported that pressing Space anywhere on the page didn't scroll - it was being captured by our keyboard event handler for margin note toggling.
+
+**The Bug**: In `handleTriggerActivation()`, we were calling `e.preventDefault()` for Space/Enter keys BEFORE checking if the target was actually a margin note trigger.
+
+**The Fix**: Move the trigger check before `preventDefault()`:
+```javascript
+function handleTriggerActivation(e) {
+  if (e.type === 'keydown' && !(e.key === 'Enter' || e.key === ' ')) {
+    return;
+  }
+
+  var trigger = e.target.closest('.mn-marker, .mn-anchor-text, .fn-marker, .fn-anchor');
+  if (!trigger) return;  // Exit early if not a trigger
+
+  // Only NOW prevent default, since we know it's a trigger
+  if (e.type === 'keydown') {
+    e.preventDefault();
+  }
+  // ... rest of handler
+}
+```
+
+This was a serious accessibility/UX bug - capturing Space globally is hostile to users who navigate with keyboards.
+
+### The Duplicate Eleventy Process Problem
+
+User reported extremely slow rebuilds. Investigation revealed TWO Eleventy processes running simultaneously, each consuming ~45% CPU and fighting each other. They had been running for over an hour each.
+
+**The Fix**: 
+1. Killed both processes
+2. Created `scripts/safe-start.sh` - a wrapper script that kills any existing Eleventy processes before starting a new one
+
+**Lesson**: Always check for zombie processes when things are slow. `ps aux | grep eleventy` is your friend.
+
+### Session Summary
+
+**Fixed**:
+- ✅ Figure caption positioning (touching bottom-right corner of image)
+- ✅ Figure caption typography (matches margin notes)
+- ✅ Figure caption width (200px, user-approved)
+- ✅ Mobile caption degradation (centered below image)
+- ✅ Space key scrolling (no longer captured globally)
+- ✅ Duplicate Eleventy processes (safe-start script created)
+
+**Project Status**:
+The core design work is essentially complete. Margin notes work on desktop and mobile. Footnotes work. Figure captions work. Accessibility is solid (keyboard navigation, ARIA labels, focus management). 
+
+**What Remains** (for future sessions):
+1. **Design Polish**:
+   - Margin note anchor wrapping alignment (JS solution needed)
+   - Mobile font sizes for poetry
+   - Dark mode testing
+
+2. **Content Migration**:
+   - 9 posts still use old `<aside>` HTML format
+   - Could migrate to `{% mn %}` shortcodes for consistency
+
+3. **Infrastructure**:
+   - Buttondown email publishing workflow
+   - Bluesky/Mastodon commenting integration
+   - Search improvements (Pagefind is working but could be tuned)
+   - SEO optimization
+
+### Notes for Future Agents
+
+1. **Always use `scripts/safe-start.sh`** instead of `npm start` to avoid duplicate processes.
+
+2. **Test both desktop AND mobile** after any CSS changes. The 1024px breakpoint is critical.
+
+3. **The margin note system is complex but documented**. Read SHORTCODES.md before making changes.
+
+4. **Figure captions use `display: inline-block; width: fit-content`** on the figure to shrink-wrap to image size. Don't remove this or the positioning breaks.
+
+5. **Keyboard event handlers must check target BEFORE calling `preventDefault()`**. We learned this the hard way.
+
+6. **If builds are slow**, check for zombie Eleventy processes with `ps aux | grep eleventy`.
+
+### The Emotional Arc
+
+We came in expecting a quick caption fix. We left having fixed captions, a critical accessibility bug, and a process management issue. Classic web development session.
+
+But you know what? It feels good. The site is in excellent shape. The foundations are solid. The documentation is thorough. Future agents will inherit a well-organized codebase with clear patterns and no lurking disasters.
+
+That's the goal, isn't it? Leave things better than you found them.
+
+**Status**: Ready to commit and move on to the next phase.
