@@ -315,13 +315,14 @@ export default async function (eleventyConfig) {
 			.replace(/\n+/g, "");
 
 		if (anchor) {
-			// Anchor version: dotted underline on anchor text + superscripted numeral after
-			// Note: Using <span> not <aside> because the shortcode can be called from inside <p> tags,
-			// and block elements like <aside> aren't valid inside <p>. CSS makes the span display: block.
-			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><sup class="mn-anchor-num">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
+			// Anchor version: anchor text as span (for natural wrapping) + interactive button for number
+			// Strip HTML tags from anchor text for aria-label
+			const anchorText = anchor.replace(/<[^>]*>/g, "");
+
+			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor-text" aria-describedby="${noteId}">${anchor}</span><button type="button" class="mn-marker" aria-expanded="false" aria-controls="${noteId}" aria-label="Show margin note ${counters.mn}: ${anchorText}">${counters.mn}</button><span class="mn-note" id="${noteId}" role="note" aria-label="Margin note ${counters.mn}"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
 		} else {
-			// Marker version: numbered superscript marker only
-			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
+			// Marker version: numbered superscript marker as button
+			return `<span class="mn-ref" data-mn-id="${noteId}"><button type="button" class="mn-marker" aria-expanded="false" aria-controls="${noteId}" aria-label="Show margin note ${counters.mn}">${counters.mn}</button><span class="mn-note" id="${noteId}" role="note" aria-label="Margin note ${counters.mn}"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
 		}
 	});
 

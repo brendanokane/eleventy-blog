@@ -30,7 +30,7 @@
 
 	--text-size: 1.375rem; /* 22px at 100% = 16px base */
 	--leading: 1.65;
-	--measure: 67ch;
+	--measure: 60ch;
 
 	/* Layout */
 	--page-pad: clamp(1rem, 3vw, 2rem);
@@ -68,6 +68,7 @@ html {
 body {
 	font-family: var(--font-body);
 	font-size: var(--text-size);
+	font-weight: 450; /* Slightly heavier than normal (400) for better readability */
 	line-height: var(--leading);
 	color: var(--ink);
 	background: var(--paper);
@@ -367,8 +368,7 @@ i:lang(ko) {
    ========================================================================== */
 
 /* Reset button elements to behave like inline text while maintaining interactivity */
-.mn-marker,
-.mn-anchor {
+.mn-marker {
 	/* Reset ALL button defaults */
 	all: unset;
 
@@ -376,8 +376,6 @@ i:lang(ko) {
 	cursor: pointer;
 
 	/* Base inline styles */
-	font-family: var(--font-display);
-	font-weight: 600;
 	color: var(--vermillion);
 	text-decoration: none;
 	font-style: normal; /* Don't inherit italic from parent */
@@ -386,27 +384,22 @@ i:lang(ko) {
 
 /* Marker-specific styling (superscript number) */
 .mn-marker {
+	font-family: inherit; /* Inherit from context: serif in main text, sans in margin */
+	font-weight: 600;
 	font-size: 0.75em;
 	vertical-align: super;
 	line-height: 1;
 	padding: 0 0.1em;
 }
 
-/* Anchor-specific styling (dotted underline) */
-.mn-anchor {
+/* Anchor text styling (not a button, just styled span for natural wrapping) */
+.mn-anchor-text {
+	color: var(--ink); /* Regular text color, not vermillion */
 	text-decoration: underline;
 	text-decoration-color: var(--vermillion);
 	text-decoration-style: dotted;
 	text-decoration-thickness: 1px;
 	text-underline-offset: 0.15em;
-}
-
-/* Anchor number (superscript inside button) */
-.mn-anchor .mn-anchor-num {
-	font-size: 0.75em;
-	vertical-align: super;
-	line-height: 1;
-	margin-left: 0.1em;
 }
 
 /* Footnote markers (still using <a> tags, not buttons yet) */
@@ -436,15 +429,13 @@ sup.fn-ref a {
 
 /* Hover states - change color to ink */
 .mn-marker:hover,
-.mn-anchor:hover,
 .fn-marker:hover,
 .fn-marker a:hover {
 	color: var(--ink) !important;
 }
 
 /* Focus states - high contrast outline + background for visibility */
-.mn-marker:focus,
-.mn-anchor:focus {
+.mn-marker:focus {
 	outline: 2px solid var(--vermillion);
 	outline-offset: 2px;
 	border-radius: 2px;
