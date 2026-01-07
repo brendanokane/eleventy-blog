@@ -11,7 +11,8 @@
  *   {% endfor %}
  */
 
-const BLUESKY_API = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread';
+const BLUESKY_API =
+	"https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread";
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 // Simple in-memory cache
@@ -27,7 +28,7 @@ function extractPostUri(url) {
 	if (!url) return null;
 
 	// Handle AT Protocol URIs directly
-	if (url.startsWith('at://')) {
+	if (url.startsWith("at://")) {
 		return url;
 	}
 
@@ -72,7 +73,9 @@ async function fetchThread(uri, options = {}) {
 		const response = await fetch(`${BLUESKY_API}?${params}`);
 
 		if (!response.ok) {
-			console.warn(`Bluesky API error: ${response.status} ${response.statusText}`);
+			console.warn(
+				`Bluesky API error: ${response.status} ${response.statusText}`,
+			);
 			return null;
 		}
 
@@ -119,7 +122,9 @@ function parseComments(thread) {
 				avatar: post.author.avatar,
 				did: post.author.did,
 			},
-			text: post.record?.text || '',
+			text:
+				post.record?.text ||
+				(post.embed ? "[Image or media - view on Bluesky]" : ""),
 			createdAt: post.record?.createdAt,
 			// Human-readable timestamp
 			timestamp: new Date(post.record?.createdAt).toISOString(),
@@ -130,7 +135,7 @@ function parseComments(thread) {
 			// Thread depth for indentation
 			depth,
 			// Link to the post on Bluesky
-			url: `https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`,
+			url: `https://bsky.app/profile/${post.author.handle}/post/${post.uri.split("/").pop()}`,
 		};
 
 		comments.push(comment);
@@ -171,7 +176,7 @@ function formatRelativeTime(timestamp) {
 	const month = 30 * day;
 	const year = 365 * day;
 
-	if (diff < minute) return 'just now';
+	if (diff < minute) return "just now";
 	if (diff < hour) return `${Math.floor(diff / minute)}m ago`;
 	if (diff < day) return `${Math.floor(diff / hour)}h ago`;
 	if (diff < week) return `${Math.floor(diff / day)}d ago`;
@@ -202,7 +207,7 @@ export async function getBlueskyComments(url, options = {}) {
 	const comments = parseComments(thread);
 
 	// Add formatted timestamps
-	return comments.map(comment => ({
+	return comments.map((comment) => ({
 		...comment,
 		relativeTime: formatRelativeTime(comment.timestamp),
 	}));

@@ -120,7 +120,7 @@
             displayName: post.author.displayName || post.author.handle,
             avatar: post.author.avatar,
           },
-          text: post.record?.text || '',
+          text: post.record?.text || (post.embed ? '[Image or media - view on Bluesky]' : ''),
           likeCount: post.likeCount || 0,
           replyCount: post.replyCount || 0,
           repostCount: post.repostCount || 0,
