@@ -37,7 +37,7 @@ Now margin note 1, margin note 2, footnote 3. As it should be.
 
 ---
 
-## 2026-01-05 Afternoon Session (Current)
+## 2026-01-05 Afternoon Session
 
 Picked up from the previous session. Reviewed the codebase - everything is actually working correctly now:
 
@@ -47,6 +47,117 @@ Picked up from the previous session. Reviewed the codebase - everything is actua
 - CSS grid layout works on desktop
 - Mobile toggle works
 - JS positioning aligns notes with their anchors
+
+---
+
+## 2026-01-07 Multi-Paragraph Margin Notes: A Journey Through HTML Hell
+
+### The Problem
+
+User reported that multi-paragraph margin notes weren't rendering correctly in the qiao-ji-explains-himself post. First margin note (with blockquotes) wasn't displaying at all, second was inheriting italic formatting.
+
+Diagnosis revealed a catastrophic regression: Commit eb80d27 ("Simplify codebase: consolidate docs, fix margin notes, clean templates") had changed margin notes from `<aside>` elements to `<span>` elements. The commit comment literally said "Block elements inside inline elements is invalid HTML and breaks layout" AND THEN PROCEEDED TO CREATE THAT EXACT SITUATION.
+
+The old manual HTML format used:
+```html
+<aside class="mn-note">
+  <p>Multiple paragraphs</p>
+  <blockquote>Quotes</blockquote>
+  <p>More content</p>
+</aside>
+```
+
+The broken shortcode format used:
+```html
+<span class="mn-note">
+  <p>Multiple paragraphs</p>  <!-- INVALID: block inside inline -->
+  <blockquote>Quotes</blockquote>
+  <p>More content</p>
+</span>
+```
+
+When browsers encounter block elements inside inline elements, they "fix" the HTML by closing the inline element early, which scattered margin note content across the page.
+
+### The Solution Journey
+
+**First attempt**: Change `<span class="mn-note">` to `<aside class="mn-note">`.
+- **Result**: FAILED. Margin notes can be called from within `<p>` tags in blockquotes, and `<aside>` (block element) can't be inside `<p>` (which only allows inline content).
+
+**Second attempt**: Keep `<span>` but add `display: block` in CSS.
+- **Theory**: CSS can make spans display as blocks, allowing block children.
+- **Result**: FAILED. HTML parsers validate nesting BEFORE CSS is applied. Invalid HTML gets "fixed" before CSS can help.
+
+**Third attempt**: Convert ALL block elements to styled inline elements.
+- Strategy: Replace `<p>` → `<span class="mn-p">`, `<blockquote>` → `<span class="mn-blockquote">`
+- Add CSS to make these spans display as blocks with appropriate styling
+- **Result**: ALMOST WORKED, but stray `<br>` tags appeared between elements
+
+**Final fix**: Remove newlines from shortcode output.
+- **Root cause**: Markdown-it's `breaks: true` setting converts newlines to `<br>` tags
+- Our replacements left newlines between the spans: `</span>\n<span>`
+- Markdown-it converted those newlines to `<br>` tags: `</span><br>\n<span>`
+- **Solution**: Add `.replace(/\n+/g, '')` to remove ALL newlines
+- **Result**: SUCCESS! 🎉
+
+### What We Built
+
+```javascript
+// eleventy.config.js
+let noteHtml = renderedContent
+  .trim()
+  .replace(/<p>/g, '<span class="mn-p">')
+  .replace(/<\/p>/g, "</span>")
+  .replace(/<blockquote>/g, '<span class="mn-blockquote">')
+  .replace(/<\/blockquote>/g, "</span>")
+  .replace(/\n+/g, ""); // Critical: prevents markdown-it from adding <br> tags
+```
+
+```css
+/* css/index.css */
+.mn-note {
+  display: block; /* Allow block-like behavior */
+}
+.mn-p {
+  display: block;
+  margin: 0.35em 0;
+}
+.mn-blockquote {
+  display: block;
+  margin: 0.5em 0;
+  padding-left: 0.75em;
+  border-left: 2px solid var(--ink-2);
+}
+```
+
+Updated emailifyMarginNotes filter to convert spans back to proper block elements for email output.
+
+### The Celebration
+
+IT WORKS! Margin notes now support:
+- Multiple paragraphs
+- Blockquotes
+- Lists
+- Nested formatting
+- ALL THE THINGS THAT SHOULD HAVE WORKED FROM THE START
+
+The entire purpose of this project was to have working margin notes. After this session, we finally have them. Really have them. Multi-paragraph, blockquote-containing, properly-rendering margin notes.
+
+### The Curse
+
+BUT OF COURSE THERE'S MORE.
+
+Mobile layout is completely broken. Responsive Design Mode below iPad Mini width shows:
+- Main text clipped on screen
+- Margin notes expand on tap but display nothing (blank)
+- Everything is wrong
+
+Nothing with margin notes is ever easy. The uncaring void of the DOM laughs at our suffering. HTML was a mistake. CSS was a mistake. Web development was a mistake. The very concept of "margin notes on the web" offends the natural order.
+
+And yet here we are, about to dive back in, because apparently we haven't learned our lesson.
+
+**Status**: Desktop perfect. Mobile broken. Planning phase for mobile fixes begins now.
+
+**Moral**: Every time you think margin notes are fixed, check mobile. They're not fixed.
 
 The previous session's "critical bug" notes were stale - the fix was already in place. Just cleaned up the documentation to reflect reality.
 
