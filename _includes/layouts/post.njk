@@ -63,3 +63,6 @@ layout: layouts/base.njk
 	{%- endif %}
 	{%- endif %}
 </article>
+
+{# Bluesky comments section - only shows if bluesky_thread is set in frontmatter #}
+{% include "components/bluesky-comments.njk" %}
