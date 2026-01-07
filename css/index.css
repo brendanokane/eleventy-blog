@@ -363,7 +363,7 @@ sup.fn-ref a {
 }
 
 .mn-note {
-	display: block; /* Allow block-level children (paragraphs, blockquotes) inside this span */
+	/* Note: display is set per breakpoint - see mobile/desktop media queries below */
 	font-family: var(--font-mn);
 	font-size: 0.85rem;
 	line-height: 1.5;
@@ -425,17 +425,35 @@ sup.fn-ref a {
 
 /* --- Mobile: Notes hidden by default, shown on toggle --- */
 @media (max-width: 1023px) {
+	/* Ensure post content doesn't overflow on narrow screens */
+	.post {
+		max-width: 100%;
+		width: 100%;
+	}
+
 	.mn-note {
-		display: none;
+		display: none !important; /* !important to override base styles */
+		position: static; /* Reset absolute positioning from desktop */
+		width: auto;
 	}
 
 	.mn-note.is-visible {
-		display: block;
+		display: block !important; /* !important to ensure visibility when toggled */
 		margin: 0.75em 0;
-		padding: 0.75em 1em;
+		padding: 0.75em 1em 0.75em 2em; /* Extra left padding for note number */
 		background: var(--paper-2);
 		border-left: 3px solid var(--vermillion);
 		border-radius: 0 4px 4px 0;
+		position: static; /* Inline with content, not absolute */
+		width: auto;
+		left: auto; /* Reset desktop positioning */
+		top: auto;
+	}
+
+	/* Ensure text inside visible notes has proper contrast */
+	.mn-note.is-visible .mn-p,
+	.mn-note.is-visible .mn-blockquote {
+		color: var(--ink);
 	}
 }
 
@@ -449,6 +467,7 @@ sup.fn-ref a {
 	}
 
 	.mn-note {
+		display: block; /* Allow block-level children on desktop */
 		position: absolute;
 		left: calc(100% + var(--margin-gap));
 		width: var(--margin-col);
