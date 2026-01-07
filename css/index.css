@@ -425,10 +425,20 @@ sup.fn-ref a {
 
 /* --- Mobile: Notes hidden by default, shown on toggle --- */
 @media (max-width: 1023px) {
-	/* Ensure post content doesn't overflow on narrow screens */
+	/* Reset layout for mobile - no character-based measure, just fill available space */
+	.layout-container {
+		padding: 1rem; /* Simpler padding than clamp */
+	}
+
 	.post {
-		max-width: 100%;
+		max-width: none; /* Remove 67ch limit */
 		width: 100%;
+		margin: 0; /* Remove any margin */
+	}
+
+	.post-body {
+		max-width: none; /* Ensure body also doesn't constrain */
+		overflow-x: visible; /* Prevent horizontal scroll */
 	}
 
 	.mn-note {
