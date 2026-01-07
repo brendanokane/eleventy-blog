@@ -159,6 +159,177 @@ And yet here we are, about to dive back in, because apparently we haven't learne
 
 **Moral**: Every time you think margin notes are fixed, check mobile. They're not fixed.
 
+---
+
+## 2026-01-07 Evening: Mobile Layout Victory (Finally!)
+
+### The Mobile Catastrophe
+
+After fixing multi-paragraph margin notes on desktop, we discovered mobile was completely broken:
+1. Main text clipped/shifted left off-screen
+2. Horizontal scrolling on narrow viewports
+3. Margin notes expanded but showed blank content
+
+### Root Causes Identified
+
+Used Explore agent to do deep investigation. Found **three critical issues**:
+
+**1. CSS Cascade Conflict**
+- Added `display: block` to base `.mn-note` selector for desktop multi-paragraph support
+- This overrode mobile `display: none` because specificity was equal and source order mattered
+- Mobile notes never actually hid, causing layout chaos
+
+**2. Absolute Positioning Persisting on Mobile**
+- Desktop CSS: `.mn-note { position: absolute; left: calc(100% + var(--margin-gap)); }`
+- This was never reset on mobile, pushing notes outside viewport when toggled visible
+- Notes were rendering but positioned off-screen to the right
+
+**3. Character-Based Measure Too Wide**
+- Desktop used `max-width: 67ch` for optimal reading
+- On narrow screens (< 1024px), 67 characters exceeded viewport width
+- Combined with grid layout, caused horizontal overflow and text clipping
+
+### The Fixes
+
+**Round 1: CSS Cascade & Positioning**
+```css
+@media (max-width: 1023px) {
+  .mn-note {
+    display: none !important;  /* Force hide */
+    position: static;           /* Reset absolute positioning */
+  }
+  .mn-note.is-visible {
+    display: block !important;
+    position: static;
+    left: auto;
+    top: auto;
+  }
+}
+@media (min-width: 1024px) {
+  .mn-note {
+    display: block;  /* Only set on desktop */
+    position: absolute;
+    /* ... */
+  }
+}
+```
+
+**Round 2: Remove Character Measure on Mobile**
+```css
+@media (max-width: 1023px) {
+  .post {
+    max-width: none;  /* Remove 67ch limit */
+    width: 100%;
+  }
+}
+```
+
+**Round 3: Aggressive Overflow Prevention**
+```css
+@media (max-width: 1023px) {
+  body { overflow-x: hidden; }
+  .layout-container { overflow-x: hidden; }
+  .post { overflow-x: hidden; }
+  .post-body { overflow-x: hidden; }
+  .post-body * { max-width: 100%; }
+}
+```
+
+**Round 4: Visual Cleanup**
+- Removed left border from mobile margin notes (overlapped with note number)
+- Changed to `border-radius: 4px` on all sides (cleaner look)
+- Removed left border from blockquotes in margin notes (indentation sufficient)
+- Increased padding to `2.5em` for note number clearance
+
+### The Victory
+
+**IT ALL WORKS NOW!**
+
+✅ Desktop: Multi-paragraph margin notes with blockquotes in right margin
+✅ Mobile: No horizontal scrolling, text fits viewport perfectly
+✅ Mobile: Margin notes toggle inline with full readable content
+✅ Mobile: Clean visual hierarchy without distracting borders
+
+### Known Issues for Future
+
+1. **Poems with preformatted text may scroll on mobile**
+   - Will fix with font-size adjustments in final polish
+   - Not critical - affects specific content type, not core functionality
+
+2. **Mobile font sizes could be optimized**
+   - Current sizes work but could be refined
+   - Save for final details phase
+
+### Lessons Learned
+
+1. **Media query order and specificity matter for cascade**
+   - Don't set base `display` if you need different values per breakpoint
+   - Use `!important` judiciously when cascade conflicts arise
+
+2. **Always reset desktop positioning on mobile**
+   - Absolute positioning that makes sense on desktop breaks mobile
+   - Must explicitly set `position: static`, `left: auto`, etc.
+
+3. **Character-based measures don't work on narrow viewports**
+   - 67ch is great for desktop readability
+   - On mobile, use `max-width: none` and let content reflow naturally
+
+4. **Overflow requires multiple layers of defense**
+   - One `overflow-x: hidden` isn't enough
+   - Apply to body, containers, and constrain all children
+
+5. **Visual hierarchy doesn't always need borders**
+   - Background color + indentation + typography = sufficient
+   - Borders can create visual clutter, especially on small screens
+
+### Commits
+
+- `0dc52e6` Fix multi-paragraph margin notes (desktop)
+- `ea2d209` Document the saga
+- `7820b35` Fix mobile layout for margin notes
+- `6ee800f` Remove character measure on mobile
+- `1861d2a` Fix horizontal scrolling and styling cleanup
+
+### Celebration
+
+🎉 **MARGIN NOTES WORK ON DESKTOP AND MOBILE!** 🎉
+
+Multi-paragraph. With blockquotes. With lists. Properly positioned. No scrolling. No clipping. No blank content.
+
+After two years of this project existing, margin notes finally work the way they were always supposed to.
+
+### What's Next (Notes for Tomorrow's Agent)
+
+**High Priority:**
+1. ~~Mobile layout fixes~~ ✅ DONE!
+2. Test on actual mobile devices (not just responsive mode)
+3. Review all posts with margin notes to ensure compatibility
+
+**Medium Priority:**
+1. Font size optimization for mobile (especially for poems with preformatted text)
+2. Dark mode testing for margin notes
+3. Email variant testing (ensure emailifyMarginNotes handles new span structure)
+
+**Polish Phase:**
+1. Margin note animation/transition on mobile toggle
+2. Accessibility audit (ARIA labels, keyboard navigation)
+3. Performance audit (CSS specificity, unnecessary rules)
+4. Browser compatibility testing
+
+**Future Features:**
+1. Consider adding "expand all notes" button on mobile
+2. Explore sidenote positioning improvements (better alignment with anchor text)
+3. Consider citation/bibliography system that integrates with margin notes
+
+**Documentation:**
+- ✅ SHORTCODES.md updated with multi-paragraph support
+- ✅ venting.md thoroughly documented
+- TODO: Update WORKFLOW.md if any process changes needed
+- TODO: Create MOBILE.md with mobile-specific considerations
+
+**The Sacred Rule:**
+Always test desktop AND mobile. Always. Every single time. No exceptions. Margin notes are never "fixed" until they work on both.
+
 The previous session's "critical bug" notes were stale - the fix was already in place. Just cleaned up the documentation to reflect reality.
 
 Now moving on to implementing the poem shortcode. Finally, new features instead of bug fixes!
