@@ -136,12 +136,20 @@ export default function (eleventyConfig) {
 		function addBackReference(noteContent, noteNum) {
 			const backref = ` <a href="#fnref-${noteNum}" class="footnote-backref" aria-label="Back to content">↩</a>`;
 
+			// Convert mn-p and mn-blockquote spans back to proper block elements for email
+			let converted = noteContent
+				.trim()
+				.replace(/<span class="mn-p">/g, "<p>")
+				.replace(/<\/span>(?=<span class="mn-|<span class="mn-p">|$)/g, "</p>")
+				.replace(/<span class="mn-blockquote">/g, "<blockquote>")
+				.replace(/<\/span>(?=.*<\/blockquote>)/g, "</blockquote>");
+
 			// If content ends with </p>, insert before closing tag
-			if (noteContent.trim().endsWith("</p>")) {
-				return noteContent.trim().replace(/<\/p>$/, `${backref}</p>`);
+			if (converted.endsWith("</p>")) {
+				return converted.replace(/<\/p>$/, `${backref}</p>`);
 			}
 			// Otherwise just append
-			return noteContent.trim() + backref;
+			return converted + backref;
 		}
 
 		// This pattern now ONLY matches footnotes. Margin notes are left untouched.

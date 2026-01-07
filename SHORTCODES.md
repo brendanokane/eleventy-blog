@@ -97,15 +97,21 @@ This is {% mn "important text" %}A note explaining why this is important.{% endm
 **With Markdown in note:**
 ```liquid
 {% mn "API endpoint" %}
-See the [documentation](https://example.com) for details. Multiple paragraphs are supported but avoid blank lines within the note content to prevent rendering issues.
+See the [documentation](https://example.com) for details.
+
+Multiple paragraphs, blockquotes, and lists are fully supported.
+
+> This is a blockquote in a margin note.
+
+All block elements render correctly.
 {% endmn %}
 ```
 
 ### Important Notes
 
 - **Anchor text cannot contain markdown**: Parameters in Nunjucks shortcodes cannot contain markdown formatting. Use plain text only: `{% mn "important text" %}` not `{% mn "_important_ text" %}`
-- **Avoid blank lines in note content**: Blank lines within margin note content create multiple `<p>` tags which break the inline structure. Keep content continuous or use explicit line breaks if needed.
-- **Single-paragraph notes work best**: For multi-paragraph notes, consider using the `{% fn %}` (footnote) shortcode instead.
+- **Multi-paragraph notes are fully supported**: As of January 2026, margin notes properly support multiple paragraphs, blockquotes, and lists. The implementation converts block-level HTML elements to styled spans to avoid HTML nesting violations.
+- **Technical implementation**: The shortcode converts `<p>` tags to `<span class="mn-p">` and `<blockquote>` to `<span class="mn-blockquote">`, then removes all newlines to prevent markdown-it's `breaks: true` setting from adding unwanted `<br>` tags.
 
 ### Output
 

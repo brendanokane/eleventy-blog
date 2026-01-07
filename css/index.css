@@ -363,6 +363,7 @@ sup.fn-ref a {
 }
 
 .mn-note {
+	display: block; /* Allow block-level children (paragraphs, blockquotes) inside this span */
 	font-family: var(--font-mn);
 	font-size: 0.85rem;
 	line-height: 1.5;
@@ -370,6 +371,30 @@ sup.fn-ref a {
 	font-style: normal; /* Don't inherit italic from parent */
 	position: relative;
 	padding-left: 1.5em; /* Space for the number */
+}
+/* Margin note paragraphs and blockquotes - using span elements to avoid HTML nesting issues */
+.mn-p {
+	display: block;
+	margin: 0.35em 0;
+}
+.mn-p:first-child {
+	margin-top: 0;
+}
+.mn-p:last-child {
+	margin-bottom: 0;
+}
+.mn-p + .mn-p {
+	margin-top: 0.35em; /* Tighter spacing between consecutive paragraphs */
+}
+.mn-blockquote {
+	display: block;
+	margin: 0.5em 0;
+	padding-left: 0.75em;
+	border-left: 2px solid var(--ink-2);
+	opacity: 0.9;
+}
+.mn-blockquote .mn-p {
+	margin: 0.25em 0; /* Even tighter inside blockquotes */
 }
 .mn-note-number {
 	font-family: var(--font-display);

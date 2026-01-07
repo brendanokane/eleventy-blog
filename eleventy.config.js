@@ -298,21 +298,30 @@ export default async function (eleventyConfig) {
 		// Render markdown content to HTML
 		const renderedContent = md.render(content.trim());
 
-		// Strip wrapping <p> tags for single-paragraph notes since we're inside an inline <span>
-		// Block elements inside inline elements is invalid HTML and breaks layout
-		let noteHtml = renderedContent.trim();
-		// Check if it's a single paragraph (starts with <p> and ends with </p> with no other <p> tags)
-		const singleParagraphMatch = noteHtml.match(/^<p>([\s\S]*)<\/p>$/);
-		if (singleParagraphMatch && !singleParagraphMatch[1].includes("<p>")) {
-			noteHtml = singleParagraphMatch[1];
-		}
+		// Margin notes can contain multiple paragraphs and blockquotes.
+		// Since the shortcode may be called from within a <p> tag, we need to avoid
+		// having <p> tags in the output (can't nest <p> tags in HTML).
+		// Strategy: Convert <p> tags to <span class="mn-p"> for styling, and convert
+		// <blockquote> to <span class="mn-blockquote"> to preserve structure without
+		// violating HTML nesting rules.
+		let noteHtml = renderedContent
+			.trim()
+			.replace(/<p>/g, '<span class="mn-p">')
+			.replace(/<\/p>/g, "</span>")
+			.replace(/<blockquote>/g, '<span class="mn-blockquote">')
+			.replace(/<\/blockquote>/g, "</span>")
+			// Remove ALL newlines between spans - markdown-it's breaks:true will convert them to <br>
+			// when the final page HTML is processed
+			.replace(/\n+/g, "");
 
 		if (anchor) {
 			// Anchor version: dotted underline on anchor text + superscripted numeral after
-			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><sup class="mn-anchor-num">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span> ${noteHtml}</span></span>`;
+			// Note: Using <span> not <aside> because the shortcode can be called from inside <p> tags,
+			// and block elements like <aside> aren't valid inside <p>. CSS makes the span display: block.
+			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${anchor}</span><sup class="mn-anchor-num">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
 		} else {
 			// Marker version: numbered superscript marker only
-			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span> ${noteHtml}</span></span>`;
+			return `<span class="mn-ref" data-mn-id="${noteId}"><sup class="mn-marker" role="button" tabindex="0" aria-expanded="false" aria-controls="${noteId}">${counters.mn}</sup><span class="mn-note" id="${noteId}" role="note"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
 		}
 	});
 

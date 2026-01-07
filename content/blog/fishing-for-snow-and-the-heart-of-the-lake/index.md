@@ -1,7 +1,7 @@
 ---
-title: Fishing for Snow, and the Heart of the Lake
+title: "Fishing for Snow, and the Heart of the Lake"
 date: 2022-12-26
-draft: true
+draft: false
 bluesky_thread: "https://bsky.app/profile/burninghou.se/post/3ma2dmjbzss2n"
 post_image: "/fishing-for-snow-and-the-heart-of-the-lake/assets/b8fbdff8-d794-4787-9292-55293f2a8a08_3575x2984.jpg"
 post_image_alt: "Xiang Shengmo 項聖謨 (1597-1658), 'The West Lake in Snow' 西湖雪景圖"
