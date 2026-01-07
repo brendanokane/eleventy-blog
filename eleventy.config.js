@@ -319,7 +319,7 @@ export default async function (eleventyConfig) {
 			// Strip HTML tags from anchor text for aria-label
 			const anchorText = anchor.replace(/<[^>]*>/g, "");
 
-			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor-text" aria-describedby="${noteId}">${anchor}</span><button type="button" class="mn-marker" aria-expanded="false" aria-controls="${noteId}" aria-label="Show margin note ${counters.mn}: ${anchorText}">${counters.mn}</button><span class="mn-note" id="${noteId}" role="note" aria-label="Margin note ${counters.mn}"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
+			return `<span class="mn-ref" data-mn-id="${noteId}"><span class="mn-anchor-text" aria-describedby="${noteId}">${anchor}</span>&#8288;<button type="button" class="mn-marker" aria-expanded="false" aria-controls="${noteId}" aria-label="Show margin note ${counters.mn}: ${anchorText}">${counters.mn}</button><span class="mn-note" id="${noteId}" role="note" aria-label="Margin note ${counters.mn}"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;
 		} else {
 			// Marker version: numbered superscript marker as button
 			return `<span class="mn-ref" data-mn-id="${noteId}"><button type="button" class="mn-marker" aria-expanded="false" aria-controls="${noteId}" aria-label="Show margin note ${counters.mn}">${counters.mn}</button><span class="mn-note" id="${noteId}" role="note" aria-label="Margin note ${counters.mn}"><span class="mn-note-number" aria-hidden="true">${counters.mn}.</span>${noteHtml}</span></span>`;

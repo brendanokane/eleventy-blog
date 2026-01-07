@@ -151,7 +151,7 @@ I won’t lie, I was feeling pretty pleased with myself about the alternating _-
 > By rhyming with _too_ much more than one syllable.{% endmn %} it felt like a good reflection of the brashness of the original.
 
 
-The only problem was that I couldn’t sustain it through the end of the poem. Every line in Qiao’s poem rhymes with _nián_, “years.” The whole thing is building up to that final flourish (“… _for forty years!_”) and the translation really has to end the same way. And I just couldn’t make it work: I kept having to fall back on more or less the same things that Owen and Crump fall back on in their translations, which forced the poem into an anticlimax.{% mn %}“…is all I’ve had by way of occupation” was one attempt. We don’t have to talk about it. At least “peregrination” didn’t last long enough for me to write it down.{% endmn %}  I could switch up the rhyme in the final couplet, but then I’d lose the connection to the rest of the poem.
+The only problem was that I couldn’t sustain it through the end of the poem. Every line in Qiao’s poem rhymes with _nián_, “years.” The whole thing is building up to that final flourish (“… _for forty years!_”) and the translation really has to end the same way. And I just couldn’t make it work: I kept having to fall back on more or less the same things that Owen and Crump fall back on in their translations, which forced the poem into an {% mn "anticlimax." %}“…is all I’ve had by way of occupation” was one attempt. We don’t have to talk about it. At least “peregrination” didn’t last long enough for me to write it down.{% endmn %}  I could switch up the rhyme in the final couplet, but then I’d lose the connection to the rest of the poem.
 
 So I cheated and I hoped you wouldn’t notice.
 
