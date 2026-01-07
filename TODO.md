@@ -59,6 +59,17 @@
 - Typography matches margin notes (font-mn, 0.85rem, line-height 1.5)
 - Mobile: degrades to centered caption below image
 
+### ✅ Bluesky Comments System (2026-01-07)
+- Implemented hybrid static/dynamic comment system
+- Server-side: `getBlueskyComments` filter fetches at build time via public Bluesky API
+- Client-side: JavaScript checks for new comments and displays with "New" badge
+- Graceful fallback if API unavailable
+- Threaded comment display with depth-based indentation
+- Shows author avatars, handles, timestamps, and engagement stats
+- Mobile-responsive layout
+- Included in post.njk layout, only renders if `bluesky_thread` is set in frontmatter
+- See `_config/bluesky-comments.js` and `_includes/components/bluesky-comments.njk`
+
 ---
 
 ## In Progress
@@ -104,7 +115,7 @@ Both formats work correctly; migration is for code consistency only.
 
 ---
 
-## Bluesky Comments System (Next Major Feature)
+## Bluesky Comments - Future Enhancements
 
 Complete implementation plan for Bluesky-based commenting with reader-triggered archival.
 
