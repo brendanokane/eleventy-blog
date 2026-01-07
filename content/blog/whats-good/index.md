@@ -1,20 +1,25 @@
 ---
 title: What's Good?
+subtitle: A Collection of Small Nice Things
 date: 2022-08-03
-draft: true
-bluesky_thread: null
-post_image: assets/image-bb106374ccca.jpeg
+draft: false
+bluesky_thread: "https://bsky.app/profile/burninghou.se/post/3mbunk2atvm2f"
+author: Brendan O'Kane
+
+# SEO and social metadata
+description: "A translation of Jin Shengtan's 金聖嘆 list of '33 Nice Things' 不亦快哉三十三則."
+social_description: "The dynasty is collapsing and the vibes are fucked. Here are a few of Jin Shengtan's favorite things."
+
+# Open Graph image
+post_image: /whats-good/assets/image-bb106374ccca.jpeg
 post_image_alt: Woodblock-printed 'Jinguyuan' edition of Jin Shengtan's commentary on 'The Romance of the Western Chamber,' open to the relevant pages
 ---
-- 
-# What's Good?
-
 {% figure "/what-s-good/assets/image-bb106374ccca.jpeg", "A scan of the Jinguyuan edition of Jin Shengtan's version of The Romance of the Western Chamber, open to the pages translated here", "center" %}Jin Shengtan's introduction to '33 Nice Things,' 清書坊金谷園刊本{% endfigure %}
 
 So you're reading _The Romance of the Western Chamber_ 西廂記, as one does, and you're reading it in an old woodblock edition, because obviously, and you're hooked. Young Student Zhang has driven away the Flying Tiger and his bandits, and for a moment it looks like there'll be nothing more to stand in the way of his marriage to the well-bred Cui Yingying – but Yingying's mother is having second thoughts about the promise she made. The young lovers have been relying on Yingying's sassy maidservant Hongniang to pass messages, but Yingying's mother is onto them.
 
 Is all hope lost? (No.) Will true love prevail? (Yes.) But before you can find out what happens next, you’re confronted with a chatty little digression from the commentator: a list of delightful things, each ending with the words 不亦快哉 _bù yì kuài zāi_ — {% mn "Is that not a delight?" %}Or: [Lin Yutang's translation](https://web.archive.org/web/20220202205924/https://artoflivingguide.org/happiness/thirty-three-happy-moments), the only other one I know of in English, consistently renders _bù yì kuài zāi_ as “Ah, is this not happiness?” while [Pierre Ryckmans' French translation](https://web.archive.org/web/20220704142950/https://www.letemps.ch/opinions/trentetrois-delices-jin-shengtan) goes with “Ah, quel délice!” throughout.
-I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.{% endmn %} 
+I vary the translation from item to item, and leave it off entirely after number 26, because I felt like it and because Jin Shengtan is, as of this writing, at least 361 years beyond caring one way or the other.{% endmn %}
 This is Jin Shengtan's 金聖嘆 "Thirty-three Nice Things" 不亦快哉三十三則, a digression so powerful that it broke free of its original context to become widely known and beloved in its own right, even among the sort of people who do not habitually read pre-20th century editions of 17th-century commentaries on 13th-century updates of 12th-century dramatizations of 9th-century romantic fiction. I thought I might cheer myself up by translating it, and when I was done I thought my friends might enjoy it. I hope you will too.
 
 * * *

@@ -301,6 +301,15 @@ i:lang(ko) {
 	margin: 0 0 0.5rem;
 }
 
+.post-subtitle {
+	font-family: var(--font-mn);
+	font-size: 1.25rem;
+	font-weight: 400;
+	font-style: italic;
+	color: var(--muted-ink);
+	margin: 0 0 1rem;
+}
+
 .post-metadata {
 	list-style: none;
 	padding: 0;

@@ -18,11 +18,13 @@
 		{% set pageDescription = description or metadata.description %}
 
 		{% set ogTitle = og_title or pageTitle %}
-		{% set ogDescription = og_description or pageDescription %}
-		{% set ogImage = og_image or (metadata.og and metadata.og.defaultImage) %}
+		{% set ogDescription = og_description or social_description or description or metadata.description %}
+		{% set ogImage = og_image or post_image or (metadata.og and metadata.og.defaultImage) %}
 		{% if ogImage %}
-			{% set ogImageAbs = ogImage if "http" in ogImage else siteUrl + ogImage %}
+			{% set ogImagePath = ogImage if ogImage.startsWith('/') else '/' + ogImage %}
+			{% set ogImageAbs = ogImage if "http" in ogImage else siteUrl + ogImagePath %}
 		{% endif %}
+		{% set ogImageAlt = og_image_alt or post_image_alt %}
 
 		<title>{{ pageTitle }}</title>
 		<meta name="description" content="{{ pageDescription }}">
@@ -30,12 +32,18 @@
 
 		{# OpenGraph #}
 		<meta property="og:site_name" content="{{ metadata.title }}">
-		<meta property="og:type" content="article">
+		<meta property="og:type" content="{{ og_type or 'article' }}">
 		<meta property="og:title" content="{{ ogTitle }}">
 		<meta property="og:description" content="{{ ogDescription }}">
 		<meta property="og:url" content="{{ canonicalUrl }}">
 		{% if ogImageAbs %}
 		<meta property="og:image" content="{{ ogImageAbs }}">
+		{% if ogImageAlt %}
+		<meta property="og:image:alt" content="{{ ogImageAlt }}">
+		{% endif %}
+		{% endif %}
+		{% if author %}
+		<meta name="author" content="{{ author }}">
 		{% endif %}
 
 		{# Twitter Card #}

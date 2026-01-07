@@ -9,3 +9,6 @@ content/*/assets/
 
 # Archived documentation
 docs-archive/
+
+# Bluesky credentials (never commit!)
+_bluesky-credentials
