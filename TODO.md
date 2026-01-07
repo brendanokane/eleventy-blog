@@ -74,10 +74,24 @@
 
 ## In Progress
 
+### Open Graph / Social Sharing
+- [ ] **OG metadata implementation**: Add Open Graph tags for social sharing cards
+- [ ] **Test OG cards**: Verify preview cards work on Bluesky, Twitter, etc.
+- [ ] **Add OG metadata to existing posts**: Currently only fishing-for-snow has `post_image` and `post_image_alt`
+
+### Bluesky Publishing Workflow
+- [ ] **Create Bluesky posting script**: Script to create posts via Bluesky API with backdating support
+- [ ] **Backfill old posts**: Once OG cards work, backfill Bluesky threads starting with "whats-good"
+- [ ] **Store thread URLs**: Add `bluesky_thread` to frontmatter for backfilled posts
+- [ ] **Environment setup**: Need `BLUESKY_HANDLE` and `BLUESKY_APP_PASSWORD` env vars
+
+**Note:** Old Substack comments will be lost in migration to Bluesky comments, but that's unavoidable.
+
 ### Design Polish
 - [ ] **Margin note anchor wrapping**: When anchor text wraps, note aligns with first line instead of the superscript marker on the last line. Needs JavaScript solution to calculate marker position.
 - [ ] **Mobile font sizes for poetry**: Preformatted text may cause horizontal scroll on narrow viewports
 - [ ] **Dark mode testing**: Verify all components render correctly
+- [ ] **Replace emoji in comment stats**: Use glyphs or SVGs instead of ❤️💬🔄 (polish phase)
 
 ---
 
