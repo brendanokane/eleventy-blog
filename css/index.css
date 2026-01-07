@@ -966,18 +966,10 @@ figcaption {
 	color: var(--ink);
 }
 
-.comments-intro {
-	margin-bottom: 2rem;
-	font-size: 0.95rem;
-}
-
-.comment-count {
-	margin: 0 0 0.5rem;
-	color: var(--muted-ink);
-}
-
 .comments-cta {
-	margin: 0;
+	margin: 1.5rem 0 0;
+	font-size: 0.95rem;
+	text-align: center;
 }
 
 .bluesky-link,
@@ -994,12 +986,6 @@ figcaption {
 	color: var(--marker-color);
 }
 
-.no-comments {
-	padding: 2rem 0;
-	text-align: center;
-	color: var(--muted-ink);
-}
-
 .comments-list {
 	margin: 1.5rem 0 0;
 }
@@ -1012,6 +998,7 @@ figcaption {
 	background: rgba(0, 0, 0, 0.02);
 	border-radius: 4px;
 	transition: background 0.2s;
+	font-family: var(--font-mn);
 }
 
 .comment:hover {
@@ -1103,6 +1090,7 @@ figcaption {
 
 .comment-text {
 	margin: 0;
+	font-size: 1rem;
 	line-height: 1.6;
 	white-space: pre-wrap;
 	word-wrap: break-word;
@@ -1110,6 +1098,9 @@ figcaption {
 
 .comment-footer {
 	margin-top: 0.75rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .comment-stats {
@@ -1117,6 +1108,19 @@ figcaption {
 	gap: 1rem;
 	font-size: 0.875rem;
 	color: var(--muted-ink);
+}
+
+.comment-reply-link {
+	font-size: 0.875rem;
+	font-weight: 300;
+	color: var(--muted-ink);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.comment-reply-link:hover {
+	color: var(--ink);
+	text-decoration: underline;
 }
 
 .stat {

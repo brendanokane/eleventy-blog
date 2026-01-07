@@ -14,23 +14,9 @@
 
 {% if bluesky_thread %}
 <section class="bluesky-comments" id="comments" data-pagefind-ignore>
-  <h2 class="comments-heading">Discussion</h2>
-
   {% set comments = bluesky_thread | getBlueskyComments %}
 
-  <div class="comments-intro">
-    <p class="comment-count" data-initial-count="{{ comments.length }}">
-      {{ comments.length }} {{ "reply" if comments.length == 1 else "replies" }} on
-      <a href="{{ bluesky_thread }}" class="bluesky-link" target="_blank" rel="noopener noreferrer">
-        Bluesky
-      </a>
-    </p>
-    <p class="comments-cta">
-      <a href="{{ bluesky_thread }}" class="join-discussion" target="_blank" rel="noopener noreferrer">
-        Join the conversation →
-      </a>
-    </p>
-  </div>
+  <h2 class="comments-heading">Discussion{% if comments.length > 0 %} ({{ comments.length }}){% endif %}</h2>
 
   {% if comments.length > 0 %}
   <div class="comments-list" data-thread="{{ bluesky_thread }}">
@@ -68,7 +54,6 @@
         <p class="comment-text">{{ comment.text }}</p>
       </div>
 
-      {% if comment.likeCount > 0 or comment.replyCount > 0 or comment.repostCount > 0 %}
       <footer class="comment-footer">
         <div class="comment-stats">
           {% if comment.likeCount > 0 %}
@@ -90,14 +75,18 @@
             </span>
           {% endif %}
         </div>
+        <a href="{{ comment.url }}" class="comment-reply-link" target="_blank" rel="noopener noreferrer">Reply</a>
       </footer>
-      {% endif %}
     </article>
     {% endfor %}
   </div>
-  {% else %}
-  <p class="no-comments">No replies yet.</p>
   {% endif %}
+
+  <p class="comments-cta">
+    <a href="{{ bluesky_thread }}" class="join-discussion" target="_blank" rel="noopener noreferrer">
+      Join the conversation on Bluesky →
+    </a>
+  </p>
 
   {# Client-side: Check for new comments and mark them #}
   <script type="module" eleventy:ignore>
@@ -244,15 +233,14 @@
           <div class="comment-body">
             <p class="comment-text">${escapeHtml(comment.text)}</p>
           </div>
-          ${comment.likeCount > 0 || comment.replyCount > 0 || comment.repostCount > 0 ? `
-            <footer class="comment-footer">
-              <div class="comment-stats">
-                ${comment.likeCount > 0 ? `<span class="stat"><span class="stat-icon">❤️</span> ${comment.likeCount}</span>` : ''}
-                ${comment.replyCount > 0 ? `<span class="stat"><span class="stat-icon">💬</span> ${comment.replyCount}</span>` : ''}
-                ${comment.repostCount > 0 ? `<span class="stat"><span class="stat-icon">🔄</span> ${comment.repostCount}</span>` : ''}
-              </div>
-            </footer>
-          ` : ''}
+          <footer class="comment-footer">
+            <div class="comment-stats">
+              ${comment.likeCount > 0 ? `<span class="stat"><span class="stat-icon">❤️</span> ${comment.likeCount}</span>` : ''}
+              ${comment.replyCount > 0 ? `<span class="stat"><span class="stat-icon">💬</span> ${comment.replyCount}</span>` : ''}
+              ${comment.repostCount > 0 ? `<span class="stat"><span class="stat-icon">🔄</span> ${comment.repostCount}</span>` : ''}
+            </div>
+            <a href="${escapeHtml(comment.url)}" class="comment-reply-link" target="_blank" rel="noopener noreferrer">Reply</a>
+          </footer>
         `;
 
         commentsList.appendChild(article);
