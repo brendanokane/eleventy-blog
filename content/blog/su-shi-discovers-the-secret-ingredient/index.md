@@ -6,7 +6,7 @@ bluesky_thread:
 ---
 # Su Shi Discovers the Secret Ingredient
 
-[![](/su-shi-discovers-the-secret-ingredient/assets/cb43d3e8-610c-402f-b2b5-67261d7b688b.jpg)](/su-shi-discovers-the-secret-ingredient/assets/cb43d3e8-610c-402f-b2b5-67261d7b688b.jpg) Su Shi, caught in the rain with sandals and a bamboo hat, presumably a reference to a _ci_ of his I’ve been meaning to translate. ( [Princeton Art Museum](https://artmuseum.princeton.edu/collections/objects/57613))
+{% figure "/su-shi-discovers-the-secret-ingredient/assets/cb43d3e8-610c-402f-b2b5-67261d7b688b.jpg" %}Su Shi, caught in the rain with sandals and a bamboo hat, presumably a reference to a _ci_ of his I’ve been meaning to translate. ( [Princeton Art Museum](https://artmuseum.princeton.edu/collections/objects/57613)){% endfigure %}
 
 For the weekend, a short vignette by Su Shi 蘇軾 (1037-1101; aka Su Dongpo 蘇東坡), writing from exile in Huangzhou, about the 12th night of the 10th month of Yuanfeng year six (November 24, 1083), which was also a Friday:
 
@@ -22,4 +22,4 @@ For the weekend, a short vignette by Su Shi 蘇軾 (1037-1101; aka Su Dongpo 蘇
 >
 > A translucent, watery radiance pooled at one end of the yard, and clumps of duckweed and floating-hearts swayed and criss-crossed in it — shadows of bamboos and cypresses. The moon is out every night, of course, and bamboos and cypresses can be found anywhere one cares to look. The two of us and our idleness had been the only things missing.
 
-Happy weekend! Use the idleness for [something delightful](https://www.burninghou.se/p/whats-good).
+Happy weekend! Use the idleness for [something delightful](/whats-good).

@@ -94,6 +94,7 @@ I’ve expanded even more in the central couplet, 煙霞狀元，江湖醉仙，
 
 The last verse is where I’m really cheating. Before I explain how and why, let’s pop over and see what Crump and Owen are doing. Both are good. Here’s {% mn "Crump:" %}_Song-Poems from Xanadu_, 93.{% endmn %}
 
+> ```
 > State honor rolls will lack my name
 > As do biographies for men of fame.
 > I _have_ from time to time
@@ -111,7 +112,7 @@ The last verse is where I’m really cheating. Before I explain how and why, let
 > In the perfect place to criticize
 > The coolness of a breeze at noon,
 > Or add poetic luster to an evening's moon.
-
+> ```
 
 And {% mn "Owen," %}_An Anthology of Chinese Literature_, 735.{% endmn %} whose version I saw first:
 

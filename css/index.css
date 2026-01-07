@@ -390,7 +390,7 @@ sup.fn-ref a {
 	display: block;
 	margin: 0.5em 0;
 	padding-left: 0.75em;
-	border-left: 2px solid var(--ink-2);
+	border-left: none; /* Indentation indicates quotation, border unnecessary */
 	opacity: 0.9;
 }
 .mn-blockquote .mn-p {
@@ -425,20 +425,32 @@ sup.fn-ref a {
 
 /* --- Mobile: Notes hidden by default, shown on toggle --- */
 @media (max-width: 1023px) {
+	/* Prevent horizontal overflow */
+	body {
+		overflow-x: hidden;
+	}
+
 	/* Reset layout for mobile - no character-based measure, just fill available space */
 	.layout-container {
 		padding: 1rem; /* Simpler padding than clamp */
+		overflow-x: hidden;
 	}
 
 	.post {
 		max-width: none; /* Remove 67ch limit */
 		width: 100%;
 		margin: 0; /* Remove any margin */
+		overflow-x: hidden;
 	}
 
 	.post-body {
 		max-width: none; /* Ensure body also doesn't constrain */
-		overflow-x: visible; /* Prevent horizontal scroll */
+		overflow-x: hidden;
+	}
+
+	/* Ensure all children respect viewport width */
+	.post-body * {
+		max-width: 100%;
 	}
 
 	.mn-note {
@@ -450,10 +462,10 @@ sup.fn-ref a {
 	.mn-note.is-visible {
 		display: block !important; /* !important to ensure visibility when toggled */
 		margin: 0.75em 0;
-		padding: 0.75em 1em 0.75em 2em; /* Extra left padding for note number */
+		padding: 0.75em 1em 0.75em 2.5em; /* Extra left padding for note number */
 		background: var(--paper-2);
-		border-left: 3px solid var(--vermillion);
-		border-radius: 0 4px 4px 0;
+		border-left: none; /* Remove border - font and background distinguish notes */
+		border-radius: 4px; /* Rounded on all sides without left border */
 		position: static; /* Inline with content, not absolute */
 		width: auto;
 		left: auto; /* Reset desktop positioning */
