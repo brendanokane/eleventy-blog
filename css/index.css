@@ -31,7 +31,8 @@
 
 	/* Typography */
 	--font-body:
-		"Vollkorn", "Noto Serif TC", "Source Han Serif TC", ui-serif, Georgia, serif;
+		"Vollkorn", "Noto Serif TC", "Source Han Serif TC", "Songti TC",
+		"Songti SC", "STSong", ui-serif, Georgia, serif;
 	--font-display:
 		"Source Sans 3", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
 	--font-mn:
@@ -775,7 +776,9 @@ figcaption {
 }
 
 .poem-title-zh {
-	font-family: "Noto Serif TC", "Source Han Serif TC", var(--font-body);
+	font-family:
+		"Noto Serif TC", "Source Han Serif TC", "Songti TC", "Songti SC", "STSong",
+		var(--font-body);
 	font-size: 1.5rem;
 	font-weight: 600;
 	margin: 0 0 0.25em;
@@ -811,7 +814,9 @@ figcaption {
 }
 
 .poem-text-zh {
-	font-family: "Noto Serif TC", "Source Han Serif TC", var(--font-body);
+	font-family:
+		"Noto Serif TC", "Source Han Serif TC", "Songti TC", "Songti SC", "STSong",
+		var(--font-body);
 	font-size: 1.25rem;
 	line-height: 1.8;
 	text-align: center;
