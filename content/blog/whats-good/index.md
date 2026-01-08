@@ -3,7 +3,7 @@ title: What's Good?
 subtitle: A Collection of Small Nice Things
 date: 2022-08-03
 draft: false
-bluesky_thread: "https://bsky.app/profile/burninghou.se/post/3mbunk2atvm2f"
+bluesky_thread: null
 author: Brendan O'Kane
 
 # SEO and social metadata
