@@ -18,16 +18,10 @@ const { id } = Astro.props;
 
 const poem = await getEntry('poems', id);
 
-if (!poem) {
-  return (
-    <div class="poem-error" style="color: var(--vermillion); padding: 1em; border: 2px dashed var(--vermillion); margin: 1em 0;">
-      <strong>⚠️ Poem not found:</strong> <code>{id}</code>
-      <br /><small>Check src/content/poems/{id}.yaml</small>
-    </div>
-  );
-}
-
-const { poet, title, text } = poem.data;
+// Prepare poem data if found
+const poet = poem?.data.poet;
+const title = poem?.data.title;
+const text = poem?.data.text;
 
 function formatPoemText(t: string | undefined) {
   if (!t) return '';
@@ -38,20 +32,27 @@ const textEnHtml = formatPoemText(text?.en);
 const textZhHtml = formatPoemText(text?.zh);
 ---
 
-<div class="poem-container" data-poem-id={id}>
-  <div class="poem-header">
-    {title?.zh && <h3 class="poem-title-zh" lang="zh">{title.zh}</h3>}
-    {poet?.zh && <p class="poem-poet-zh" lang="zh">{poet.zh}</p>}
-    {title?.en && <h4 class="poem-title-en">{title.en}</h4>}
-    {poet?.en && <p class="poem-poet-en">{poet.en}</p>}
+{!poem ? (
+  <div class="poem-error" style="color: var(--vermillion); padding: 1em; border: 2px dashed var(--vermillion); margin: 1em 0;">
+    <strong>⚠️ Poem not found:</strong> <code>{id}</code>
+    <br /><small>Check src/content/poems/{id}.yaml</small>
   </div>
+) : (
+  <div class="poem-container" data-poem-id={id}>
+    <div class="poem-header">
+      {title?.zh && <h3 class="poem-title-zh" lang="zh">{title.zh}</h3>}
+      {poet?.zh && <p class="poem-poet-zh" lang="zh">{poet.zh}</p>}
+      {title?.en && <h4 class="poem-title-en">{title.en}</h4>}
+      {poet?.en && <p class="poem-poet-en">{poet.en}</p>}
+    </div>
 
-  <div class="poem-body">
-    {textZhHtml && (
-      <div class="poem-text-zh" lang="zh" set:html={textZhHtml} />
-    )}
-    {textEnHtml && (
-      <div class="poem-text-en" set:html={textEnHtml} />
-    )}
+    <div class="poem-body">
+      {textZhHtml && (
+        <div class="poem-text-zh" lang="zh" set:html={textZhHtml} />
+      )}
+      {textEnHtml && (
+        <div class="poem-text-en" set:html={textEnHtml} />
+      )}
+    </div>
   </div>
-</div>
+)}

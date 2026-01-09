@@ -2,29 +2,24 @@
 /**
  * Figure Component with Astro's Built-in Image Optimization
  *
- * Automatically optimizes images:
- * - Generates WebP and AVIF versions
- * - Creates responsive srcset (400w, 800w, 1200w)
- * - Adds lazy loading
- * - Prevents layout shift (width/height)
- * - Compresses for optimal file size
+ * Supports two modes:
+ * 1. Imported images: Full optimization (WebP, AVIF, responsive srcset)
+ * 2. String paths: Simple img tag (for migration compatibility)
+ *
+ * Features:
+ * - Click/tap to view full-size image in lightbox
+ * - Accessible keyboard navigation (Escape to close)
  *
  * Usage:
- *   <Figure src="/path/to/image.jpg" alt="description">
- *   Caption text here
- *   </Figure>
- *
- *   <Figure src="/path/to/image.jpg" alt="description" style="center">
- *   Centered caption
- *   </Figure>
- *
- * Note: Images can be in public/ or imported from src/
+ *   <Figure src={importedImage} alt="description">Caption</Figure>
+ *   <Figure src="/path/to/image.jpg" alt="description">Caption</Figure>
+ *   <Figure src="/path/to/image.jpg" alt="description" style="center">Centered</Figure>
  */
 
 import { Image } from 'astro:assets';
 
 interface Props {
-  src: string;
+  src: string | ImageMetadata;
   alt: string;
   style?: 'center' | 'margin';
   width?: number;
@@ -34,43 +29,207 @@ interface Props {
 const { src, alt, style, width = 1200, height = 800 } = Astro.props;
 const isCentered = style === 'center';
 
-// Generate responsive widths
+// Check if src is an imported image (object) or string path
+const isImportedImage = typeof src === 'object';
+
+// Generate unique ID for this figure's dialog
+const figureId = `fig-${Math.random().toString(36).substr(2, 9)}`;
+const dialogId = `dialog-${figureId}`;
+
+// For string paths, we'll link to the original
+const fullSizeUrl = typeof src === 'string' ? src : null;
+
+// Generate responsive widths for optimized images
 const widths = [400, 800, 1200];
 const formats = ['avif', 'webp', 'jpg'] as const;
 ---
 
 {isCentered ? (
-  <figure class="fig-centered">
-    <Image
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      widths={widths}
-      formats={formats}
-      quality={80}
-      loading="lazy"
-      decoding="async"
-    />
+  <figure class="fig-centered" id={figureId}>
+    <button
+      class="img-button"
+      onclick={`document.getElementById('${dialogId}').showModal()`}
+      aria-label={`View full size: ${alt}`}
+    >
+      {isImportedImage ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          widths={widths}
+          formats={formats}
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      )}
+    </button>
     <figcaption>
       <slot />
     </figcaption>
   </figure>
 ) : (
-  <figure class="fig-margin">
-    <Image
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      widths={widths}
-      formats={formats}
-      quality={80}
-      loading="lazy"
-      decoding="async"
-    />
+  <figure class="fig-margin" id={figureId}>
+    <button
+      class="img-button"
+      onclick={`document.getElementById('${dialogId}').showModal()`}
+      aria-label={`View full size: ${alt}`}
+    >
+      {isImportedImage ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          widths={widths}
+          formats={formats}
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      )}
+    </button>
     <figcaption class="fig-caption-margin">
       <slot />
     </figcaption>
   </figure>
 )}
+
+<!-- Lightbox Dialog -->
+<dialog id={dialogId} class="img-lightbox">
+  <div class="lightbox-content">
+    {fullSizeUrl ? (
+      <img src={fullSizeUrl} alt={alt} />
+    ) : isImportedImage ? (
+      <Image
+        src={src}
+        alt={alt}
+        quality={95}
+        loading="lazy"
+        decoding="async"
+      />
+    ) : null}
+    <button
+      class="lightbox-close"
+      onclick={`document.getElementById('${dialogId}').close()`}
+      aria-label="Close lightbox"
+    >
+      ✕
+    </button>
+  </div>
+</dialog>
+
+<style>
+  /* Remove button styling from image wrapper */
+  .img-button {
+    all: unset;
+    display: block;
+    cursor: zoom-in;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .img-button img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .img-button:hover {
+    opacity: 0.95;
+  }
+
+  .img-button:focus-visible {
+    outline: 2px solid var(--vermillion, #8f1d14);
+    outline-offset: 2px;
+  }
+
+  /* Lightbox Dialog */
+  .img-lightbox {
+    border: none;
+    padding: 0;
+    max-width: 95vw;
+    max-height: 95vh;
+    background: transparent;
+  }
+
+  .img-lightbox::backdrop {
+    background: rgba(36, 20, 37, 0.9);
+    backdrop-filter: blur(4px);
+  }
+
+  .lightbox-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .lightbox-content img {
+    max-width: 100%;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    display: block;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--paper, #fff5e6);
+    border: 2px solid var(--ink, #241425);
+    color: var(--ink, #241425);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.2s ease;
+  }
+
+  .lightbox-close:hover {
+    background: var(--vermillion, #8f1d14);
+    color: var(--paper, #fff5e6);
+    border-color: var(--vermillion, #8f1d14);
+  }
+
+  .lightbox-close:focus-visible {
+    outline: 2px solid var(--vermillion, #8f1d14);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Close dialog on Escape key and clicking backdrop
+  document.querySelectorAll('.img-lightbox').forEach((dialog) => {
+    dialog.addEventListener('click', (e) => {
+      // Close if clicking the backdrop (outside the content)
+      const rect = dialog.getBoundingClientRect();
+      const clickedOutside = (
+        e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom
+      );
+      if (clickedOutside) {
+        (dialog as HTMLDialogElement).close();
+      }
+    });
+  });
+</script>

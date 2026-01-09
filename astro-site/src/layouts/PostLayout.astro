@@ -7,7 +7,11 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, subtitle, date, description, og_description, post_image, post_image_alt } = post.data;
+const { title, subtitle, date, description, og_description, social_description, post_image, post_image_alt } = post.data;
+
+// Ensure we always have a description for SEO
+const metaDescription = og_description || description || social_description ||
+  (subtitle ? `${title} - ${subtitle}` : `${title} - Stories from a Burning House`);
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
@@ -18,7 +22,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
 <BaseLayout
   title={title}
-  description={og_description || description}
+  description={metaDescription}
   ogImage={post_image}
 >
   <article class="post" data-pagefind-body>
