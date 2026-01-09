@@ -1,10 +1,7 @@
-id: anonymous_yuan_education
+id: no_readers
 poet:
   en: "Anonymous"
   zh: "佚名"
-title:
-  en: "On Education in the Yuan Dynasty"
-  zh: "元代教育觀"
 text:
   en: |
     There are no readers at the top —
@@ -17,7 +14,7 @@ text:
     So mock the poor. Defraud the kind.
     Watch anyone with learning fall behind.
     Or practice your calligraphy
-          and study your epigraphy: You'll find
+    And study your epigraphy: You'll find
     The learned and the competent
     Are worth less than a copper cent.
   zh: |

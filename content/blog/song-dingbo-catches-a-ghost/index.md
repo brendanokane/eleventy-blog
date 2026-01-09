@@ -3,8 +3,8 @@ title: "Song Dingbo Catches a Ghost"
 date: 2024-10-11
 draft: true
 bluesky_thread:
-post_image: "/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.jpg"
-post_image_alt: "A sassy Qin variant of the character for ghost, from Shuihudi"
+post_image: "/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.png"
+post_image_alt: "A sassy Qin variant of the character for 'ghost' 鬼, from Shuihudi"
 ---
 # Song Dingbo Catches a Ghost
 
@@ -20,7 +20,7 @@ When he was a young man, Song Dingbo of Nanyang was out walking one night when h
 
 "That's where I'm going too!" the ghost exclaimed, and the two set off together.
 
-[![](/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.jpg)](/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.jpg) A sassy Qin variant of the character for “ghost,” from Shuihudi
+{% figure "/song-dingbo-catches-a-ghost/assets/7b457a25-f06b-4baa-8376-790e11d04a91_520x505.png", "A sassy Qin variant of the character for 'ghost' 鬼, from Shuihudi" %}A sassy Qin variant of the character for 'ghost' 鬼, from Shuihudi{% endfigure	%}
 
 After a mile or so, the ghost said: "Walking is too slow. How about we take turns carrying each other?"
 
@@ -42,7 +42,7 @@ They came to a stream, and Dingbo told the ghost to cross first. It made no soun
 
 "I only just died," Dingbo said. "I'm not used to crossing water, that's all. Don't give me a hard time about it."
 
-[![](/song-dingbo-catches-a-ghost/assets/5a8187f2-bfee-46c0-96b7-7a657b5f01bf_500x500.jpg)](/song-dingbo-catches-a-ghost/assets/5a8187f2-bfee-46c0-96b7-7a657b5f01bf_500x500.jpg) A funky Chu variant of “ghost,” from Guodian. It looks sort of like a guy with a ghost on his shoulders, or at least it does to me.
+{% figure "/song-dingbo-catches-a-ghost/assets/5a8187f2-bfee-46c0-96b7-7a657b5f01bf_500x500.png", "A funky Chu variant of “ghost,” from Guodian. It looks sort of like a guy with a ghost on his shoulders, or at least it does to me." %}A funky Chu variant of “ghost,” from Guodian. It looks sort of like a guy with a ghost on his shoulders, or at least it does to me.{% endfigure %}
 
 As they were reaching the market in Yuan, Dingbo tossed the ghost up onto his shoulders and held onto it as hard as he could. The ghost squealed and sputtered and begged to be let down, but Dingbo ignored its cries. He didn't set it down until they reached the middle of the market.
 

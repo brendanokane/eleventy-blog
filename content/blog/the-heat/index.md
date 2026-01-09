@@ -10,7 +10,7 @@ post_image_alt: "Taking the Breeze by a Palace Pond - Anonymous Song dynasty pai
 
 Greetings from my backyard in South Philadelphia, where it is currently 86° Fahrenheit, or 30° centigrade, or approximately 48 farthings, though you should probably check my math on the last one, at 7 in the morning. We used to spend summers in Ireland when I was a kid, and I always felt very superior to the people who protested loudly that they were melting at anything over 25 Celsius, but this shit is hot and it’s only getting hotter, and so obviously it’s time to translate part of Chapter 27 of _Jin Ping Mei_ 金瓶梅, though not _that_ part.
 
-[![](/the-heat/assets/8b8c97ea-19af-4dbd-ac55-3f0731ddd075_1948x3590.jpg)](/the-heat/assets/8b8c97ea-19af-4dbd-ac55-3f0731ddd075_1948x3590.jpg)“Taking the Breeze by a Palace Pond” (宮沼納涼圖), Anonymous, Song dynasty. Collection of the National Palace Museum, Taipei.
+{% figure "/the-heat/assets/8b8c97ea-19af-4dbd-ac55-3f0731ddd075_1948x3590.jpg", "" %}“Taking the Breeze by a Palace Pond” (宮沼納涼圖), Anonymous, Song dynasty. Collection of the National Palace Museum, Taipei.{% endfigure %}
 
 > There are in this world three sorts of people who fear the heat, and three who do not.
 >
@@ -31,9 +31,6 @@ Greetings from my backyard in South Philadelphia, where it is currently 86° Fah
 > These are the three sorts of people who don’t fear the heat. As the poem says:
 >
 > _The cruel heat of the sun scorches the land —_
->
 > _Grain half-withered, millet sere._
->
 > _The hearts of the farmers roil with fear,_
->
 > _While high above, the nobles wave their fans._

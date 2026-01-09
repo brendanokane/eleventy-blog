@@ -6,7 +6,7 @@ bluesky_thread:
 ---
 # Su Shi Discovers the Secret Ingredient
 
-{% figure "/su-shi-discovers-the-secret-ingredient/assets/cb43d3e8-610c-402f-b2b5-67261d7b688b.jpg" %}Su Shi, caught in the rain with sandals and a bamboo hat, presumably a reference to a _ci_ of his I’ve been meaning to translate. ( [Princeton Art Museum](https://artmuseum.princeton.edu/collections/objects/57613)){% endfigure %}
+{% figure "/su-shi-discovers-the-secret-ingredient/assets/cb43d3e8-610c-402f-b2b5-67261d7b688b.jpg", "Handscroll ink rubbing with a portrait of Su Shi wearing a bamboo hat and carrying a bamboo staff", "center" %}Su Shi, caught in the rain with sandals and a bamboo hat, presumably a reference to a _ci_ of his I’ve been meaning to translate. ( [Princeton Art Museum](https://artmuseum.princeton.edu/collections/objects/57613)){% endfigure %}
 
 For the weekend, a short vignette by Su Shi 蘇軾 (1037-1101; aka Su Dongpo 蘇東坡), writing from exile in Huangzhou, about the 12th night of the 10th month of Yuanfeng year six (November 24, 1083), which was also a Friday:
 

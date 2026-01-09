@@ -52,14 +52,12 @@ But “Hanshan” contained multitudes and self-pity gets old fast. Dig the coun
 >
 > Broke scholars who can't catch a break,
 > Hungry and cold as hungry and cold can be,
-> Versifying in your abundant leisure, ※
+> {% mn "Versifying in your abundant leisure," %}Thanks to Kate Lingley and Chris Elford for a very helpful discussion of this line, and particularly for the observation that 閑居 “abiding in leisure” here is mocking: these piddling poetasters are _pretending_ to do the poetical thing of effortlessly tossing off observations on nature, human and regular, without sullying themselves with temporal considerations. The next line (札札用心力, “on every strip of paper they expend mental effort”) punctures the image: they’re working so _hard_ at it.{% endmn %}
 > Sweating and straining for effortless poetry —
 > Low as you are, who'd listen to your words?
 > I'm telling you: Quit moaning and groaning.
 > Write your verses on a bun
 > And the starvingest street dog would leave it alone.
-
-Thanks to Kate Lingley and Chris Elford for a very helpful discussion of this line, and particularly for the observation that 閑居 “abiding in leisure” here is mocking: these piddling poetasters are _pretending_ to do the poetical thing of effortlessly tossing off observations on nature, human and regular, without sullying themselves with temporal considerations. The next line (札札用心力, “on every strip of paper they expend mental effort”) punctures the image: they’re working so _hard_ at it.
 
 Of course, most people never even got the chance to be disappointed, a fact seldom represented in the literary record outside of exceptional cases like the Daoist nun, entertainer, and murderess ( _alleged!_) Yu Xuanji 魚玄機:
 
@@ -148,15 +146,3 @@ There are no monuments to Wang Susu either, but she deployed the rules of sophis
 The iconoclastic philosopher Li Zhi 李贄, who died in 1602 after cutting his own throat to make a point, used it in the same sense around the same time, in a posthumously published book of essays whose title (續焚書) I can only translate as _Burn This Book Too_.
 
 Poetry and talent might not change the way the world works, as Yu Xuanji knew all too well — but in the right place, at the right time, under the right conditions, they can help you get some extremely satisfying shots in. Just ask Wang Susu.
-
-* * *
-
-In a segue so smooth I can only point it out myself, I’m delighted to announce that I’m teaching a new course for Outlier Linguistics, “ [Introduction to Premodern Chinese Literature](https://www.outlier-linguistics.com/products/intro-to-premodern-chinese-literature).” (There’s a short video teaser of me talking awkwardly about the class on that page, and a much longer livestream with me talking awkwardly with John Renfroe [on Outlier's YouTube channel](https://www.youtube.com/watch?v=zne5J-D3A2o).)
-
-We’ll be covering about 3,000 years of literature in 10 weeks with a brisk (and hopefully enjoyable!) introduction to many of the major works, from the _Book of Odes_ 詩經 to _The Story of the Stone_ 石頭記 (or _The Dream of the Red Chamber_ 紅樓夢, as less fussy people call it). This is a tweaked version of an introductory college course that I loved teaching, and I’m really, really happy to be teaching it again.
-
-If you think you might be interested, I’d love to see you there. The class starts tomorrow — September 12 — but you can [sign up](https://www.outlier-linguistics.com/products/intro-to-premodern-chinese-literature) any time and work through recordings of the livestreamed lectures at your own pace.
-
-**But!** There’s a $100 discount if you sign up before the class starts!
-
-I recommend you take advantage of it: Chinese literature, while awesome, is not necessarily a profitable pursuit, as so many major figures of the Chinese literary tradition discovered, so it doesn’t hurt to economize where you can. And I get paid the same either way.

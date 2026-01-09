@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vertical Chinese Typography Test</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family:
+					-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+				padding: 2rem;
+				max-width: 1200px;
+				margin: 0 auto;
+				background: #fafafa;
+			}
+
+			h1 {
+				margin-bottom: 2rem;
+				color: #333;
+			}
+
+			.poem-container {
+				background: white;
+				padding: 2rem;
+				border-radius: 8px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				margin-bottom: 2rem;
+			}
+
+			.poem-layout {
+				display: flex;
+				gap: 3rem;
+				justify-content: center;
+				align-items: flex-start;
+			}
+
+			/* Chinese vertical text block */
+			.poem-chinese {
+				display: flex;
+				flex-direction: row;
+				writing-mode: vertical-rl;
+				text-orientation: upright;
+				font-family: "Noto Serif TC", "Songti TC", "STSong", serif;
+				font-size: 1.5rem;
+				line-height: 2;
+				letter-spacing: 0.2em;
+				color: #1a1a1a;
+				border-right: 2px solid #e0e0e0;
+				padding-right: 2rem;
+				height: auto;
+				max-height: 600px;
+			}
+
+			.poem-chinese-column {
+				display: flex;
+				flex-direction: column;
+			}
+
+			/* Title/author column (rightmost in vertical text = leftmost visually) */
+			.poem-chinese-header {
+				writing-mode: vertical-rl;
+				text-orientation: upright;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding-left: 1.5rem;
+				min-height: 300px;
+			}
+
+			.poem-title-zh {
+				font-size: 1.8rem;
+				font-weight: 600;
+				margin-bottom: 1rem;
+				color: #000;
+			}
+
+			.poem-poet-zh {
+				font-size: 1.2rem;
+				color: #666;
+				margin-top: auto;
+			}
+
+			/* Text columns */
+			.poem-text-zh {
+				writing-mode: vertical-rl;
+				text-orientation: upright;
+				padding: 0 0.75rem;
+				white-space: pre-wrap;
+				/* Set column height to ~12 characters (2 pentametric lines) */
+				height: 24em; /* 12 characters × 2em line-height */
+				overflow: visible;
+			}
+
+			/* English block */
+			.poem-english {
+				flex: 1;
+				max-width: 500px;
+			}
+
+			.poem-title-en {
+				font-size: 1.5rem;
+				font-style: italic;
+				margin-bottom: 0.5rem;
+				color: #1a1a1a;
+			}
+
+			.poem-poet-en {
+				font-size: 1rem;
+				color: #666;
+				margin-bottom: 0.25rem;
+			}
+
+			.poem-dates-en {
+				font-size: 0.9rem;
+				color: #999;
+				margin-bottom: 2rem;
+			}
+
+			.poem-text-en {
+				font-size: 1.1rem;
+				line-height: 1.8;
+				white-space: pre-wrap;
+				color: #333;
+			}
+
+			/* Mobile fallback */
+			@media (max-width: 768px) {
+				.poem-layout {
+					flex-direction: column;
+					gap: 2rem;
+				}
+
+				.poem-chinese {
+					border-right: none;
+					border-bottom: 2px solid #e0e0e0;
+					padding-right: 0;
+					padding-bottom: 2rem;
+					max-height: 400px;
+				}
+			}
+
+			/* Version comparison */
+			.version-label {
+				font-weight: bold;
+				color: #0066cc;
+				margin-bottom: 1rem;
+				font-size: 1.2rem;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Vertical Chinese Typography Experiment</h1>
+
+		<!-- Vertical Layout Version -->
+		<div class="version-label">Version 1: Vertical Chinese (RTL Columnar)</div>
+		<div class="poem-container">
+			<div class="poem-layout">
+				<!-- Chinese text block with vertical columns -->
+				<div class="poem-chinese">
+					<!-- Header column (title/author) - appears rightmost in vertical text -->
+					<div class="poem-chinese-header">
+						<div class="poem-title-zh" lang="zh">春曉</div>
+						<div class="poem-poet-zh" lang="zh">孟浩然</div>
+					</div>
+
+					<!-- Poem text - will flow into columns based on height -->
+					<div class="poem-text-zh" lang="zh">
+						春眠不覺曉，處處聞啼鳥。夜來風雨聲，花落知多少？
+					</div>
+				</div>
+
+				<!-- English text block -->
+				<div class="poem-english">
+					<h3 class="poem-title-en">Spring Dawning</h3>
+					<p class="poem-poet-en">Meng Haoran</p>
+					<p class="poem-dates-en">689-740</p>
+					<div class="poem-text-en">
+						Spring slumber: I didn't mark the dawn. From all around, the sound
+						of singing birds. In the night there was a noise of wind and rain —
+						Flowers fell. I wonder how many?
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Current Layout Version (for comparison) -->
+		<div class="version-label">
+			Version 2: Current Side-by-Side (Horizontal)
+		</div>
+		<div class="poem-container">
+			<div class="poem-layout">
+				<div class="poem-english">
+					<h3 class="poem-title-en">春曉 (Spring Dawning)</h3>
+					<p class="poem-poet-en">孟浩然 (Meng Haoran, 689-740)</p>
+					<div
+						class="poem-text-en"
+						style="
+							white-space: pre-wrap;
+							font-family: &quot;Noto Serif TC&quot;, serif;
+							font-size: 1.3rem;
+							margin-bottom: 2rem;
+						"
+					>
+						春眠不覺曉，處處聞啼鳥。 夜來風雨聲，花落知多少？
+					</div>
+					<div class="poem-text-en">
+						Spring slumber: I didn't mark the dawn. From all around, the sound
+						of singing birds. In the night there was a noise of wind and rain —
+						Flowers fell. I wonder how many?
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Longer poem test: Liu Zongyuan -->
+		<div class="version-label">Version 3: Longer Poem Test (River Snow)</div>
+		<div class="poem-container">
+			<div class="poem-layout">
+				<!-- Chinese text block -->
+				<div class="poem-chinese">
+					<div class="poem-chinese-header">
+						<div class="poem-title-zh" lang="zh">江雪</div>
+						<div class="poem-poet-zh" lang="zh">柳宗元</div>
+					</div>
+
+					<div class="poem-text-zh" lang="zh">
+						千山鳥飛絕，萬徑人蹤滅。孤舟簑笠翁，獨釣寒江雪。
+					</div>
+				</div>
+
+				<!-- English text block -->
+				<div class="poem-english">
+					<h3 class="poem-title-en">River Snow</h3>
+					<p class="poem-poet-en">Liu Zongyuan</p>
+					<p class="poem-dates-en">773-819</p>
+					<div class="poem-text-en">
+						a thousand hills and not one bird in flight a million trails and not
+						so much as a footprint lone boat, rush cloak, reed hat: an old man
+						fishes alone in the freezing river for snow
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

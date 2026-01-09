@@ -15,16 +15,7 @@ I [mentioned](https://www.burninghou.se/p/in-defense-of-the-relatively-low-quali
 > 立身則小學，修身則大學，
 > 智和能都不及鴨青鈔。
 
-> There are {% mn "no readers at the top —" %}There’s another poem in the _Quan Yuan sanqu_ that shares the same opening to each line, which I won’t attempt to reflect in translation. Here’s the start:
-
-> 不讀書有權，不識字有錢，
-> 不曉事倒有人誇薦。
-
-> The powerful don’t read,
-> The illiterate are loaded,
-> And only fuck-ups get promoted.
-
-When you see a doublet like this, what you’re looking at is an invitation, received a few centuries too late, to a boozy party where friends shouted lines out over cups of wine for other friends to complete, rhyme with, or outdo. I translate to keep the party going.{% endmn %}
+> There are no readers at the top —
 > Illiterate? You'll benefit. And praise
 > Is the prize for idiocy nowadays.
 > For Heaven won't discriminate
@@ -38,7 +29,16 @@ When you see a doublet like this, what you’re looking at is an invitation, rec
 > The learned and the competent
 > Are worth less than a copper cent.
 >
-> _Anonymous_
+> {% mn "_Anonymous_" %}There’s another poem in the _Quan Yuan sanqu_ that shares the same opening to each line, which I won’t attempt to reflect in translation. Here’s the start:
+
+> 不讀書有權，不識字有錢，
+> 不曉事倒有人誇薦。
+
+> The powerful don’t read,
+> The illiterate are loaded,
+> And only fuck-ups get promoted.
+
+When you see a doublet like this, what you’re looking at is an invitation, received a few centuries too late, to a boozy party where friends shouted lines out over cups of wine for other friends to complete, rhyme with, or outdo. I translate to keep the party going.{% endmn %}
 
 But having nothing left to lose is just another way of describing freedom, as Kris Kristofferson said if you apply the symmetric property of equality. Here’s the poet and playwright Qiao Ji 喬吉 (1280-1345) to close out 2023 with one of my all-time favorite articulations of the joy and goodwill universally felt by all humans, in all places and times, upon leaving a PhD program:
 
