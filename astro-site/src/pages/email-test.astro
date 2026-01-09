@@ -1,0 +1,60 @@
+---
+/**
+ * Email Template Test Page
+ *
+ * Renders the counter-test post using EmailLayout to verify:
+ * - CSS variables match site design
+ * - Typography is email-safe
+ * - Endnotes render correctly
+ * - Plain text degradation works
+ *
+ * Visit /email-test to preview email rendering
+ */
+
+import EmailLayout from '../layouts/EmailLayout.astro';
+import { getEntry } from 'astro:content';
+
+// Load the counter test post
+const post = await getEntry('blog', 'counter-test');
+if (!post) throw new Error('Test post not found');
+
+const { Content } = await post.render();
+const { title, date } = post.data;
+---
+
+<EmailLayout title={title} date={date}>
+  <Content />
+
+  <Fragment slot="endnotes">
+    <!-- Manually added endnotes for testing -->
+    <div class="endnote" id="fn-1">
+      <span class="endnote-number">1.</span>
+      This should be numbered 1.
+      <a href="#fnref-1" class="backref" aria-label="Return to text">↩</a>
+    </div>
+
+    <div class="endnote" id="fn-2">
+      <span class="endnote-number">2.</span>
+      This should be numbered 2.
+      <a href="#fnref-2" class="backref" aria-label="Return to text">↩</a>
+    </div>
+
+    <div class="endnote" id="fn-3">
+      <span class="endnote-number">3.</span>
+      This should be numbered 3.
+      <a href="#fnref-3" class="backref" aria-label="Return to text">↩</a>
+    </div>
+
+    <div class="endnote" id="fn-4">
+      <span class="endnote-number">4.</span>
+      This should be numbered 4, continuing the sequence from margin notes and footnotes.
+      <a href="#fnref-4" class="backref" aria-label="Return to text">↩</a>
+    </div>
+
+    <div class="endnote" id="fn-5">
+      <span class="endnote-number">5.</span>
+      Number 5 here!
+      <a href="#fnref-5" class="backref" aria-label="Return to text">↩</a>
+    </div>
+  </Fragment>
+</EmailLayout>

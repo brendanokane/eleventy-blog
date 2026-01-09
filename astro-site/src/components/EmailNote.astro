@@ -1,0 +1,42 @@
+---
+/**
+ * Email Note Component
+ *
+ * For email/RSS output, both MarginNote and Footnote render as this component.
+ * Displays as inline reference number with endnote collected at bottom.
+ *
+ * The number prop is injected by remark-note-numbers plugin (shared counter).
+ *
+ * Usage (in EmailLayout context):
+ *   <EmailNote number={1}>Note content here</EmailNote>
+ *   <EmailNote number={2} anchor="highlighted text">Note about that text</EmailNote>
+ */
+
+interface Props {
+  number: number;
+  anchor?: string;
+  id?: string;
+}
+
+const { number, anchor, id } = Astro.props;
+const noteId = id || `fn-${number}`;
+---
+
+<!--
+  For email, we render ONLY the inline reference.
+  The actual note content is collected separately by EmailLayout.
+  This component's slot content will be extracted server-side.
+-->
+{anchor ? (
+  <span>
+    {anchor}<sup><a href={`#${noteId}`} id={`fnref-${noteId}`} style="text-decoration: none;">{number}</a></sup>
+  </span>
+) : (
+  <sup><a href={`#${noteId}`} id={`fnref-${noteId}`} style="text-decoration: none;">{number}</a></sup>
+)}
+
+<!--
+  Note: The slot content is intentionally NOT rendered here.
+  EmailLayout will collect it and render at bottom as endnotes section.
+  This is handled via a custom rendering pass in the layout.
+-->
