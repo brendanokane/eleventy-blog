@@ -1,0 +1,54 @@
+---
+/**
+ * Footnote Component
+ *
+ * Similar to MarginNote but appears at the bottom of the page instead of in margin.
+ * The `number` prop is automatically injected by remark-note-numbers plugin.
+ * Numbers are shared with MarginNote component for unified sequential numbering.
+ *
+ * Usage:
+ *   <Footnote>Your footnote content here</Footnote>
+ *   <Footnote anchor="reference text">Footnote explaining that reference</Footnote>
+ */
+
+interface Props {
+  anchor?: string;
+  id?: string;
+  number?: number; // Injected by remark-note-numbers plugin
+}
+
+const { anchor, id, number } = Astro.props;
+
+// Use provided number or fall back to asterisk
+const displayNumber = number ?? '*';
+const noteId = id || `fn-${number || Math.random().toString(36).substr(2, 9)}`;
+---
+
+{anchor ? (
+  <span class="fn-ref">
+    <span class="fn-anchor-text">
+      <Fragment set:html={anchor} />
+    </span>
+    <sup>
+      <a href={`#${noteId}`} id={`fnref-${noteId}`} aria-label={`Footnote ${displayNumber}`}>
+        {displayNumber}
+      </a>
+    </sup>
+    <span class="fn-content" id={noteId} role="note">
+      <span class="fn-number">{displayNumber}.</span>
+      <slot />
+      <a href={`#fnref-${noteId}`} class="fn-backref" aria-label="Return to text">↩</a>
+    </span>
+  </span>
+) : (
+  <sup class="fn-ref">
+    <a href={`#${noteId}`} id={`fnref-${noteId}`} aria-label={`Footnote ${displayNumber}`}>
+      {displayNumber}
+    </a>
+    <span class="fn-content" id={noteId} role="note">
+      <span class="fn-number">{displayNumber}.</span>
+      <slot />
+      <a href={`#fnref-${noteId}`} class="fn-backref" aria-label="Return to text">↩</a>
+    </span>
+  </sup>
+)}

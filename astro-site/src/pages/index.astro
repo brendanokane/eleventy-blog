@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Burning House" description="Essays, notes, and translations">
+  <div class="posts-list-container">
+    <h1>Recent Posts</h1>
+    <ul class="post-list">
+      {sortedPosts.map((post) => (
+        <li>
+          <h2 class="post-list-title">
+            <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+          </h2>
+          <p class="post-list-meta">
+            {new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }).format(post.data.date)}
+          </p>
+          {post.data.description && <p>{post.data.description}</p>}
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>

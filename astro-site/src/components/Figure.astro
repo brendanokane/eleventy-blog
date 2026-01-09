@@ -1,0 +1,76 @@
+---
+/**
+ * Figure Component with Astro's Built-in Image Optimization
+ *
+ * Automatically optimizes images:
+ * - Generates WebP and AVIF versions
+ * - Creates responsive srcset (400w, 800w, 1200w)
+ * - Adds lazy loading
+ * - Prevents layout shift (width/height)
+ * - Compresses for optimal file size
+ *
+ * Usage:
+ *   <Figure src="/path/to/image.jpg" alt="description">
+ *   Caption text here
+ *   </Figure>
+ *
+ *   <Figure src="/path/to/image.jpg" alt="description" style="center">
+ *   Centered caption
+ *   </Figure>
+ *
+ * Note: Images can be in public/ or imported from src/
+ */
+
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt: string;
+  style?: 'center' | 'margin';
+  width?: number;
+  height?: number;
+}
+
+const { src, alt, style, width = 1200, height = 800 } = Astro.props;
+const isCentered = style === 'center';
+
+// Generate responsive widths
+const widths = [400, 800, 1200];
+const formats = ['avif', 'webp', 'jpg'] as const;
+---
+
+{isCentered ? (
+  <figure class="fig-centered">
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      widths={widths}
+      formats={formats}
+      quality={80}
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption>
+      <slot />
+    </figcaption>
+  </figure>
+) : (
+  <figure class="fig-margin">
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      widths={widths}
+      formats={formats}
+      quality={80}
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption class="fig-caption-margin">
+      <slot />
+    </figcaption>
+  </figure>
+)}

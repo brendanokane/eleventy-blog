@@ -1,0 +1,49 @@
+---
+/**
+ * Margin Note Component
+ *
+ * The `number` prop is automatically injected by remark-note-numbers plugin.
+ * Numbers are shared with Footnote component for unified sequential numbering.
+ *
+ * Usage:
+ *   <MarginNote>Your note content here</MarginNote>
+ *   <MarginNote anchor="highlighted text">Note about that text</MarginNote>
+ */
+
+interface Props {
+  anchor?: string;
+  id?: string;
+  number?: number; // Injected by remark-note-numbers plugin
+}
+
+const { anchor, id, number } = Astro.props;
+
+// Use provided number or fall back to asterisk
+const displayNumber = number ?? '*';
+const noteId = id || `mn-${number || Math.random().toString(36).substr(2, 9)}`;
+---
+
+{anchor ? (
+  <span class="mn-ref" data-mn-id={noteId}>
+    <span class="mn-anchor-text">
+      <Fragment set:html={anchor} />
+      <button type="button" class="mn-marker" aria-expanded="false" aria-controls={noteId} aria-label={`Show margin note ${displayNumber}`}>
+        {displayNumber}
+      </button>
+    </span>
+    <span class="mn-note" id={noteId} role="note">
+      <span class="mn-note-number" aria-hidden="true">{displayNumber}</span>
+      <slot />
+    </span>
+  </span>
+) : (
+  <span class="mn-ref" data-mn-id={noteId}>
+    <button type="button" class="mn-marker" aria-expanded="false" aria-controls={noteId} aria-label={`Show margin note ${displayNumber}`}>
+      {displayNumber}
+    </button>
+    <span class="mn-note" id={noteId} role="note">
+      <span class="mn-note-number" aria-hidden="true">{displayNumber}</span>
+      <slot />
+    </span>
+  </span>
+)}

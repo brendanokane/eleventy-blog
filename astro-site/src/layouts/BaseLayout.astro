@@ -1,0 +1,195 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const siteUrl = 'https://burninghou.se';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{title}</title>
+    {description && <meta name="description" content={description}>}
+    <link rel="canonical" href={canonicalUrl}>
+
+    <!-- OpenGraph -->
+    <meta property="og:site_name" content="Burning House">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content={title}>
+    {description && <meta property="og:description" content={description}>}
+    <meta property="og:url" content={canonicalUrl}>
+    {ogImage && <meta property="og:image" content={`${siteUrl}${ogImage}`}>}
+
+    <!-- Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=Vollkorn:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Global Styles -->
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
+  </head>
+
+  <body>
+    <a href="#main" class="visually-hidden">Skip to main content</a>
+
+    <div class="site-header-container">
+      <header class="site-header">
+        <a href="/" class="home-link">
+          <span>Burning House</span>
+        </a>
+        <nav>
+          <ul class="nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog/">Archive</a></li>
+            <li><a href="/about/">About</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+
+    <main id="main" class="main-content-container">
+      <div class="layout-container">
+        <slot />
+      </div>
+    </main>
+
+    <div class="site-footer-container">
+      <footer class="site-footer">
+        <p><em>Built with Astro</em></p>
+      </footer>
+    </div>
+
+    <!-- Margin note positioning script -->
+    <script>
+      const MOBILE_BREAKPOINT = 1024;
+      let wasMobile = window.innerWidth < MOBILE_BREAKPOINT;
+
+      function handleTriggerActivation(e: Event) {
+        if (e.type === 'keydown' && !['Enter', ' '].includes((e as KeyboardEvent).key)) {
+          return;
+        }
+
+        const trigger = (e.target as Element).closest('.mn-marker, .mn-anchor-text');
+        if (!trigger) return;
+
+        if (window.innerWidth >= MOBILE_BREAKPOINT) return;
+
+        const ref = trigger.closest('.mn-ref');
+        if (!ref) return;
+
+        const note = ref.querySelector('.mn-note');
+        if (!note) return;
+
+        e.preventDefault();
+
+        const isExpanded = !note.classList.contains('is-visible');
+        note.classList.toggle('is-visible');
+        trigger.setAttribute('aria-expanded', String(isExpanded));
+
+        if (isExpanded) {
+          note.setAttribute('tabindex', '-1');
+          (note as HTMLElement).focus();
+        }
+      }
+
+      function positionNotes() {
+        document.querySelectorAll('.post-body .mn-ref').forEach((ref) => {
+          const note = ref.querySelector('.mn-note') as HTMLElement;
+          const marker = ref.querySelector('.mn-marker') as HTMLElement;
+          if (!note || !marker) return;
+
+          const markerRect = marker.getBoundingClientRect();
+          const postBody = ref.closest('.post-body');
+          if (!postBody) return;
+
+          const bodyRect = postBody.getBoundingClientRect();
+          const offset = markerRect.top - bodyRect.top;
+
+          note.style.top = `${offset}px`;
+        });
+      }
+
+      function clearMobileState() {
+        document.querySelectorAll('.mn-note.is-visible').forEach((note) => {
+          note.classList.remove('is-visible');
+          note.removeAttribute('tabindex');
+        });
+        document.querySelectorAll('[aria-expanded="true"]').forEach((el) => {
+          el.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      function updateAriaAttributes() {
+        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+
+        document.querySelectorAll('.mn-ref').forEach((ref) => {
+          const trigger = ref.querySelector('.mn-marker');
+          const note = ref.querySelector('.mn-note');
+
+          if (!trigger || !note) return;
+
+          if (isMobile) {
+            const isVisible = note.classList.contains('is-visible');
+            trigger.setAttribute('aria-expanded', String(isVisible));
+            trigger.setAttribute('aria-controls', note.id);
+          } else {
+            trigger.removeAttribute('aria-expanded');
+            trigger.removeAttribute('aria-controls');
+          }
+        });
+      }
+
+      function handleLayout() {
+        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+
+        if (wasMobile && !isMobile) {
+          clearMobileState();
+        }
+
+        updateAriaAttributes();
+
+        if (!isMobile) {
+          positionNotes();
+        }
+
+        wasMobile = isMobile;
+      }
+
+      let resizeTimeout: number;
+      function onResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(handleLayout, 100) as unknown as number;
+      }
+
+      function init() {
+        handleLayout();
+        window.addEventListener('resize', onResize);
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(handleLayout);
+        }
+
+        window.addEventListener('load', handleLayout);
+      }
+
+      document.addEventListener('click', handleTriggerActivation);
+      document.addEventListener('keydown', handleTriggerActivation);
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    </script>
+  </body>
+</html>

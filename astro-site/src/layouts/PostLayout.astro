@@ -1,0 +1,37 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, subtitle, date, description, og_description, post_image, post_image_alt } = post.data;
+
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<BaseLayout
+  title={title}
+  description={og_description || description}
+  ogImage={post_image}
+>
+  <article class="post" data-pagefind-body>
+    <header class="post-header">
+      <h1 class="post-title">{title}</h1>
+      {subtitle && <p class="post-subtitle">{subtitle}</p>}
+      <ul class="post-metadata">
+        <li><time datetime={date.toISOString()}>{formattedDate}</time></li>
+      </ul>
+    </header>
+
+    <div class="post-body">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
